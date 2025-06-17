@@ -115,6 +115,10 @@ report 70107 "Purchase Request Order"
                 CompanyInfo.Picture)
                 {
                 }
+                column(Item_Type; "Item Type")
+                {
+
+                }
 
                 //AN 04/14/2025
                 trigger OnAfterGetRecord()
