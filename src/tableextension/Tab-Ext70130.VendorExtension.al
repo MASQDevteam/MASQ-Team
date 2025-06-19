@@ -22,7 +22,13 @@ tableextension 70130 "Vendor Extension" extends Vendor
             FieldClass = FlowField;
             CalcFormula = lookup("Payment Terms".Description where(Code = field("Payment Terms Code")));
         }
-
+        field(70104; "Masq Remainig AmountNotZero"; Boolean)
+        {
+            Caption = 'Remaining Amount Not Zero';
+            FieldClass = FlowField;
+            CalcFormula = exist("Vendor Ledger Entry"
+                where("Vendor No." = field("No."), "Remaining Amount" = filter(<> 0)));
+        }
     }
 
     keys

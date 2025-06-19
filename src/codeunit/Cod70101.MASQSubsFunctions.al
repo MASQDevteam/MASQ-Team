@@ -1127,6 +1127,8 @@ codeunit 70101 "MASQ Subs & Functions"
     begin
         RequisitionLine."Meg Item Type" := UnplannedDemand."Meg Item Type";
         RequisitionLine."Vendor Item No." := UnplannedDemand."Meg Vendor Item Code";
+        //AN 06/19/2025
+        //RequisitionLine."Meg Vendor Item Code" := UnplannedDemand."Meg Vendor Item Code";
         RequisitionLine."MASQ Sales Order No." := UnplannedDemand."MASQ Sales Order No.";
         RequisitionLine."MASQ Sales Order Line No." := UnplannedDemand."MASQ Sales Order Line No.";
         RequisitionLine."Sent to PO" := UnplannedDemand."Sent to PO";
@@ -2014,6 +2016,8 @@ codeunit 70101 "MASQ Subs & Functions"
         PurchOrderLine.Validate("Line Discount %", RequisitionLine."Line Discount %");
 
         PurchOrderLine."Vendor Item No." := RequisitionLine."Vendor Item No.";
+        //AN 06/19/2025
+        //PurchOrderLine."Meg Vendor Item Code" := RequisitionLine."Meg Vendor Item Code";
         PurchOrderLine.Description := RequisitionLine.Description;
         PurchOrderLine."Description 2" := RequisitionLine."Description 2";
         PurchOrderLine."Sales Order No." := RequisitionLine."Sales Order No.";
@@ -2388,62 +2392,62 @@ codeunit 70101 "MASQ Subs & Functions"
 
     //AN 06/16/2025
 
-    [EventSubscriber(ObjectType::Codeunit, CodeUnit::"Purch. Inv. Header - Edit", OnBeforePurchInvHeaderModify, '', false, false)]
-    local procedure OnBeforePurchInvHeaderModify(var PurchInvHeader: Record "Purch. Inv. Header"; PurchInvHeaderRec: Record "Purch. Inv. Header")
+    // [EventSubscriber(ObjectType::Codeunit, CodeUnit::"Purch. Inv. Header - Edit", OnBeforePurchInvHeaderModify, '', false, false)]
+    // local procedure OnBeforePurchInvHeaderModify(var PurchInvHeader: Record "Purch. Inv. Header"; PurchInvHeaderRec: Record "Purch. Inv. Header")
 
-    var
-        ValueEntryGoods: Record "Value Entry";
-        ValueEntryCharges: Record "Value Entry";
-        CLEARING: Decimal;
-        CUSTOMS: Decimal;
-        FREIGHT: Decimal;
-        OTHERS: Decimal;
-        INSURANCE: Decimal;
-    begin
-        FREIGHT := 0;
-        CUSTOMS := 0;
-        CLEARING := 0;
-        OTHERS := 0;
-        INSURANCE := 0;
+    // var
+    //     ValueEntryGoods: Record "Value Entry";
+    //     ValueEntryCharges: Record "Value Entry";
+    //     CLEARING: Decimal;
+    //     CUSTOMS: Decimal;
+    //     FREIGHT: Decimal;
+    //     OTHERS: Decimal;
+    //     INSURANCE: Decimal;
+    // begin
+    //     FREIGHT := 0;
+    //     CUSTOMS := 0;
+    //     CLEARING := 0;
+    //     OTHERS := 0;
+    //     INSURANCE := 0;
 
-        Clear(ValueEntryGoods);
-        ValueEntryGoods.SetRange("Posting Date", PurchInvHeader."Posting Date");
-        ValueEntryGoods.SetRange("Document No.", PurchInvHeader."No.");
-        IF ValueEntryGoods.FindFirst() then begin
-            Clear(ValueEntryCharges);
-            ValueEntryCharges.SetRange("Item Ledger Entry No.", ValueEntryGoods."Item Ledger Entry No.");
-            if ValueEntryCharges.FindSet() then
-                repeat
+    //     Clear(ValueEntryGoods);
+    //     ValueEntryGoods.SetRange("Posting Date", PurchInvHeader."Posting Date");
+    //     ValueEntryGoods.SetRange("Document No.", PurchInvHeader."No.");
+    //     IF ValueEntryGoods.FindFirst() then begin
+    //         Clear(ValueEntryCharges);
+    //         ValueEntryCharges.SetRange("Item Ledger Entry No.", ValueEntryGoods."Item Ledger Entry No.");
+    //         if ValueEntryCharges.FindSet() then
+    //             repeat
 
-                    IF ValueEntryCharges."Gen. Prod. Posting Group" = 'CLEARING' then
-                        CLEARING += ValueEntryCharges."Cost Amount (Actual)" else
+    //                 IF ValueEntryCharges."Gen. Prod. Posting Group" = 'CLEARING' then
+    //                     CLEARING += ValueEntryCharges."Cost Amount (Actual)" else
 
-                        IF ValueEntryCharges."Gen. Prod. Posting Group" = 'CUSTOMS' then
-                            CUSTOMS += ValueEntryCharges."Cost Amount (Actual)" else
+    //                     IF ValueEntryCharges."Gen. Prod. Posting Group" = 'CUSTOMS' then
+    //                         CUSTOMS += ValueEntryCharges."Cost Amount (Actual)" else
 
-                            IF ValueEntryCharges."Gen. Prod. Posting Group" = 'FREIGHT' then
-                                FREIGHT += ValueEntryCharges."Cost Amount (Actual)" else
+    //                         IF ValueEntryCharges."Gen. Prod. Posting Group" = 'FREIGHT' then
+    //                             FREIGHT += ValueEntryCharges."Cost Amount (Actual)" else
 
-                                IF ValueEntryCharges."Gen. Prod. Posting Group" = 'INSURANCE' then
-                                    INSURANCE += ValueEntryCharges."Cost Amount (Actual)" else
+    //                             IF ValueEntryCharges."Gen. Prod. Posting Group" = 'INSURANCE' then
+    //                                 INSURANCE += ValueEntryCharges."Cost Amount (Actual)" else
 
-                                    IF ValueEntryCharges."Gen. Prod. Posting Group" = 'OTHEREXP TAXABLE' then
-                                        OTHERS += ValueEntryCharges."Cost Amount (Actual)";
+    //                                 IF ValueEntryCharges."Gen. Prod. Posting Group" = 'OTHEREXP TAXABLE' then
+    //                                     OTHERS += ValueEntryCharges."Cost Amount (Actual)";
 
-                until ValueEntryCharges.Next() = 0;
-
-
-            PurchInvHeader."Actual (Total Cost) Freight" := FREIGHT;
-            PurchInvHeader."Actual (Total Cost) Custom" := CUSTOMS;
-            PurchInvHeader."Actual (Total Cost) Clearance" := CLEARING;
-            PurchInvHeader."Actual (Total Cost) Others" := OTHERS;
-
-            PurchInvHeader."Actual (Total Cost) Insurance" := INSURANCE;//all cost related to insurance is added on 10/02/2025
+    //             until ValueEntryCharges.Next() = 0;
 
 
-        end;
+    //         PurchInvHeader."Actual (Total Cost) Freight" := FREIGHT;
+    //         PurchInvHeader."Actual (Total Cost) Custom" := CUSTOMS;
+    //         PurchInvHeader."Actual (Total Cost) Clearance" := CLEARING;
+    //         PurchInvHeader."Actual (Total Cost) Others" := OTHERS;
 
-    end;
+    //         PurchInvHeader."Actual (Total Cost) Insurance" := INSURANCE;//all cost related to insurance is added on 10/02/2025
+
+
+    //     end;
+
+    // end;
 
     var
         FilterText: Text;

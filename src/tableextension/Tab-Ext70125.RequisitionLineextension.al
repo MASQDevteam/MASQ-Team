@@ -158,9 +158,14 @@ tableextension 70125 "Requisition Line extension" extends "Requisition Line"
 
             end;
         }
-
+        //AN 06/19/2025
+        field(70119; "Meg Vendor Item Code"; Code[200])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Vendor Item Code';
+            Editable = false;
+        }
     }
-
     keys
     {
         // Add changes to keys here

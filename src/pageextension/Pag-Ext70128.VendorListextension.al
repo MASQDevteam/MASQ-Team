@@ -16,6 +16,11 @@ pageextension 70128 "Vendor List extension" extends "Vendor List"
         // Add changes to page layout here
         addafter(Name)
         {
+            field("Masq Remainig AmountNotZero"; Rec."Masq Remainig AmountNotZero")
+            {
+                ApplicationArea = All;
+                DrillDownPageId = "Vendor Ledger Entries";
+            }
             field("Purchases (LCY)"; Rec."Purchases (LCY)")
             {
                 ApplicationArea = All;
@@ -72,6 +77,7 @@ pageextension 70128 "Vendor List extension" extends "Vendor List"
             {
                 ApplicationArea = All;
             }
+
         }
         modify("Payment Terms Code")
         {
