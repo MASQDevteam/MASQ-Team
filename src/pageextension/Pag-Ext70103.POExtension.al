@@ -87,9 +87,9 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                 Caption = 'BL Attachments';
                 Provider = PurchLines;
                 SubPageLink = //"Table ID" = const(Database::"BL Details"),
-                              "No." = field("BL/AWB ID"),
+                              "No." = field("BL/AWB ID");
                 //modified by aya
-                "Document Type" = field("Document Type");
+                // "Document Type" = field("Document Type");
             }
             part("Cost LOGs Factbox"; "Cost LOGs Factbox")
             {
