@@ -54,21 +54,18 @@ tableextension 70123 "Document attachment Extension" extends "Document Attachmen
 
     trigger OnAfterInsert()
     var
-    //     FinanceDetails: Record "Finance Details";
-    // begin
-    //     IF Rec."Table ID" = Database::"Finance Details" then begin
-    //         FinanceDetails.Get(Rec."No.");
-    //         Clear(DocumentAttachment1);
-    //         DocumentAttachment1.SetRange("Table ID", Database::"Finance Details");
-    //         DocumentAttachment1.SetRange("No.", Rec."No.");
-    //         DocumentAttachment1.SetFilter("File Name", '<> %1', '');
-    //         FinanceDetails."# of Amendment" := DocumentAttachment1.Count;
-    //         FinanceDetails.Modify();
-    //     end;
+        FinanceDetails: Record "Finance Details";
     begin
-
+        IF Rec."Table ID" = Database::"Finance Details" then begin
+            FinanceDetails.Get(Rec."No.");
+            Clear(DocumentAttachment1);
+            DocumentAttachment1.SetRange("Table ID", Database::"Finance Details");
+            DocumentAttachment1.SetRange("No.", Rec."No.");
+            DocumentAttachment1.SetFilter("File Name", '<> %1', '');
+            FinanceDetails."# of Amendment" := DocumentAttachment1.Count;
+            FinanceDetails.Modify();
+        end;
     end;
-
 
     var
         myInt: Integer;

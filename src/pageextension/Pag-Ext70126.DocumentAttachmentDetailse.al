@@ -39,7 +39,7 @@ pageextension 70126 "Document Attachment Details e" extends "Document Attachment
     var
         Project: Record Job;
         PurchaseOrder: Record "Purchase Header";
-      //  FinanceDetails: Record "Finance Details";
+        FinanceDetails: Record "Finance Details";
         BLDetails: Record "BL Details";
         AWBDetails: Record "AWB Details";
         VariationOrder: Record "Variation Order";
@@ -95,7 +95,7 @@ pageextension 70126 "Document Attachment Details e" extends "Document Attachment
             end
         end;
 
-      /*  IF (Rec."Table ID" = Database::"Finance Details") then begin
+        IF (Rec."Table ID" = Database::"Finance Details") then begin
             Clear(FinanceDetails);
             FinanceDetails.Get(Rec."No.");
             FinanceDetails."Attachment ID" := '';
@@ -117,7 +117,7 @@ pageextension 70126 "Document Attachment Details e" extends "Document Attachment
                 FinanceDetails."Document Attachment ID" := REc.ID;
                 FinanceDetails.Modify();
             end
-        end;*/
+        end;
 
         IF (Rec."Table ID" = Database::"BL Details") then begin
             Clear(BLDetails);

@@ -133,7 +133,7 @@ codeunit 70101 "MASQ Subs & Functions"
         PurchaseRequestHeader: Record "SUPPLIER PAYMENT REQUEST";
         //   PaymentRequestHeader: Record "Payment Request Header";
         BankAccount: Record "Bank Account";
-        //   FinanceDetails: Record "Finance Details";
+        FinanceDetails: Record "Finance Details";
         BLDetails: Record "BL Details";
         AWBDetails: Record "AWB Details";
         ShippingQuote: Record "Shipping Quotation";
@@ -158,13 +158,13 @@ codeunit 70101 "MASQ Subs & Functions"
                     if BankAccount.Get(DocumentAttachment."No.") then
                         RecRef.GetTable(BankAccount);
                 end;
-            /*  Database::"Finance Details":
-                  begin
-                      RecRef.Open(DATABASE::"Finance Details");
-                      if FinanceDetails.Get(DocumentAttachment."No.") then
-                          RecRef.GetTable(FinanceDetails);
+            Database::"Finance Details":
+                begin
+                    RecRef.Open(DATABASE::"Finance Details");
+                    if FinanceDetails.Get(DocumentAttachment."No.") then
+                        RecRef.GetTable(FinanceDetails);
 
-                  end;*/
+                end;
             Database::"BL Details":
                 begin
                     RecRef.Open(DATABASE::"BL Details");
@@ -259,12 +259,12 @@ codeunit 70101 "MASQ Subs & Functions"
                     DocumentAttachment.Validate("No.", RecNo);
                 end;
 
-            /* DATABASE::"Finance Details":
-                 begin
-                     FieldRef := RecRef.Field(22);
-                     RecNo := FieldRef.Value;
-                     DocumentAttachment.Validate("No.", RecNo);
-                 end;*/
+            DATABASE::"Finance Details":
+                begin
+                    FieldRef := RecRef.Field(22);
+                    RecNo := FieldRef.Value;
+                    DocumentAttachment.Validate("No.", RecNo);
+                end;
 
             DATABASE::"BL Details":
                 begin
@@ -363,19 +363,18 @@ codeunit 70101 "MASQ Subs & Functions"
                     FlowFieldsEditable := false;
                 end;
 
+            DATABASE::"Finance Details":
+                begin
+                    FieldRef := RecRef.Field(22);
+                    RecNo := FieldRef.Value;
+                    DocumentAttachment.SetRange("No.", RecNo);
 
-            /*   DATABASE::"Finance Details":
-                   begin
-                       FieldRef := RecRef.Field(22);
-                       RecNo := FieldRef.Value;
-                       DocumentAttachment.SetRange("No.", RecNo);
+                    // FieldRef := RecRef.Field(4);
+                    // LineNo := FieldRef.Value;
+                    // DocumentAttachment.SetRange("Line No.", LineNo);
 
-                       // FieldRef := RecRef.Field(4);
-                       // LineNo := FieldRef.Value;
-                       // DocumentAttachment.SetRange("Line No.", LineNo);
-
-                       FlowFieldsEditable := false;
-                   end;*/
+                    FlowFieldsEditable := false;
+                end;
             DATABASE::"BL Details":
                 begin
                     FieldRef := RecRef.Field(25);
@@ -555,36 +554,36 @@ codeunit 70101 "MASQ Subs & Functions"
 
     end;
 
-    /*  [EventSubscriber(ObjectType::Table, Database::"Finance Details", 'OnAfterInsertEvent', '', false, false)]
-      local procedure OnAfterInsertEventFinanceDetails(var Rec: Record "Finance Details")
-      var
-          DocumentAttchament: Record "Document Attachment";
-          LastDocumentAttchamentID: Integer;
-          AttachmentID: array[10] of Text[50];
-          I: Integer;
-          v: Page "Item List";
-      begin
-          // IF Rec."Document Type" = Rec."Document Type"::Order then begin
-          AttachmentID[1] := 'Signed LC Application';
-          AttachmentID[2] := 'Issuing LC Swift';
-          AttachmentID[3] := 'Amendments';
-          LastDocumentAttchamentID := GETLastDocumentAttchamentIDLC(Rec);
+    [EventSubscriber(ObjectType::Table, Database::"Finance Details", 'OnAfterInsertEvent', '', false, false)]
+    local procedure OnAfterInsertEventFinanceDetails(var Rec: Record "Finance Details")
+    var
+        DocumentAttchament: Record "Document Attachment";
+        LastDocumentAttchamentID: Integer;
+        AttachmentID: array[10] of Text[50];
+        I: Integer;
+        v: Page "Item List";
+    begin
+        // IF Rec."Document Type" = Rec."Document Type"::Order then begin
+        AttachmentID[1] := 'Signed LC Application';
+        AttachmentID[2] := 'Issuing LC Swift';
+        AttachmentID[3] := 'Amendments';
+        LastDocumentAttchamentID := GETLastDocumentAttchamentIDLC(Rec);
 
-          for I := 1 to 3 do begin
-              DocumentAttchament.Init();
-              DocumentAttchament.Validate("Table ID", Database::"Finance Details");
-              DocumentAttchament.Validate("No.", Rec."LC Number");
-              DocumentAttchament.Validate("Document Type", DocumentAttchament."Document Type"::Order);
-              DocumentAttchament.Validate("Line No.", LastDocumentAttchamentID + I);
-              DocumentAttchament.Validate(ID, LastDocumentAttchamentID + I);
-              DocumentAttchament."Attachment ID" := AttachmentID[I];
-              DocumentAttchament."to be removed" := true;
-              // DocumentAttchament.Validate("File Name", AttachmentID[I]);
-              DocumentAttchament.Insert();
-          end;
-          // end;
+        for I := 1 to 3 do begin
+            DocumentAttchament.Init();
+            DocumentAttchament.Validate("Table ID", Database::"Finance Details");
+            DocumentAttchament.Validate("No.", Rec."LC Number");
+            DocumentAttchament.Validate("Document Type", DocumentAttchament."Document Type"::Order);
+            DocumentAttchament.Validate("Line No.", LastDocumentAttchamentID + I);
+            DocumentAttchament.Validate(ID, LastDocumentAttchamentID + I);
+            DocumentAttchament."Attachment ID" := AttachmentID[I];
+            DocumentAttchament."to be removed" := true;
+            // DocumentAttchament.Validate("File Name", AttachmentID[I]);
+            DocumentAttchament.Insert();
+        end;
+        // end;
 
-      end;*/
+    end;
     //AN 03/06/25
     [EventSubscriber(ObjectType::Table, Database::"Variation Order", OnAfterInsertEvent, '', false, false)]
     local procedure OnAfterInsertEventVariationOrders(var Rec: Record "Variation Order")
@@ -804,17 +803,17 @@ codeunit 70101 "MASQ Subs & Functions"
             exit(DocumentAttchament.ID);
     end;
 
-    // Local procedure GETLastDocumentAttchamentIDLC(LC: Record "Finance Details"): Integer
-    // var
-    //     DocumentAttchament: Record "Document Attachment";
-    // begin
+    Local procedure GETLastDocumentAttchamentIDLC(LC: Record "Finance Details"): Integer
+    var
+        DocumentAttchament: Record "Document Attachment";
+    begin
 
-    //     Clear(DocumentAttchament);
-    //     DocumentAttchament.SetRange("Table ID", Database::"Finance Details");
-    //     DocumentAttchament.SetRange("No.", LC."LC Number");
-    //     IF DocumentAttchament.FindLast() then
-    //         exit(DocumentAttchament.ID);
-    // end;
+        Clear(DocumentAttchament);
+        DocumentAttchament.SetRange("Table ID", Database::"Finance Details");
+        DocumentAttchament.SetRange("No.", LC."LC Number");
+        IF DocumentAttchament.FindLast() then
+            exit(DocumentAttchament.ID);
+    end;
 
     Local procedure GETLastDocumentAttchamentIDBL(BL: Record "BL Details"): Integer
     var
@@ -882,7 +881,7 @@ codeunit 70101 "MASQ Subs & Functions"
         Project: Record Job;
         DocumentAttachmentTemp: Record "Document Attachment";
         PurchaseOrder: Record "Purchase Header";
-        // FinanceDetail: Record "Finance Details";
+        FinanceDetail: Record "Finance Details";
         BLDetails: Record "BL Details";
         AWBDetails: Record "AWB Details";
         VariationOrder: Record "Variation Order";
@@ -915,18 +914,18 @@ codeunit 70101 "MASQ Subs & Functions"
 
             end;
         end;
-        // IF (DocumentAttachment."Table ID" = Database::"Finance Details") then begin
-        //     Clear(FinanceDetail);
-        //     FinanceDetail.Get(DocumentAttachment."No.");
-        //     IF FinanceDetail."Attachment ID" <> '' then begin
-        //         DocumentAttachment."Attachment ID" := FinanceDetail."Attachment ID";
-        //         DocumentAttachment."Attachment Mandatory" := true;
-        //         Clear(DocumentAttachmentTemp);
-        //         DocumentAttachmentTemp.Get(FinanceDetail."Document Attachment Table ID", FinanceDetail."Document Attachment No.", FinanceDetail."Document Attachment Doc. Type", FinanceDetail."Document Attachment Line No.", FinanceDetail."Document Attachment ID");
-        //         DocumentAttachmentTemp.Delete();
+        IF (DocumentAttachment."Table ID" = Database::"Finance Details") then begin
+            Clear(FinanceDetail);
+            FinanceDetail.Get(DocumentAttachment."No.");
+            IF FinanceDetail."Attachment ID" <> '' then begin
+                DocumentAttachment."Attachment ID" := FinanceDetail."Attachment ID";
+                DocumentAttachment."Attachment Mandatory" := true;
+                Clear(DocumentAttachmentTemp);
+                DocumentAttachmentTemp.Get(FinanceDetail."Document Attachment Table ID", FinanceDetail."Document Attachment No.", FinanceDetail."Document Attachment Doc. Type", FinanceDetail."Document Attachment Line No.", FinanceDetail."Document Attachment ID");
+                DocumentAttachmentTemp.Delete();
 
-        //     end;
-        // end;
+            end;
+        end;
 
 
         IF (DocumentAttachment."Table ID" = Database::"BL Details") then begin

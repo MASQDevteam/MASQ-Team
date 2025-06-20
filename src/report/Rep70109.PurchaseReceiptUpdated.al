@@ -266,7 +266,7 @@ Report 70109 "Purchase - Receipt Updated"
                         {
                             IncludeCaption = false;
                         }
-                        column(UOM_PurchRcptLine; "Unit of Measure")
+                        column(UOM_PurchRcptLine; "Unit of Measure Code")
                         {
                             IncludeCaption = false;
                         }
