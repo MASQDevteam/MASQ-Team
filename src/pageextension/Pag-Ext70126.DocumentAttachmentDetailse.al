@@ -250,7 +250,7 @@ pageextension 70126 "Document Attachment Details e" extends "Document Attachment
             Clear(TruckWayBill);
             // VariationOrder.Get(Rec."No.");
             TruckWayBill.SetRange("Truck WayBill ID", Rec."No.");
-            TruckWayBill.FindFirst();
+            if TruckWayBill.FindFirst() then;
             TruckWayBill."Attachment ID" := '';
 
             TruckWayBill."Document Attachment Table ID" := 0;

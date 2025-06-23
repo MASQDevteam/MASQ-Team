@@ -265,6 +265,7 @@ table 70120 "Shipping Quotation"
             Editable = false;
             CalcFormula = lookup("Shipping Quotation Project"."Project Name" where("Comparison ID" = field("Comparison ID")));
             FieldClass = FlowField;
+            Caption = 'Apollo Project No.';
         }
     }
 
