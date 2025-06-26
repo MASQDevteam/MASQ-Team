@@ -157,5 +157,6 @@ permissionset 70100 masq
         table "Finance Details"=X,
         codeunit "Post Inventory to Apollo"=X,
         page "LC Card"=X,
-        page "LC Lists"=X;
+        page "LC Lists"=X,
+        page "Hidden COA"=X;
 }

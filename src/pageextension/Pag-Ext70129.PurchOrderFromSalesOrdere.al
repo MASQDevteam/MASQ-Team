@@ -481,8 +481,8 @@ pageextension 70129 "Purch. Order From Sales Ordere" extends "Purch. Order From 
                     PurchaseRequestLine.Validate("Shortcut Dimension 6 Code", Rec."Shortcut Dimension 6 Code");
                     PurchaseRequestLine.Validate("Shortcut Dimension 7 Code", REc."Shortcut Dimension 7 Code");
                     PurchaseRequestLine.Validate("Shortcut Dimension 8 Code", Rec."Shortcut Dimension 8 Code");
-                    PurchaseRequestLine."MASQ Sales Order No." := Rec."MASQ Sales Order No.";
-                    PurchaseRequestLine."MASQ Sales Order Line No." := Rec."MASQ Sales Order Line No.";
+                    PurchaseRequestLine.Validate("MASQ Sales Order No.", Rec."MASQ Sales Order No.");
+                    PurchaseRequestLine.Validate("MASQ Sales Order Line No.", Rec."MASQ Sales Order Line No.");
                     PurchaseRequestLine."PO Status" := PurchaseRequestLine."PO Status"::"Not Ordered";
                     PurchaseRequestLine."PO No." := Rec."PO No.";
                     PurchaseRequestLine."PO Line No" := Rec."PO Line No";

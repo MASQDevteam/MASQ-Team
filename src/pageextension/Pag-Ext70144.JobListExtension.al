@@ -49,6 +49,12 @@ pageextension 70144 "Job List Extension" extends "Job List"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Apollo Project Number field.', Comment = '%';
             }
+            field("Total Exported Quantity"; Rec."Total Exported Quantity")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Total Exported Quantity field.', Comment = '%';
+                DrillDownPageId = "Job Planning Lines";
+            }
             field("Box Mover"; Rec."Box Mover")
             {
                 ApplicationArea = All;

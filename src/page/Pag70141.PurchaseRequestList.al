@@ -180,6 +180,37 @@ page 70141 "Purchase Request List"
                     end;
                 }
             }
+            group("Item Type")
+            {
+                action("Fill Item Type")
+                {
+                    Caption = 'Fill Item Type';
+                    Image = Add;
+                    ApplicationArea = All;
+
+                    trigger OnAction()
+                    var
+                        PurchaseRequest: Record "Purchase Request Header";
+                        PurchaseRequestLine: Record "Purchase Request Line";
+                    begin
+                        Clear(PurchaseRequest);
+                        Clear(PurchaseRequestLine);
+                        // PurchaseRequest.SetRange("No.", Rec."No.");
+                        // if PurchaseRequest.FindFirst() then
+                        repeat
+                            PurchaseRequestLine.SetRange("Document No.", Rec."No.");
+                            if PurchaseRequestLine.FindFirst() then begin
+                                repeat
+                                    if (PurchaseRequestLine."Item Type" = '') then begin
+                                        PurchaseRequestLine.FIllItemType();
+                                        PurchaseRequestLine.Modify();
+                                    end;
+                                until PurchaseRequestLine.Next() = 0;
+                            end;
+                        until Rec.Next() = 0;
+                    end;
+                }
+            }
         }
     }
 

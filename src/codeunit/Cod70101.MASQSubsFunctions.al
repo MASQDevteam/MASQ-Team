@@ -1284,6 +1284,10 @@ codeunit 70101 "MASQ Subs & Functions"
         BatchLOG: Record "Supply Chain LOG";
         Purchaseinvoice: Record "Purch. Inv. Header";
     begin
+        //AN 06/26/2025
+        // if PurchHeader."Document Type" = PurchHeader."Document Type"::Order then begin
+        //     PurchHeader.TestField("Invoice Received Date");
+        // end;
         IF (PurchLine.Type = PurchLine.Type::Item) AND (PurchLine."Document Type" = PurchLine."Document Type"::Order) then begin
 
             // no post receive if not linked to bl/awb if it is an order
@@ -2390,7 +2394,6 @@ codeunit 70101 "MASQ Subs & Functions"
     end;
 
     //AN 06/16/2025
-
     // [EventSubscriber(ObjectType::Codeunit, CodeUnit::"Purch. Inv. Header - Edit", OnBeforePurchInvHeaderModify, '', false, false)]
     // local procedure OnBeforePurchInvHeaderModify(var PurchInvHeader: Record "Purch. Inv. Header"; PurchInvHeaderRec: Record "Purch. Inv. Header")
 

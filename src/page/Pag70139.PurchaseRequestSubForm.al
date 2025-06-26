@@ -63,7 +63,8 @@ page 70139 "Purchase Request SubForm"
                 field("Item Type"; Rec."Item Type")
                 {
                     ApplicationArea = All;
-                    DrillDownPageId = "Job Planning Lines";
+                    // DrillDownPageId = "Job Planning Lines";
+                    Editable = false;
                 }
                 field("Vendor Item Code"; Rec."Vendor Item Code")
                 {
@@ -324,15 +325,16 @@ page 70139 "Purchase Request SubForm"
 
     end;
 
-    trigger OnAfterGetRecord()
-    begin
-
-    end;
+    // trigger OnAfterGetRecord()
+    // begin
+    //     Rec.FIllItemType();
+    // end;
 
 
     trigger OnOpenPage()
     begin
         SetControlAppearance;
+        Rec.FIllItemType();
     end;
 
     var

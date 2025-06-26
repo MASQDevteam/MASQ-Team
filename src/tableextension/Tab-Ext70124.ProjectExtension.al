@@ -62,6 +62,12 @@ tableextension 70124 "Project Extension" extends Job
         {
             DataClassification = ToBeClassified;
         }
+        field(70113; "Total Exported Quantity"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = sum("Job Planning Line".Quantity where("Job No." = field("No.")));
+            Editable = false;
+        }
     }
 
 

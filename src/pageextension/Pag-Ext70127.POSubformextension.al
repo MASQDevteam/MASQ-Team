@@ -749,6 +749,7 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                 ApplicationArea = All;
                 trigger OnAction()
                 var
+                    PurchaseHeader: Record "Purchase Header";
                     PurchaseOrderLinepage: page "Purchase Lines";
                     PurchaseOrderLine: Record "Purchase Line";
                     "AWB Card": Page "AWB Card";
@@ -770,6 +771,8 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                     DocumentAttachment: Record "Document Attachment";
                     InLandID: Code[20];//added on 06/04/2025
                     InLandDetailsLineNo: Integer;//added on 06/04/2025
+                    ShipmentMethod: Record "Shipment Method";
+                    ShippingQuotation: Record "Shipping Quotation";
 
                 begin
                     rec.FilterGroup(4);
@@ -871,8 +874,9 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                         if PurchaseOrderLine.FindSet() then
                             repeat
                                 Clear(ShippingQuotationProject);
+                                ShippingQuotationProject.SetRange("Comparison ID", ShippingQuotationReference);//added by aya 06/26/2025
+                                ShippingQuotationProject.SetFilter(Status, 'Approved');//added on 19/03/2025
                                 ShippingQuotationProject.SetFilter("Project Name", PurchaseOrderLine."Job No.");
-                                ShippingQuotationProject.SetRange(Status, ShippingQuotationProject.Status::Approved);//added on 19/03/2025
                                 if (BLAWBNumber <> '') AND (ContainerNumber <> '') THEN//ADDED ON 17/02/2025
                                     ShippingQuotationProject.SetRange("Quotation Type", ShippingQuotationProject."Quotation Type"::Sea);
 
@@ -882,9 +886,20 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                                 if (TruckWayBillID <> '') THEN//ADDED ON 17/02/2025
                                     ShippingQuotationProject.SetRange("Quotation Type", ShippingQuotationProject."Quotation Type"::Inland);
 
+                                Clear(PurchaseHeader);
+                                PurchaseHeader.SetRange("Document Type", PurchaseOrderLine."Document Type");
+                                purchaseHeader.SetRange("No.", PurchaseOrderLine."Document No.");
+                                if PurchaseHeader.FindFirst() then begin
+                                    ShipmentMethod.SetRange(Code, PurchaseHeader."Shipment Method Code");
+                                    ShipmentMethod.SetRange("NotMand for Shipping Quotation", true);
+                                    if ShipmentMethod.FindFirst() then begin
+                                        Message('Shipment Method %1 is not mandatory for Shipping Quotation', ShipmentMethod.Code);
+                                    end
+                                    else
+                                        IF NOT ShippingQuotationProject.FindFirst() then
+                                            Error('Please add a shipping Quotation for this Project');
+                                end;
 
-                                IF NOT ShippingQuotationProject.FindFirst() then
-                                    Error('Please add an approved shipping Quotation for this Project');
 
                                 PurchaseOrderLine."BL/AWB ID" := BLAWBNumber;
                                 PurchaseOrderLine."Container ID" := ContainerNumber;

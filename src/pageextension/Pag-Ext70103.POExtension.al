@@ -2,6 +2,10 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
 {
     layout
     {
+        modify("Invoice Received Date")
+        {
+            ShowMandatory = true;
+        }
         // Add changes to page layout here
         addafter(Status)
         {

@@ -122,6 +122,11 @@ pageextension 70111 "User Setup Extension" extends "User Setup"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Projects Reciever field.', Comment = '%';
             }
+            field("Hide/Unhide Accounts in COA"; Rec."Hide/Unhide Accounts in COA")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Hide/Unhide Accounts in COA field.', Comment = '%';
+            }
         }
     }
 

@@ -26,6 +26,7 @@ table 70112 "MASQ Lookup"
             TableRelation = "MASQ Lookup".Code where(Type = const(Origin));
 
         }
+        
     }
 
     keys

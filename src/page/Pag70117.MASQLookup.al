@@ -27,6 +27,7 @@ page 70117 "MASQ Lookup"
                 {
                     ToolTip = 'Specifies the value of the ORIGINS field.', Comment = '%';
                 }
+                
             }
         }
         area(Factboxes)

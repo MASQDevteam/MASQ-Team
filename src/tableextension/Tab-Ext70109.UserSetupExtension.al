@@ -116,6 +116,10 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
         {
             DataClassification = ToBeClassified;
         }
+        field(70125; "Hide/Unhide Accounts in COA"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

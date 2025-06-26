@@ -205,6 +205,24 @@ pageextension 70138 "Job Planning Lines extension" extends "Job Planning Lines"
         }
         modify("Unit Cost")
         { Editable = true; }
+        addafter(Control1)
+        {
+            group(Totals)
+            {
+                field("Total Exported Quantity"; Rec."Total Exported Quantity")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Total Exported Quantity field.', Comment = '%';
+                    Editable = false;
+                }
+                field("Apollo Total Offer Value"; Rec."Apollo Total Offer Value")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Apollo Total Offer Value field.', Comment = '%';
+                    Editable = false;
+                }
+            }
+        }
     }
 
     actions
@@ -337,7 +355,7 @@ pageextension 70138 "Job Planning Lines extension" extends "Job Planning Lines"
         Item: Record Item;
     begin
         Clear(PurchaseRequest);
-        // PurchaseRequest.SetRange("Global Dimension 1 Code", Rec."Shortcut Dimension 1 Code");
+        PurchaseRequest.SetRange("Global Dimension 1 Code", Rec."Shortcut Dimension 1 Code");
         PurchaseRequest.SetRange("Project No.", Rec."Job No.");
         IF NOT PurchaseRequest.FindFirst() then begin
 
@@ -380,7 +398,7 @@ pageextension 70138 "Job Planning Lines extension" extends "Job Planning Lines"
                     item.Get(Rec."No.");
                     PurchaseRequestLine.Description := item.Description;
                     PurchaseRequestLine."Item Description" := item.Description;
-                    PurchaseRequestLine."Project No." := Rec."Job No.";
+                    PurchaseRequestLine.Validate("Project No.", Rec."Job No.");
                     PurchaseRequestLine.Validate(Quantity, Rec.Quantity);
                     // IF Rec."Currency Code" = '' then
                     //     PurchaseRequestLine.Validate("Unit Cost", Rec."Unit Cost (LCY)")
