@@ -210,7 +210,48 @@ table 70126 "Purchase Request Header"
             DataClassification = ToBeClassified;
             TableRelation = Job;
         }
+        //AN 06/27/2025+
+        field(50052; "Discount %"; Decimal)
+        {
+            Caption = 'Discount %';
+            DecimalPlaces = 0 : 5;
+
+            trigger OnValidate()
+            begin
+                if "Total Line Amount" <> 0 then
+                    "Discount Amount" := Round(("Total Line Amount" * "Discount %") / 100, 0.01);
+
+                RecalculateDiscountTotals();
+            end;
+        }
+
+        field(50053; "Discount Amount"; Decimal)
+        {
+            Caption = 'Discount Amount';
+
+            trigger OnValidate()
+            begin
+                if "Total Line Amount" <> 0 then
+                    "Discount %" := Round(("Discount Amount" / "Total Line Amount") * 100, 0.01);
+
+                RecalculateDiscountTotals();
+            end;
+        }
+
+        field(50054; "Total After Discount"; Decimal)
+        {
+            Caption = 'Total After Discount';
+            Editable = false;
+        }
+
+        field(50055; "Total After Discount Incl. VAT"; Decimal)
+        {
+            Caption = 'Total After Discount Incl. VAT';
+            Editable = false;
+        }
+        //AN 06/27/2025-
     }
+
 
     keys
     {
@@ -267,6 +308,17 @@ table 70126 "Purchase Request Header"
         //  ERROR('Request is pending approval');
     end;
 
+    //AN 06/27/2025+
+    procedure RecalculateDiscountTotals()
+    var
+        VATAmount: Decimal;
+    begin
+        CalcFields("Total Line Amount", "Total Line Amount Inc. VAT");
+        "Total After Discount" := "Total Line Amount" - "Discount Amount";
+        VATAmount := "Total Line Amount Inc. VAT" - "Total Line Amount";
+        "Total After Discount Incl. VAT" := "Total After Discount" + VATAmount;
+    end;
+    //AN 06/27/2025-
     var
         PurchaseSetup: Record "Purchases & Payables Setup";
         NoSeriesMgt: Codeunit NoSeriesManagement;

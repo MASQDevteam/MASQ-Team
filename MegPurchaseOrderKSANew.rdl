@@ -9,7 +9,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.0.20283.0</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-05-21T06:12:47.2939672Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-06-27T05:56:02.6219910Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -812,7 +812,6 @@
                                           <PaddingBottom>2pt</PaddingBottom>
                                         </Style>
                                       </Textbox>
-                                      <rd:Selected>true</rd:Selected>
                                     </CellContents>
                                   </TablixCell>
                                 </TablixCells>
@@ -1736,7 +1735,7 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=Fields!Chief_Finance_Officer_Caption.Value</Value>
+                                                <Value EvaluationMode="Constant">Supply Chain Manager</Value>
                                                 <Style>
                                                   <FontFamily>Segoe UI</FontFamily>
                                                 </Style>

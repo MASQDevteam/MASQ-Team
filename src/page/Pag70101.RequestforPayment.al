@@ -358,6 +358,9 @@ page 70101 "Request for Payment"
         CancelledEntries: Record "Approval Entry";
         RejectedEntries: Record "Approval Entry";
         AllApprovalEntries: Record "Approval Entry";
+
+        PurchaseOrder: Record "Purchase Header";
+        POEnum: Enum "Purchase Document Type";
     begin
         Clear(ApprovedEntries);
         ApprovedEntries.SetRange("Document No.", Rec.Number);
@@ -399,6 +402,18 @@ page 70101 "Request for Payment"
         UserSetup.Get(UserId);
         Caneditfieldsafterpost := UserSetup."Can edit RFP fields after post" AND (Rec.Status =
         Rec.Status::Released);
+
+        //AN 06/27/2025
+        IF Rec."PO#" <> '' then begin
+            Clear(PurchaseOrder);
+            PurchaseOrder.Get(POEnum::Order, Rec."PO#");
+            PurchaseOrder.CalcFields("Amount Including VAT");
+            Rec."PO Value" := PurchaseOrder."Amount Including VAT";
+            Rec.Currency := PurchaseOrder."Currency Code";
+            Rec."Request Amount/PO Value %" := (Rec."Requested Amount" / Rec."PO Value") * 100;
+            Rec."Project Name" := PurchaseOrder."Shortcut Dimension 1 Code";
+            Rec."Responsibility Center" := PurchaseOrder."Responsibility Center";
+        end;
     end;
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
@@ -440,7 +455,6 @@ page 70101 "Request for Payment"
     begin
         ChangeUrgencyColor();
     end;
-
 
 
     var

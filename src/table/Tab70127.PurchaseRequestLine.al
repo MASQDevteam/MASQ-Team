@@ -844,6 +844,48 @@ table 70127 "Purchase Request Line"
             // FieldClass = FlowField;
             // CalcFormula = lookup("Job Planning Line"."Meg Item Type" WHERE("Job No." = FIELD("Project No."), "No." = field("Item No.")));
         }
+        //AN 06/27/2025+
+        field(50054; "Discount %"; Decimal)
+        {
+            Caption = 'Discount %';
+            DecimalPlaces = 0 : 5;
+
+            trigger OnValidate()
+            begin
+                if "Line Amount" <> 0 then
+                    "Discount Amount" := Round(("Line Amount" * "Discount %") / 100, 0.01);
+
+                RecalculateLineDiscount();
+                UpdateHeaderDiscounts();
+            end;
+        }
+
+        field(50055; "Discount Amount"; Decimal)
+        {
+            Caption = 'Discount Amount';
+
+            trigger OnValidate()
+            begin
+                if "Line Amount" <> 0 then
+                    "Discount %" := Round(("Discount Amount" / "Line Amount") * 100, 0.01);
+
+                RecalculateLineDiscount();
+                UpdateHeaderDiscounts();
+            end;
+        }
+
+        field(50056; "Line Amount After Discount"; Decimal)
+        {
+            Caption = 'Line After Discount';
+            Editable = false;
+        }
+
+        field(50057; "Line Amt After Disc Incl. VAT"; Decimal)
+        {
+            Caption = 'Line After Discount Incl. VAT';
+            Editable = false;
+        }
+        //AN 06/27/2025-
     }
 
     keys
@@ -905,6 +947,88 @@ table 70127 "Purchase Request Line"
     begin
         ERROR(Text001, TABLECAPTION);
     end;
+
+    //AN 06/27/2025+
+    procedure RecalculateLineDiscount()
+    var
+        VATAmount: Decimal;
+    begin
+        "Line Amount After Discount" := Amount - "Discount Amount";
+        VATAmount := "Amount Including VAT" - Amount;
+        "Line Amt After Disc Incl. VAT" := "Line Amount After Discount" + VATAmount;
+        Modify();
+    end;
+
+    procedure UpdateHeaderDiscounts()
+    var
+        HeaderRec: Record "Purchase Request Header";
+        LineRec: Record "Purchase Request Line";
+        LineCount: Integer;
+        TotalDiscountPercent: Decimal;
+        TotalDiscountAmount: Decimal;
+    begin
+        TotalDiscountPercent := 0;
+        TotalDiscountAmount := 0;
+        LineCount := 0;
+        if GetHeader(HeaderRec) then begin
+            LineRec.SetRange("Document No.", "Document No.");
+            if LineRec.FindSet() then begin
+                repeat
+                    TotalDiscountPercent += LineRec."Discount %";
+                    TotalDiscountAmount += LineRec."Discount Amount";
+                    LineCount += 1;
+                until LineRec.Next() = 0;
+            end;
+
+            if LineCount > 0 then begin
+                HeaderRec."Discount %" := TotalDiscountPercent / LineCount;
+                HeaderRec."Discount Amount" := TotalDiscountAmount / LineCount;
+                HeaderRec.Modify();
+                HeaderRec.RecalculateDiscountTotals();
+            end;
+            if (TotalDiscountAmount = 0) and (TotalDiscountPercent = 0) then begin
+                HeaderRec."Discount %" := 0;
+                HeaderRec."Discount Amount" := 0;
+                HeaderRec."Total After Discount" := 0;
+                HeaderRec."Total After Discount Incl. VAT" := 0;
+            end;
+            HeaderRec.Modify();
+        end;
+    end;
+
+
+
+    // procedure UpdateHeaderDiscounts()
+    // var
+    //     HeaderRec: Record "Purchase Request Header";
+    //     LineRec: Record "Purchase Request Line";
+    //     HDAmt: Decimal;
+    //     HDPercent: Decimal;
+    // begin
+    //     HDAmt := 0;
+    //     HDPercent := 0;
+    //     HeaderRec."Discount Amount" := 0;
+    //     HeaderRec."Total Line Amount" := 0;
+    //     HeaderRec."Total Line Amount Inc. VAT" := 0;
+    //     if GetHeader(HeaderRec) then begin
+    //         LineRec.SetRange("Document No.", "Document No.");
+    //         if LineRec.FindSet() then begin
+    //             repeat
+    //                 HDAmt += LineRec."Discount Amount";
+    //                 HDPercent += LineRec."Discount %";
+    //                 HeaderRec.Validate("Discount Amount", HDAmt);
+    //                 HeaderRec.Validate("Discount %", HDPercent);
+    //                 HeaderRec.Modify();
+    //             until LineRec.Next() = 0;
+    //         end;
+    //     end;
+    // end;
+
+    local procedure GetHeader(var Header: Record "Purchase Request Header"): Boolean
+    begin
+        exit(Header.Get("Document No."));
+    end;
+    //AN 06/27/2025-
 
     var
         PurchReqHeader: Record "Purchase Request Header";
