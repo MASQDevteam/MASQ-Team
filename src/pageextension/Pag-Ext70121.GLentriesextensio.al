@@ -2,6 +2,16 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
 {
     layout
     {
+        addafter("Shortcut Dimension 7 Code")
+        {
+            field("Expense Category Description"; Rec."Expense Category Description")
+            {
+                Caption = 'Expense Category Description';
+                ApplicationArea = All;
+                ToolTip = 'Displays the description of the expense category based on the default dimension.';
+                Editable = false;
+            }
+        }
         // Add changes to page layout here
         addafter("Source No.")
         {
@@ -19,7 +29,20 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
 
     actions
     {
-        // Add changes to page actions here
+        addafter("&Navigate")
+        {
+            action(FillExpenseCatDesc)
+            {
+                ApplicationArea = All;
+                Caption = 'Fill Expense Category Description';
+                ToolTip = 'Fills the Expense Category Description based on the Default Dimension.';
+                Image = Edit;
+                trigger OnAction()
+                begin
+                    FillExpenseCatDesc();
+                end;
+            }
+        }
     }
 
 
@@ -51,6 +74,22 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
         end;
     end;
 
+    local procedure FillExpenseCatDesc()
+    var
+        DimensionSetEntry: Record "Dimension Set Entry";
+    begin
+        repeat
+            DimensionSetEntry.SetRange("Dimension Code", 'EXPENSE CATEGORY');
+            DimensionSetEntry.SetRange("Dimension Value Code", Rec."Shortcut Dimension 7 Code");
+            if DimensionSetEntry.FindFirst() then begin
+                DimensionSetEntry.CalcFields("Dimension Value Name");
+                Rec."Expense Category Description" := DimensionSetEntry."Dimension Value Name";
+            end
+            else
+                Rec."Expense Category Description" := '';
+            Rec.Modify(true);
+        until Rec.Next() = 0;
+    end;
 
     var
         SourceName: Text[100];

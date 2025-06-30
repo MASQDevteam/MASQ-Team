@@ -1910,8 +1910,18 @@ codeunit 70101 "MASQ Subs & Functions"
     //AN 03/13/25
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", OnBeforeInsertGlEntry, '', true, true)]
     local procedure OnBeforeInsertGlEntry(var GenJnlLine: Record "Gen. Journal Line"; var GLEntry: Record "G/L Entry"; var IsHandled: Boolean)
+    var
+        DimensionSetEntry: Record "Dimension Set Entry";
     begin
         GLEntry."Travel Request Code" := GenJnlLine."Travel Request Code";
+
+        //AN 06/90/2025
+        DimensionSetEntry.SetRange("Dimension Code", 'EXPENSE CATEGORY');
+        DimensionSetEntry.SetRange("Dimension Value Code", GLEntry."Shortcut Dimension 7 Code");
+        if DimensionSetEntry.FindFirst() then begin
+            DimensionSetEntry.CalcFields("Dimension Value Name");
+            GLEntry."Expense Category Description" := DimensionSetEntry."Dimension Value Name";
+        end;
     end;
 
     //AN 03/17/25

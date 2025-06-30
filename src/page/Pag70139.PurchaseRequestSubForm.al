@@ -176,27 +176,27 @@ page 70139 "Purchase Request SubForm"
                     Editable = false;
                 }
                 //AN 06/27/2025+
-                field("Discount %"; Rec."Discount %")
-                {
-                    ApplicationArea = All;
-                }
-                field("Discount Amount"; Rec."Discount Amount")
-                {
-                    ApplicationArea = All;
-                }
-                field("Line Amount After Discount"; Rec."Line Amount After Discount")
-                {
-                    ApplicationArea = All;
-                }
-                //AN 06/27/2025-
+                // field("Discount %"; Rec."Discount %")
+                // {
+                //     ApplicationArea = All;
+                // }
+                // field("Discount Amount"; Rec."Discount Amount")
+                // {
+                //     ApplicationArea = All;
+                // }
+                // field("Line Amount After Discount"; Rec."Line Amount After Discount")
+                // {
+                //     ApplicationArea = All;
+                // }
+                // //AN 06/27/2025-
                 field("Amount Including VAT"; Rec."Amount Including VAT")
                 {
                 }
                 //AN 06/27/2025+
-                field("Line Amt After Disc Incl. VAT"; Rec."Line Amt After Disc Incl. VAT")
-                {
-                    ApplicationArea = All;
-                }
+                // field("Line Amt After Disc Incl. VAT"; Rec."Line Amt After Disc Incl. VAT")
+                // {
+                //     ApplicationArea = All;
+                // }
                 //AN 06/27/2025-
                 field(Remark; Rec.Remark)
                 {

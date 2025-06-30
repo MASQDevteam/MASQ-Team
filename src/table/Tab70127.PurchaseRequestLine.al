@@ -849,7 +849,6 @@ table 70127 "Purchase Request Line"
         {
             Caption = 'Discount %';
             DecimalPlaces = 0 : 5;
-
             trigger OnValidate()
             begin
                 if "Line Amount" <> 0 then
@@ -995,34 +994,6 @@ table 70127 "Purchase Request Line"
             HeaderRec.Modify();
         end;
     end;
-
-
-
-    // procedure UpdateHeaderDiscounts()
-    // var
-    //     HeaderRec: Record "Purchase Request Header";
-    //     LineRec: Record "Purchase Request Line";
-    //     HDAmt: Decimal;
-    //     HDPercent: Decimal;
-    // begin
-    //     HDAmt := 0;
-    //     HDPercent := 0;
-    //     HeaderRec."Discount Amount" := 0;
-    //     HeaderRec."Total Line Amount" := 0;
-    //     HeaderRec."Total Line Amount Inc. VAT" := 0;
-    //     if GetHeader(HeaderRec) then begin
-    //         LineRec.SetRange("Document No.", "Document No.");
-    //         if LineRec.FindSet() then begin
-    //             repeat
-    //                 HDAmt += LineRec."Discount Amount";
-    //                 HDPercent += LineRec."Discount %";
-    //                 HeaderRec.Validate("Discount Amount", HDAmt);
-    //                 HeaderRec.Validate("Discount %", HDPercent);
-    //                 HeaderRec.Modify();
-    //             until LineRec.Next() = 0;
-    //         end;
-    //     end;
-    // end;
 
     local procedure GetHeader(var Header: Record "Purchase Request Header"): Boolean
     begin
