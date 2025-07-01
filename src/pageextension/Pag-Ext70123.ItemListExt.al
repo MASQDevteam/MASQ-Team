@@ -33,8 +33,30 @@ pageextension 70123 ItemListExt extends "Item List"
 
     actions
     {
+        addfirst(Reports)
+        {
+            action(ItemByLocation)
+            {
+                ApplicationArea = All;
+                Caption = 'Item per Location';
+                Promoted = true;
+                PromotedCategory = Process;
+                Image = ItemAvailbyLoc;
+                ToolTip = 'View item quantities by location.';
+                trigger OnAction()
+                var
+                    ItemByLocation: Report "Item by Location";
+                    ItemLedgerEntry: Record "Item Ledger Entry";
+                begin
+                    ItemLedgerEntry.SetRange("Item No.", Rec."No.");
+                    ItemByLocation.SetTableView(ItemLedgerEntry);
+                    ItemByLocation.Run();
+                end;
+            }
+        }
         addafter(ApplyTemplate)
         {
+
             action(UpdatePictureThumbnails)
             {
                 Caption = 'Update Picture Thumbnails';
