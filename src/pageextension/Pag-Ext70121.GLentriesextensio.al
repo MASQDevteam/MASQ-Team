@@ -106,20 +106,8 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
             if DimensionSetEntry.FindFirst() then begin
                 DimensionSetEntry.CalcFields("Dimension Value Name");
                 Rec."Expense Category Description" := DimensionSetEntry."Dimension Value Name";
-            end
-            else
-                Rec."Expense Category Description" := '';
-            Rec.Modify(true);
-            Clear(DimensionSetEntry);
-            DimensionSetEntry.SetRange("Dimension Code", 'EMPLOYEE');
-            DimensionSetEntry.SetRange("Dimension Value Code", Rec."Shortcut Dimension 8 Code");
-            if DimensionSetEntry.FindFirst() then begin
-                DimensionSetEntry.CalcFields("Dimension Value Name");
-                Rec."Employee Name" := DimensionSetEntry."Dimension Value Name";
-            end
-            else
-                Rec."Expense Category Description" := '';
-            Rec.Modify();
+                Rec.Modify();
+            end;
         until Rec.Next() = 0;
     end;
 
@@ -135,10 +123,8 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
             if DimensionSetEntry.FindFirst() then begin
                 DimensionSetEntry.CalcFields("Dimension Value Name");
                 Rec."Employee Name" := DimensionSetEntry."Dimension Value Name";
-            end
-            else
-                Rec."Employee Name" := '';
-            Rec.Modify();
+                Rec.Modify();
+            end;
         until Rec.Next() = 0;
     end;
 
