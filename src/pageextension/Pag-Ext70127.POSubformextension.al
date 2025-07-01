@@ -874,7 +874,7 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                         if PurchaseOrderLine.FindSet() then
                             repeat
                                 Clear(ShippingQuotationProject);
-                                ShippingQuotationProject.SetRange("Comparison ID", ShippingQuotationReference);//added by aya 06/26/2025
+                                //ShippingQuotationProject.SetRange("Comparison ID", ShippingQuotationReference);//added by aya 06/26/2025
                                 ShippingQuotationProject.SetFilter(Status, 'Approved');//added on 19/03/2025
                                 ShippingQuotationProject.SetFilter("Project Name", PurchaseOrderLine."Job No.");
                                 if (BLAWBNumber <> '') AND (ContainerNumber <> '') THEN//ADDED ON 17/02/2025

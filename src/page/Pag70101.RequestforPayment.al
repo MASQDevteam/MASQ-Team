@@ -406,13 +406,14 @@ page 70101 "Request for Payment"
         //AN 06/27/2025
         IF Rec."PO#" <> '' then begin
             Clear(PurchaseOrder);
-            PurchaseOrder.Get(POEnum::Order, Rec."PO#");
-            PurchaseOrder.CalcFields("Amount Including VAT");
-            Rec."PO Value" := PurchaseOrder."Amount Including VAT";
-            Rec.Currency := PurchaseOrder."Currency Code";
-            Rec."Request Amount/PO Value %" := (Rec."Requested Amount" / Rec."PO Value") * 100;
-            Rec."Project Name" := PurchaseOrder."Shortcut Dimension 1 Code";
-            Rec."Responsibility Center" := PurchaseOrder."Responsibility Center";
+            if PurchaseOrder.Get(POEnum::Order, Rec."PO#") then begin
+                PurchaseOrder.CalcFields("Amount Including VAT");
+                Rec."PO Value" := PurchaseOrder."Amount Including VAT";
+                Rec.Currency := PurchaseOrder."Currency Code";
+                Rec."Request Amount/PO Value %" := (Rec."Requested Amount" / Rec."PO Value") * 100;
+                Rec."Project Name" := PurchaseOrder."Shortcut Dimension 1 Code";
+                Rec."Responsibility Center" := PurchaseOrder."Responsibility Center";
+            end;
         end;
     end;
 
