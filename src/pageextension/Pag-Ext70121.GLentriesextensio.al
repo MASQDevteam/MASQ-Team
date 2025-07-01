@@ -12,6 +12,16 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
                 Editable = false;
             }
         }
+        addafter("Shortcut Dimension 8 Code")
+        {
+            field("Employee Name"; Rec."Employee Name")
+            {
+                Caption = 'Employee Description';
+                ApplicationArea = All;
+                ToolTip = 'Displays the name of the employee associated with this entry.';
+                Editable = false;
+            }
+        }
         // Add changes to page layout here
         addafter("Source No.")
         {
@@ -40,6 +50,17 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
                 trigger OnAction()
                 begin
                     FillExpenseCatDesc();
+                end;
+            }
+            action(FillEmployeeDesc)
+            {
+                ApplicationArea = All;
+                Caption = 'Fill Employee Description';
+                ToolTip = 'Fills the Employee Description based on the Default Dimension.';
+                Image = Edit;
+                trigger OnAction()
+                begin
+                    FillEmpDesc();
                 end;
             }
         }
@@ -79,6 +100,7 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
         DimensionSetEntry: Record "Dimension Set Entry";
     begin
         repeat
+            Clear(DimensionSetEntry);
             DimensionSetEntry.SetRange("Dimension Code", 'EXPENSE CATEGORY');
             DimensionSetEntry.SetRange("Dimension Value Code", Rec."Shortcut Dimension 7 Code");
             if DimensionSetEntry.FindFirst() then begin
@@ -88,6 +110,35 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
             else
                 Rec."Expense Category Description" := '';
             Rec.Modify(true);
+            Clear(DimensionSetEntry);
+            DimensionSetEntry.SetRange("Dimension Code", 'EMPLOYEE');
+            DimensionSetEntry.SetRange("Dimension Value Code", Rec."Shortcut Dimension 8 Code");
+            if DimensionSetEntry.FindFirst() then begin
+                DimensionSetEntry.CalcFields("Dimension Value Name");
+                Rec."Employee Name" := DimensionSetEntry."Dimension Value Name";
+            end
+            else
+                Rec."Expense Category Description" := '';
+            Rec.Modify();
+        until Rec.Next() = 0;
+    end;
+
+    //AN 07/01/2025
+    local procedure FillEmpDesc()
+    var
+        DimensionSetEntry: Record "Dimension Set Entry";
+    begin
+        repeat
+            Clear(DimensionSetEntry);
+            DimensionSetEntry.SetRange("Dimension Code", 'EMPLOYEE');
+            DimensionSetEntry.SetRange("Dimension Value Code", Rec."Shortcut Dimension 8 Code");
+            if DimensionSetEntry.FindFirst() then begin
+                DimensionSetEntry.CalcFields("Dimension Value Name");
+                Rec."Employee Name" := DimensionSetEntry."Dimension Value Name";
+            end
+            else
+                Rec."Employee Name" := '';
+            Rec.Modify();
         until Rec.Next() = 0;
     end;
 

@@ -1916,12 +1916,21 @@ codeunit 70101 "MASQ Subs & Functions"
         GLEntry."Travel Request Code" := GenJnlLine."Travel Request Code";
 
         //AN 06/90/2025
+        Clear(DimensionSetEntry);
         DimensionSetEntry.SetRange("Dimension Code", 'EXPENSE CATEGORY');
         DimensionSetEntry.SetRange("Dimension Value Code", GLEntry."Shortcut Dimension 7 Code");
         if DimensionSetEntry.FindFirst() then begin
             DimensionSetEntry.CalcFields("Dimension Value Name");
             GLEntry."Expense Category Description" := DimensionSetEntry."Dimension Value Name";
         end;
+        //AN 07/01/2025
+        Clear(DimensionSetEntry);
+        DimensionSetEntry.SetRange("Dimension Code", 'EMPLOYEE');
+        DimensionSetEntry.SetRange("Dimension Value Code", GLEntry."Shortcut Dimension 8 Code");
+        if DimensionSetEntry.FindFirst() then begin
+            DimensionSetEntry.CalcFields("Dimension Value Name");
+            GLEntry."Employee Name" := DimensionSetEntry."Dimension Value Name";
+        end
     end;
 
     //AN 03/17/25
