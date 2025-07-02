@@ -59,6 +59,10 @@ page 70130 "Shipping Quotation Card"
                 {
                     ApplicationArea = All;
                 }
+                field(Transhipment; Rec.Transhipment)
+                {
+                    ApplicationArea = All;
+                }
             }
 
             group("Sea Shipping Information")

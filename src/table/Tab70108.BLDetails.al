@@ -197,6 +197,7 @@ table 70108 "BL Details"
         }
         field(41; "Location Code"; Text[1000])
         {
+            Caption = 'Apollo Project No';
             trigger OnLookup()
             var
                 Location: Record Location;

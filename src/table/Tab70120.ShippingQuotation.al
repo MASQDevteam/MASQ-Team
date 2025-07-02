@@ -267,6 +267,10 @@ table 70120 "Shipping Quotation"
             FieldClass = FlowField;
             Caption = 'Apollo Project No.';
         }
+        field(34; Transhipment; Option)
+        {
+            OptionMembers = Direct,Indirect;
+        }
     }
 
     keys

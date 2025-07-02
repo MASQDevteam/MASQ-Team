@@ -34,13 +34,13 @@ table 70110 "AWB Details"
         }
         field(6; "Port of Loading"; Code[50])
         {
-            Caption = 'Port of Loading';
+            Caption = 'Air Port of Loading';
             // Set up a lookup to your port master table here    
             TableRelation = "MASQ Lookup".Code where(Type = const("Air Port"), ORIGINS = field(Origin));
         }
         field(7; "Port of Discharge"; Code[50])
         {
-            Caption = 'Port of Discharge';
+            Caption = 'Air Port of Discharge';
             // Set up a lookup to your port master table here    
             TableRelation = "MASQ Lookup".Code where(Type = const("Air Port"));
         }
@@ -418,6 +418,7 @@ table 70110 "AWB Details"
         }
         field(41; "Location Code"; Text[1000])
         {
+            Caption = 'Apollo Project No';
             trigger OnLookup()
             var
                 Location: Record Location;

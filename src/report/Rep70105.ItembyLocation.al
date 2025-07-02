@@ -18,9 +18,23 @@ report 70105 "Item by Location"
             column(LocationCode; "Location Code")
             {
             }
+            column(LocName; LocName)
+            {
+
+            }
             column(Quantity; Quantity)
             {
             }
+            trigger OnAfterGetRecord()
+            var
+                myInt: Integer;
+            begin
+                if Location.Get("Location Code") then begin
+                    LocName := Location.Name;
+                end else begin
+                    LocName := '';
+                end;
+            end;
         }
     }
     requestpage
@@ -41,4 +55,8 @@ report 70105 "Item by Location"
             }
         }
     }
+
+    var
+        Location: Record Location;
+        LocName: Text[100];
 }
