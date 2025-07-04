@@ -862,7 +862,9 @@ table 70127 "Purchase Request Line"
         field(50055; "Discount Amount"; Decimal)
         {
             Caption = 'Discount Amount';
-
+            DecimalPlaces = 0 : 2;
+            MinValue = 0;
+            MaxValue = 100;
             trigger OnValidate()
             begin
                 if "Line Amount" <> 0 then
@@ -962,30 +964,27 @@ table 70127 "Purchase Request Line"
     var
         HeaderRec: Record "Purchase Request Header";
         LineRec: Record "Purchase Request Line";
-        LineCount: Integer;
-        TotalDiscountPercent: Decimal;
         TotalDiscountAmount: Decimal;
+        SumAmt: Decimal;
     begin
-        TotalDiscountPercent := 0;
         TotalDiscountAmount := 0;
-        LineCount := 0;
+        SumAmt := 0;
         if GetHeader(HeaderRec) then begin
             LineRec.SetRange("Document No.", "Document No.");
-            if LineRec.FindSet() then begin
+            if LineRec.FindFirst() then
                 repeat
-                    TotalDiscountPercent += LineRec."Discount %";
                     TotalDiscountAmount += LineRec."Discount Amount";
-                    LineCount += 1;
+                    SumAmt += LineRec.Amount;
                 until LineRec.Next() = 0;
-            end;
-
-            if LineCount > 0 then begin
-                HeaderRec."Discount %" := TotalDiscountPercent / LineCount;
-                HeaderRec."Discount Amount" := TotalDiscountAmount / LineCount;
+            if SumAmt > 0 then begin
+                HeaderRec."Discount %" := (TotalDiscountAmount / SumAmt) * 100;
                 HeaderRec.Modify();
-                HeaderRec.RecalculateDiscountTotals();
+                HeaderRec."Discount Amount" := (HeaderRec."Discount %" * SumAmt) / 100;
+                HeaderRec.Modify();
             end;
-            if (TotalDiscountAmount = 0) and (TotalDiscountPercent = 0) then begin
+            HeaderRec.RecalculateDiscountTotals();
+
+            if (TotalDiscountAmount = 0) then begin
                 HeaderRec."Discount %" := 0;
                 HeaderRec."Discount Amount" := 0;
                 HeaderRec."Total After Discount" := 0;

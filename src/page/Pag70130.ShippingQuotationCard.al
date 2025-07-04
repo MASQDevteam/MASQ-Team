@@ -63,6 +63,10 @@ page 70130 "Shipping Quotation Card"
                 {
                     ApplicationArea = All;
                 }
+                field("1st Available Departure"; Rec."1st Available Departure")
+                {
+                    ApplicationArea = All;
+                }
             }
 
             group("Sea Shipping Information")

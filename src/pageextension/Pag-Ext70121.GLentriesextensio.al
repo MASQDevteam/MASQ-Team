@@ -2,6 +2,16 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
 {
     layout
     {
+        addafter("Global Dimension 1 Code")
+        {
+            field("Project Name"; Rec."Project Name")
+            {
+                Caption = 'Project Name';
+                ApplicationArea = All;
+                ToolTip = 'Displays the name of the project associated with this entry based on the Global Dimension 1 Code.';
+                Editable = false;
+            }
+        }
         addafter("Shortcut Dimension 7 Code")
         {
             field("Expense Category Description"; Rec."Expense Category Description")

@@ -10,6 +10,11 @@ pageextension 70140 "Vendor Card extension" extends "Vendor Card"
                 ToolTip = 'Specifies the value of the Payment Terms Description field.', Comment = '%';
                 DrillDownPageId = "Payment Terms";
             }
+            field("Credit Limit"; Rec."Credit Limit")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Credit Limit field.';
+            }
 
         }
         // Add changes to page layout here

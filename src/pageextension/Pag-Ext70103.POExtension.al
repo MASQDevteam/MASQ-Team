@@ -2,6 +2,14 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
 {
     layout
     {
+        addafter(General)
+        {
+            group(Expenses)
+            {
+
+            }
+        }
+
         modify("Invoice Received Date")
         {
             ShowMandatory = true;
@@ -82,6 +90,7 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the MASQ Sales Order No. field.', Comment = '%';
             }
+
         }
         addafter("Attached Documents")
         {

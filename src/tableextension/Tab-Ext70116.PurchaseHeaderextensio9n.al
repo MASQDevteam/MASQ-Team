@@ -75,8 +75,6 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
                             ShippingDateLOG."Initial ETA" := Rec."Initial ETA";
                             ShippingDateLOG."Initial ETAW" := Rec."Initial ETAW";
                             ShippingDateLOG.Insert(true);
-
-
                         end;
                         PurchaseLine."Initial ETD" := REc."Initial ETD";
                         PurchaseLine.Modify();
@@ -220,6 +218,7 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
         {
             Editable = false;
         }
+       
     }
 
     keys

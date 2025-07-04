@@ -398,8 +398,8 @@ table 70110 "AWB Details"
                 PurchaseLine.SetRange("BL/AWB ID", Rec."AWB ID");
                 if PurchaseLine.FindFirst() then
                     repeat
-                        PurchaseHeader.Get(PurchaseLine."Document Type", PurchaseLine."Document No.");
-                        PurchaseHeader.Mark(true);
+                        if PurchaseHeader.Get(PurchaseLine."Document Type", PurchaseLine."Document No.") then
+                            PurchaseHeader.Mark(true);
                     until PurchaseLine.Next() = 0;
 
                 PurchaseHeader.MarkedOnly(true);
@@ -432,8 +432,8 @@ table 70110 "AWB Details"
                 PurchaseLine.SetRange("BL/AWB ID", Rec."AWB ID");
                 if PurchaseLine.FindFirst() then
                     repeat
-                        Location.Get(PurchaseLine."Location Code");
-                        Location.Mark(true);
+                        if Location.Get(PurchaseLine."Location Code") then
+                            Location.Mark(true);
                     until PurchaseLine.Next() = 0;
 
                 Location.MarkedOnly(true);
@@ -466,8 +466,8 @@ table 70110 "AWB Details"
                 PurchaseLine.SetRange("BL/AWB ID", Rec."AWB ID");
                 if PurchaseLine.FindFirst() then
                     repeat
-                        Job.Get(PurchaseLine."Job No.");
-                        Job.Mark(true);
+                        if Job.Get(PurchaseLine."Job No.") then
+                            Job.Mark(true);
                     until PurchaseLine.Next() = 0;
 
                 Job.MarkedOnly(true);
@@ -488,6 +488,31 @@ table 70110 "AWB Details"
         {
             DataClassification = ToBeClassified;
             Caption = 'Invoice Received Date';
+        }
+        field(44; "Transhipment Airport"; Text[1000])
+        {
+            DataClassification = ToBeClassified;
+            trigger OnLookup()
+            var
+                MASQLookupRec: Record "MASQ Lookup";
+                MASQLookup: Page "MASQ Lookup";
+            begin
+                Rec."Transhipment Airport" := '';
+                Clear(MASQLookupRec);
+                MASQLookupRec.SetRange(Type, MASQLookupRec.Type::"Air Port");
+                MASQLookup.SetTableView(MASQLookupRec);
+                MASQLookup.LookupMode(true);
+                IF MASQLookup.RunModal() = Action::LookupOK then begin
+                    MASQLookup.SetSelectionFilter(MASQLookupRec);
+                    if MASQLookupRec.FindSet() then
+                        repeat
+                            Rec."Transhipment Airport" += MASQLookupRec.Code + ' , ';
+                        until MASQLookupRec.Next() = 0;
+
+                end;
+                If Rec."Transhipment Airport" <> '' then
+                    Rec."Transhipment Airport" := CopyStr(Rec."Transhipment Airport", 1, StrLen(Rec."Transhipment Airport") - 3);
+            end;
         }
     }
 

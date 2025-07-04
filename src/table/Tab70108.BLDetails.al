@@ -177,8 +177,8 @@ table 70108 "BL Details"
                 PurchaseLine.SetRange("BL/AWB ID", Rec."BL ID");
                 if PurchaseLine.FindFirst() then
                     repeat
-                        PurchaseHeader.Get(PurchaseLine."Document Type", PurchaseLine."Document No.");
-                        PurchaseHeader.Mark(true);
+                        if PurchaseHeader.Get(PurchaseLine."Document Type", PurchaseLine."Document No.") then
+                            PurchaseHeader.Mark(true);
                     until PurchaseLine.Next() = 0;
 
                 PurchaseHeader.MarkedOnly(true);
@@ -211,8 +211,8 @@ table 70108 "BL Details"
                 PurchaseLine.SetRange("BL/AWB ID", Rec."BL ID");
                 if PurchaseLine.FindFirst() then
                     repeat
-                        Location.Get(PurchaseLine."Location Code");
-                        Location.Mark(true);
+                        if Location.Get(PurchaseLine."Location Code") then
+                            Location.Mark(true);
                     until PurchaseLine.Next() = 0;
 
                 Location.MarkedOnly(true);
@@ -245,8 +245,8 @@ table 70108 "BL Details"
                 PurchaseLine.SetRange("BL/AWB ID", Rec."BL ID");
                 if PurchaseLine.FindFirst() then
                     repeat
-                        Job.Get(PurchaseLine."Job No.");
-                        Job.Mark(true);
+                        if Job.Get(PurchaseLine."Job No.") then
+                            Job.Mark(true);
                     until PurchaseLine.Next() = 0;
 
                 Job.MarkedOnly(true);
@@ -267,6 +267,31 @@ table 70108 "BL Details"
         {
             DataClassification = ToBeClassified;
             Caption = 'Invoice Received Date';
+        }
+        field(44; "Transhipment Port"; Text[1000])
+        {
+            DataClassification = ToBeClassified;
+            trigger OnLookup()
+            var
+                MASQLookupRec: Record "MASQ Lookup";
+                MASQLookup: Page "MASQ Lookup";
+            begin
+                Rec."Transhipment Port" := '';
+                Clear(MASQLookupRec);
+                MASQLookupRec.SetRange(Type, MASQLookupRec.Type::"Port");
+                MASQLookup.SetTableView(MASQLookupRec);
+                MASQLookup.LookupMode(true);
+                IF MASQLookup.RunModal() = Action::LookupOK then begin
+                    MASQLookup.SetSelectionFilter(MASQLookupRec);
+                    if MASQLookupRec.FindSet() then
+                        repeat
+                            Rec."Transhipment Port" += MASQLookupRec.Code + ' , ';
+                        until MASQLookupRec.Next() = 0;
+
+                end;
+                If Rec."Transhipment Port" <> '' then
+                    Rec."Transhipment Port" := CopyStr(Rec."Transhipment Port", 1, StrLen(Rec."Transhipment Port") - 3);
+            end;
         }
     }
 

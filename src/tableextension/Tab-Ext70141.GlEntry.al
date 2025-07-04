@@ -18,5 +18,10 @@ tableextension 70141 GlEntry extends "G/L Entry"
         {
             DataClassification = ToBeClassified;
         }
+        field(70103; "Project Name"; Text[50])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup("Dimension Value".Name where("Dimension Code" = const('PROJECT'), "Code" = field("Global Dimension 1 Code")));
+        }
     }
 }

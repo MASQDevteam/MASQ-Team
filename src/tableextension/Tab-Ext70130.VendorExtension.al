@@ -29,6 +29,11 @@ tableextension 70130 "Vendor Extension" extends Vendor
             CalcFormula = exist("Vendor Ledger Entry"
                 where("Vendor No." = field("No."), "Remaining Amount" = filter(<> 0)));
         }
+        field(70105; "Credit Limit"; Decimal)
+        {
+            Caption = 'Credit Limit';
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

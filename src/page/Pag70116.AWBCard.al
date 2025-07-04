@@ -187,6 +187,10 @@ page 70116 "AWB Card"
                 {
                     ApplicationArea = All;
                 }
+                field("Transhipment Airport"; Rec."Transhipment Airport")
+                {
+                    ApplicationArea = All;
+                }
             }
 
             part(PurchLines; "Purchase Order Subform")

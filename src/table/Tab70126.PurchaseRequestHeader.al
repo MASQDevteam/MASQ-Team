@@ -214,8 +214,9 @@ table 70126 "Purchase Request Header"
         field(50052; "Discount %"; Decimal)
         {
             Caption = 'Discount %';
-            DecimalPlaces = 0 : 5;
-
+            DecimalPlaces = 0 : 2;
+            MinValue = 0;
+            MaxValue = 100;
             trigger OnValidate()
             begin
                 if "Total Line Amount" <> 0 then

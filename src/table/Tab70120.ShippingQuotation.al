@@ -271,6 +271,10 @@ table 70120 "Shipping Quotation"
         {
             OptionMembers = Direct,Indirect;
         }
+        field(35; "1st Available Departure"; Date)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys
