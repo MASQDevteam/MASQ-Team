@@ -187,9 +187,10 @@ page 70116 "AWB Card"
                 {
                     ApplicationArea = All;
                 }
-                field("Transhipment Airport"; Rec."Transhipment Airport")
+                field("Transshipment Airport"; Rec."Transhipment Airport")
                 {
                     ApplicationArea = All;
+                    Caption = 'Transshipment Airport';
                 }
             }
 

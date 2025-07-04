@@ -467,6 +467,18 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
         {
             DataClassification = ToBeClassified;
         }
+        // modify("Amount Including VAT")
+        // {
+        //AN 07/04/2025
+        // trigger OnAfterValidate()
+        // var
+        //     PurchaseHeader: Record "Purchase Header";
+        // begin
+        //     if PurchaseHeader.get(Rec."Document Type", Rec."Document No.") then begin
+        //         PurchaseHeader.CalculateTotalWithCharge();
+        //     end;
+        // end;
+        //    / }
         modify("No.")
         {
             trigger OnAfterValidate()
@@ -876,9 +888,6 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
     var
     begin
     end;
-
-
-
 
     var
         Text000: Label 'You cannot delete the order line because it is associated with Sales order %1 line %2.';

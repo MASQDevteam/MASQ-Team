@@ -848,9 +848,14 @@ table 70127 "Purchase Request Line"
         field(50054; "Discount %"; Decimal)
         {
             Caption = 'Discount %';
-            DecimalPlaces = 0 : 5;
+            DecimalPlaces = 0 : 2;
+            MinValue = 0;
+            MaxValue = 100;
+
             trigger OnValidate()
             begin
+                if (Rec."Discount %" > 100) or (Rec."Discount %" < 0) then
+                    ERROR('Discount percentage cannot be greater than 100 or less than 0.');
                 if "Line Amount" <> 0 then
                     "Discount Amount" := Round(("Line Amount" * "Discount %") / 100, 0.01);
 
@@ -863,8 +868,7 @@ table 70127 "Purchase Request Line"
         {
             Caption = 'Discount Amount';
             DecimalPlaces = 0 : 2;
-            MinValue = 0;
-            MaxValue = 100;
+
             trigger OnValidate()
             begin
                 if "Line Amount" <> 0 then

@@ -219,6 +219,8 @@ table 70126 "Purchase Request Header"
             MaxValue = 100;
             trigger OnValidate()
             begin
+                if (Rec."Discount %" > 100) or (Rec."Discount %" < 0) then
+                    ERROR('Discount percentage cannot be greater than 100 or less than 0.');
                 if "Total Line Amount" <> 0 then
                     "Discount Amount" := Round(("Total Line Amount" * "Discount %") / 100, 0.01);
 

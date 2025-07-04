@@ -2,6 +2,16 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
 {
     layout
     {
+        addafter("G/L Account No.")
+        {
+            field("GL Account Name"; Rec."GL Account Name")
+            {
+                Caption = 'G/L Account Name';
+                ApplicationArea = All;
+                ToolTip = 'Displays the name of the G/L account associated with this entry.';
+                Editable = false;
+            }
+        }
         addafter("Global Dimension 1 Code")
         {
             field("Project Name"; Rec."Project Name")

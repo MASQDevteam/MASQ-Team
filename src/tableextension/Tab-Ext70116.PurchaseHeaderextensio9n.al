@@ -219,6 +219,42 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
             Editable = false;
         }
        
+        field(70123; "Freight Charges"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                myInt: Integer;
+            begin
+                CalculateTotalWithCharge();
+            end;
+        }
+        field(70124; "Documentation Charges"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                myInt: Integer;
+            begin
+                CalculateTotalWithCharge();
+            end;
+        }
+        field(70125; "Finance Charges"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                myInt: Integer;
+            begin
+                CalculateTotalWithCharge();
+            end;
+        }
+        field(70126; "TotalWithCharges"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+
     }
 
     keys
@@ -241,7 +277,13 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
     //     if Rec."Document Type" = Rec."Document Type"::"Credit Memo" then
     //         MASQEmail.SendEmailPurchCrMemo(Rec);
     // end;
-
+     procedure CalculateTotalWithCharge()
+    var
+    begin
+        CalcFields("Amount Including VAT");
+        TotalWithCharges := ("Amount Including VAT" + Rec."Freight Charges" + Rec."Documentation Charges" + Rec."Finance Charges");
+        Modify();
+    end;
 
     var
         MASQEmail: Codeunit "MASQ Email";

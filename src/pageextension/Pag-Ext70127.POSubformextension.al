@@ -1074,7 +1074,6 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
         CanEditPO_SO_Lines := UserSetup."Can Edit SO/PO Details";
     end;
 
-
     var
         myInt: Integer;
         UserSetup: Record "User Setup";

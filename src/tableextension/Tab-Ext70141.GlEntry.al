@@ -23,5 +23,11 @@ tableextension 70141 GlEntry extends "G/L Entry"
             FieldClass = FlowField;
             CalcFormula = lookup("Dimension Value".Name where("Dimension Code" = const('PROJECT'), "Code" = field("Global Dimension 1 Code")));
         }
+        field(70104; "GL Account Name"; Text[100])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup("G/L Account".Name where("No." = field("G/L Account No.")));
+        }
+
     }
 }

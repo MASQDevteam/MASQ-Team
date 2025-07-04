@@ -155,12 +155,11 @@ page 70113 "BL Card"
                 {
                     ApplicationArea = All;
                 }
-                field("Transhipment Port"; Rec."Transhipment Port")
+                field("Transshipment Port"; Rec."Transhipment Port")
                 {
                     ApplicationArea = All;
+                    Caption = 'Transshipment Port';
                 }
-
-
             }
             part(Container; "Container Subform")
             {
