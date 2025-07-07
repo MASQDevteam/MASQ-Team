@@ -986,14 +986,13 @@ table 70127 "Purchase Request Line"
                 HeaderRec."Discount Amount" := (HeaderRec."Discount %" * SumAmt) / 100;
                 HeaderRec.Modify();
             end;
-            HeaderRec.RecalculateDiscountTotals();
-
             if (TotalDiscountAmount = 0) then begin
                 HeaderRec."Discount %" := 0;
                 HeaderRec."Discount Amount" := 0;
-                HeaderRec."Total After Discount" := 0;
-                HeaderRec."Total After Discount Incl. VAT" := 0;
+                //HeaderRec."Total After Discount" := 0;
+                //HeaderRec."Total After Discount Incl. VAT" := 0;
             end;
+            HeaderRec.RecalculateDiscountTotals();
             HeaderRec.Modify();
         end;
     end;

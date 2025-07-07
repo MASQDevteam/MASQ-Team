@@ -317,7 +317,10 @@ table 70126 "Purchase Request Header"
         VATAmount: Decimal;
     begin
         CalcFields("Total Line Amount", "Total Line Amount Inc. VAT");
-        "Total After Discount" := "Total Line Amount" - "Discount Amount";
+        if "Discount Amount" <> 0 then
+            "Total After Discount" := "Total Line Amount" - "Discount Amount"
+        else
+            "Total After Discount" := "Total Line Amount";
         VATAmount := "Total Line Amount Inc. VAT" - "Total Line Amount";
         "Total After Discount Incl. VAT" := "Total After Discount" + VATAmount;
     end;
