@@ -107,6 +107,7 @@ page 70146 "DamagedList"
                 field("Warranty Status"; Rec."Warranty Status")
                 {
                     ApplicationArea = All;
+                    Caption = 'Damage Status';
                 }
 
                 field("Notes / Comments"; Rec."Notes / Comments")
