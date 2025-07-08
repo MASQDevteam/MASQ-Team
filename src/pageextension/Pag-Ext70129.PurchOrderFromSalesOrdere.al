@@ -15,6 +15,15 @@ pageextension 70129 "Purch. Order From Sales Ordere" extends "Purch. Order From 
                 Editable = false;
             }
         }
+        addbefore(Vendor)
+        {
+            field("Vendor No."; Rec."Vendor No.")
+            {
+                ApplicationArea = All;
+                Editable = false;
+            }
+
+        }
         addafter(Vendor)
         {
 
