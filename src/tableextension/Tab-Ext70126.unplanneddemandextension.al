@@ -3,7 +3,7 @@ tableextension 70126 "unplanned demand extension" extends "Unplanned Demand"
     fields
     {
         // Add changes to table fields here
-        field(50002; "Meg Item Type"; Code[20])
+        field(50002; "Meg Item Type"; Code[50])
         {
             Caption = 'Item Type';
             Description = 'Used in Delivery Order report';

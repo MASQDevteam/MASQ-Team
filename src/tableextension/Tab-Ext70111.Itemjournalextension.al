@@ -3,7 +3,7 @@ tableextension 70111 "Item journal extension" extends "Item Journal Line"
     fields
     {
         // Add changes to table fields here
-        field(70106; "MASQ Item Type"; Code[20])
+        field(70106; "MASQ Item Type"; Code[50])
         {
             DataClassification = ToBeClassified;
         }

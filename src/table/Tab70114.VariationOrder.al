@@ -183,7 +183,7 @@ table 70114 "Variation Order"
         field(32; "Document Attachment Line No."; Integer)
         {
         }
-        field(33; "MASQ Item Type"; Code[20])//added on 25/03/2025
+        field(33; "MASQ Item Type"; Code[50])//added on 25/03/2025
         {
             DataClassification = ToBeClassified;
             trigger OnValidate()

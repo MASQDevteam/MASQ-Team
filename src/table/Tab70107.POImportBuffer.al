@@ -97,7 +97,7 @@ table 70107 "PO Import Buffer"
         field(48; MODIFIED; Boolean)
         {
         }
-        field(49; "ITEM TYPE"; Code[20])
+        field(49; "ITEM TYPE"; Code[50])
         {
         }
         field(50; "Initial ETR"; Date)//Created on 28/10/2024 with Nathalie
