@@ -52,8 +52,29 @@ page 70141 "Purchase Request List"
                 field("Total Line Amount Inc. VAT"; Rec."Total Line Amount Inc. VAT")
                 {
                 }
+
                 field("Total Amount Assigned"; Rec."Total Amount Assigned")
                 {
+                }
+                field("Discount %"; Rec."Discount %")
+                {
+                    ToolTip = 'Specifies the value of the Discount % field.', Comment = '%';
+                    Editable = false;
+                }
+                field("Discount Amount"; Rec."Discount Amount")
+                {
+                    ToolTip = 'Specifies the value of the Discount Amount field.', Comment = '%';
+                    Editable = false;
+                }
+                field("Total After Discount"; Rec."Total After Discount")
+                {
+                    ToolTip = 'Specifies the value of the Total After Discount field.', Comment = '%';
+                    Editable = false;
+                }
+                field("Total After Discount Incl. VAT"; Rec."Total After Discount Incl. VAT")
+                {
+                    ToolTip = 'Specifies the value of the Total After Discount Incl. VAT field.', Comment = '%';
+                    Editable = false;
                 }
                 field(Reason; Rec.Reason)
                 {
@@ -65,6 +86,7 @@ page 70141 "Purchase Request List"
                 {
                     Caption = 'Item Description';
                 }
+
             }
         }
 
