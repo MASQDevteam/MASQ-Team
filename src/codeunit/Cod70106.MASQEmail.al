@@ -818,7 +818,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
         Subject := 'Purchase Order ' + PurchHeader."No.";
-
+        //an
         // Add Recipient
         UserSetup.SetRange("PO Reciever", true);
         IF UserSetup.FindFirst() then begin
