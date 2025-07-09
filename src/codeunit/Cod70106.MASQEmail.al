@@ -783,7 +783,7 @@ codeunit 70106 "MASQ Email"
             Job.SetRange("No.", PurchaseLine."Job No.");
             if Job.FindFirst() then begin
                 AppProjNumber := Job."Apollo Project Number";
-            end;
+            end;//aya 
         end;
         GLSetup.Get();
         Body := 'This is a system generated email to inform you about the new Purchase Order: <br><br>';
