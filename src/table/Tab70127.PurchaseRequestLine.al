@@ -839,7 +839,7 @@ table 70127 "Purchase Request Line"
             FieldClass = FlowField;
             CalcFormula = lookup(Item."Meg Vendor Item Code" where("No." = field("Item No.")));
         }
-        field(50053; "Item Type"; Code[20])
+        field(50053; "Item Type"; Code[50])
         {
             // FieldClass = FlowField;
             // CalcFormula = lookup("Job Planning Line"."Meg Item Type" WHERE("Job No." = FIELD("Project No."), "No." = field("Item No.")));

@@ -5,7 +5,7 @@ tableextension 70125 "Requisition Line extension" extends "Requisition Line"
         // Add changes to table fields here      
         field(70100;
         "Meg Item Type";
-        Code[20])
+        Code[50])
         {
             Caption = 'Item Type';
             Description = 'Used in Delivery Order report';

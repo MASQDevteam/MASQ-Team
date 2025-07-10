@@ -3,7 +3,7 @@ tableextension 70112 "Physical inv item ledger" extends "Phys. Inventory Ledger 
     fields
     {
         // Add changes to table fields here
-        field(70106; "MASQ Item Type"; code[20])
+        field(70106; "MASQ Item Type"; code[50])
         {
             DataClassification = ToBeClassified;
         }

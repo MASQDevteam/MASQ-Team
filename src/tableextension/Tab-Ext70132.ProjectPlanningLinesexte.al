@@ -75,7 +75,7 @@ tableextension 70132 "Project Planning Lines exte" extends "Job Planning Line"
         {
             DataClassification = ToBeClassified;
         }
-        field(70112; "Meg Item Type"; Code[20])
+        field(70112; "Meg Item Type"; Code[50])
         {
             Caption = 'Item Type';
             Description = 'Used in Purchase Order report';

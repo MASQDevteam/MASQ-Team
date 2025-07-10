@@ -4,14 +4,14 @@ tableextension 70106 "Value Entry Extension" extends "Value Entry"
     {
         // Add changes to table fields here
 
-        field(70100; "Item Type Purch. Rcpt."; Code[20])
+        field(70100; "Item Type Purch. Rcpt."; Code[50])
         {
             Caption = 'Item Type Purchase Rcpt.';
             Editable = false;
             FieldClass = FlowField;
             CalcFormula = lookup("Purch. Rcpt. Line"."Meg Item Type" where("Posting Date" = field("Posting Date"), "Document No." = field("Document No."), "Line No." = field("Document Line No."), Type = const(Item), "No." = field("Item No.")));
         }
-        field(70101; "Item Type Purch. Inv."; Code[20])
+        field(70101; "Item Type Purch. Inv."; Code[50])
         {
             Caption = 'Item Type Purchase Inv.';
             Editable = false;
@@ -19,35 +19,35 @@ tableextension 70106 "Value Entry Extension" extends "Value Entry"
             CalcFormula = lookup("Purch. Inv. Line"."Meg Item Type" where("Posting Date" = field("Posting Date"), "Document No." = field("Document No."), "Line No." = field("Document Line No."), Type = const(Item), "No." = field("Item No.")));
         }
 
-        field(70102; "Item Type Sales Shipment"; Code[20])
+        field(70102; "Item Type Sales Shipment"; Code[50])
         {
             Caption = 'Item Type Sales Shipment.';
             Editable = false;
             FieldClass = FlowField;
             CalcFormula = lookup("Sales Shipment Line"."Meg Item Type" where("Posting Date" = field("Posting Date"), "Document No." = field("Document No."), "Line No." = field("Document Line No."), Type = const(Item), "No." = field("Item No.")));
         }
-        field(70103; "Item Type Sales Invoice"; Code[20])
+        field(70103; "Item Type Sales Invoice"; Code[50])
         {
             Caption = 'Item Type Sales Inv.';
             Editable = false;
             FieldClass = FlowField;
             CalcFormula = lookup("Sales Invoice Line"."Meg Item Type" where("Posting Date" = field("Posting Date"), "Document No." = field("Document No."), "Line No." = field("Document Line No."), Type = const(Item), "No." = field("Item No.")));
         }
-        field(70104; "Item Type Purch. CM"; Code[20])
+        field(70104; "Item Type Purch. CM"; Code[50])
         {
             Caption = 'Item Type Purchase CM';
             Editable = false;
             FieldClass = FlowField;
             CalcFormula = lookup("Purch. Cr. Memo Line"."Meg Item Type" where("Posting Date" = field("Posting Date"), "Document No." = field("Document No."), "Line No." = field("Document Line No."), Type = const(Item), "No." = field("Item No.")));
         }
-        field(70105; "Item Type Sales CM"; Code[20])
+        field(70105; "Item Type Sales CM"; Code[50])
         {
             Caption = 'Item Type Sales CM';
             Editable = false;
             FieldClass = FlowField;
             CalcFormula = lookup("Sales Cr.Memo Line"."Meg Item Type" where("Posting Date" = field("Posting Date"), "Document No." = field("Document No."), "Line No." = field("Document Line No."), Type = const(Item), "No." = field("Item No.")));
         }
-        field(70106; "MASQ Item Type"; Code[20])
+        field(70106; "MASQ Item Type"; Code[50])
         {
             DataClassification = ToBeClassified;
         }
