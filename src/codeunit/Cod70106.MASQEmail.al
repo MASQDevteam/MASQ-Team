@@ -783,7 +783,7 @@ codeunit 70106 "MASQ Email"
             Job.SetRange("No.", PurchaseLine."Job No.");
             if Job.FindFirst() then begin
                 AppProjNumber := Job."Apollo Project Number";
-            end;
+            end;//aya 
         end;
         GLSetup.Get();
         Body := 'This is a system generated email to inform you about the new Purchase Order: <br><br>';
@@ -818,7 +818,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
         Subject := 'Purchase Order ' + PurchHeader."No.";
-
+        //an
         // Add Recipient
         UserSetup.SetRange("PO Reciever", true);
         IF UserSetup.FindFirst() then begin
