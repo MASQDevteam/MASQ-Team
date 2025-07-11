@@ -746,12 +746,6 @@ table 70127 "Purchase Request Line"
         field(50036; "MASQ Sales Order No."; Code[20])
         {
             DataClassification = ToBeClassified;
-            trigger OnValidate()
-            var
-                myInt: Integer;
-            begin
-                FIllItemType();
-            end;
         }
         field(50037; "MASQ Sales Order Line No."; Integer)
         {
@@ -760,7 +754,7 @@ table 70127 "Purchase Request Line"
             var
                 myInt: Integer;
             begin
-                FIllItemType();
+                FIllItemTypefromSalesLine()
             end;
         }
         field(50038; "Total Available Stock"; Decimal)
@@ -827,12 +821,6 @@ table 70127 "Purchase Request Line"
         {
             DataClassification = ToBeClassified;
             TableRelation = Job;
-            trigger OnValidate()
-            var
-                myInt: Integer;
-            begin
-                FIllItemType();
-            end;
         }
         field(50052; "Vendor Item Code"; Code[200])
         {
@@ -862,6 +850,7 @@ table 70127 "Purchase Request Line"
                 RecalculateLineDiscount();
                 UpdateHeaderDiscounts();
             end;
+
         }
 
         field(50055; "Discount Amount"; Decimal)
@@ -891,6 +880,16 @@ table 70127 "Purchase Request Line"
             Editable = false;
         }
         //AN 06/27/2025-
+        field(50058; "PPL Line No"; Integer)
+        {
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                myInt: Integer;
+            begin
+                FIllItemTypefromPPLine();
+            end;
+        }
     }
 
     keys
@@ -900,7 +899,7 @@ table 70127 "Purchase Request Line"
             Clustered = true;
         }
     }
-    procedure FIllItemType()
+    procedure FIllItemTypefromSalesLine()
     var
         SalesLine: Record "Sales Line";
         JobPlanningLine: Record "Job Planning Line";
@@ -910,9 +909,18 @@ table 70127 "Purchase Request Line"
             SalesLine.SetRange("Line No.", "MASQ Sales Order Line No.");
             if SalesLine.FindFirst() then
                 "Item Type" := SalesLine."Meg Item Type";
-        end else begin
+        end;
+    end;
+
+    procedure FIllItemTypefromPPLine()
+    var
+        SalesLine: Record "Sales Line";
+        JobPlanningLine: Record "Job Planning Line";
+    begin
+        if ("Project No." <> '') then begin
             JobPlanningLine.SetRange("Job No.", "Project No.");
             JobPlanningLine.SetRange("No.", "Item No.");
+            JobPlanningLine.SetRange("Line No.", "PPL Line No");
             if JobPlanningLine.FindFirst() then
                 "Item Type" := JobPlanningLine."Meg Item Type";
         end;

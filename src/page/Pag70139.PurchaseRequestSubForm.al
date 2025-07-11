@@ -361,7 +361,6 @@ page 70139 "Purchase Request SubForm"
     trigger OnOpenPage()
     begin
         SetControlAppearance;
-        Rec.FIllItemType();
     end;
 
     var

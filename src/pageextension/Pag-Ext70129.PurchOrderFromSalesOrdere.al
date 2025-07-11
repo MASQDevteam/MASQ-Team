@@ -495,9 +495,7 @@ pageextension 70129 "Purch. Order From Sales Ordere" extends "Purch. Order From 
                     PurchaseRequestLine."PO Status" := PurchaseRequestLine."PO Status"::"Not Ordered";
                     PurchaseRequestLine."PO No." := Rec."PO No.";
                     PurchaseRequestLine."PO Line No" := Rec."PO Line No";
-
-
-
+                
                     IF rec.Include then
                         PurchaseRequestLine.Check := true;
 
