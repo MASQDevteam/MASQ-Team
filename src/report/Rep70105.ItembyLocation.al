@@ -12,9 +12,6 @@ report 70105 "Item by Location"
             column(ItemNo; "Item No.")
             {
             }
-            column(Description; Description)
-            {
-            }
             column(LocationCode; "Location Code")
             {
             }
@@ -24,6 +21,14 @@ report 70105 "Item by Location"
             }
             column(Quantity; Quantity)
             {
+            }
+            dataitem(Item; Item)
+            {
+                DataItemLink = "No." = field("Item No.");
+                column(Description; Description)
+                {
+
+                }
             }
             trigger OnAfterGetRecord()
             var
@@ -35,6 +40,7 @@ report 70105 "Item by Location"
                     LocName := '';
                 end;
             end;
+
         }
     }
     requestpage

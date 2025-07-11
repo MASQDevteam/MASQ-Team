@@ -847,9 +847,6 @@ End Function
         <Field Name="ItemNo">
           <DataField>ItemNo</DataField>
         </Field>
-        <Field Name="Description">
-          <DataField>Description</DataField>
-        </Field>
         <Field Name="LocationCode">
           <DataField>LocationCode</DataField>
         </Field>
@@ -861,6 +858,9 @@ End Function
         </Field>
         <Field Name="QuantityFormat">
           <DataField>QuantityFormat</DataField>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
         </Field>
       </Fields>
       <Query>
