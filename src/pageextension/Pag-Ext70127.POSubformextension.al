@@ -821,7 +821,7 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                     IF (TruckList.Get(TruckWayBillID)) and (ShippingQuotationReference = '') then
                         ShippingQuotationReference := TruckList."Shipping Quotation Reference";
 
-                    //Modified by AN 07/11/2025+
+                    //Modified by AN 07/11/2025
                     clear(SQProjects);
                     SQProjects.SetRange("Comparison ID", ShippingQuotationReference);
                     if SQProjects.FindSet() then
