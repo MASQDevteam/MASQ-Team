@@ -832,6 +832,7 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                         //         else
                         //             SQProjectFilter := SQProjectFilter + '|' + SQProjects."Project Name";
                         // until SQProjects.Next() = 0;
+                        // revert to original code 
                         repeat
                             SQProjectFilter := SQProjectFilter + SQProjects."Project Name" + ' | ';
                         until SQProjects.Next() = 0;
