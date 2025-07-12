@@ -431,6 +431,7 @@ pageextension 70138 "Job Planning Lines extension" extends "Job Planning Lines"
                     //     PurchaseRequestLine.Check := true;
                     //modified by AN 07/11/2025
                     PurchaseRequestLine.Validate("Project No.", PurchaseRequest."Project No.");
+                    PurchaseRequestLine.Validate("PPL Line No", Rec."Line No.");
                     PurchaseRequestLine.Modify();
 
                     if PurchaseRequestLine."PO No." <> '' then begin
