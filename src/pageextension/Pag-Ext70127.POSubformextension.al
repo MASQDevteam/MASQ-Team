@@ -825,12 +825,16 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                     clear(SQProjects);
                     SQProjects.SetRange("Comparison ID", ShippingQuotationReference);
                     if SQProjects.FindSet() then
+                        // repeat
+                        //     if SQProjects."Project Name" <> '' then
+                        //         if SQProjectFilter = '' then
+                        //             SQProjectFilter := SQProjects."Project Name"
+                        //         else
+                        //             SQProjectFilter := SQProjectFilter + '|' + SQProjects."Project Name";
+                        // until SQProjects.Next() = 0;
+                        // revert to original code 
                         repeat
-                            if SQProjects."Project Name" <> '' then
-                                if SQProjectFilter = '' then
-                                    SQProjectFilter := SQProjects."Project Name"
-                                else
-                                    SQProjectFilter := SQProjectFilter + '|' + SQProjects."Project Name";
+                            SQProjectFilter := SQProjectFilter + SQProjects."Project Name" + ' | ';
                         until SQProjects.Next() = 0;
                     IF SQProjectFilter <> '' then
                         SQProjectFilter := COPYSTR(SQProjectFilter, 1, StrLen(SQProjectFilter) - 3);
