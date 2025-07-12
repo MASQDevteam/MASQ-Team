@@ -206,7 +206,7 @@ page 70141 "Purchase Request List"
             {
                 action("Fill Item Type")
                 {
-                    Caption = 'Fill Item Type';
+                    Caption = 'Fill Item Type From Sales Order';
                     Image = Add;
                     ApplicationArea = All;
 
@@ -222,7 +222,7 @@ page 70141 "Purchase Request List"
                         PurchaseRequestLine.SetRange("Document No.", Rec."No.");
                         if PurchaseRequestLine.FindFirst() then begin
                             repeat
-                                PurchaseRequestLine.FIllItemTypefromPPLine();
+                                PurchaseRequestLine.FIllItemTypefromSalesLine();
                                 PurchaseRequestLine.Modify();
                             until PurchaseRequestLine.Next() = 0;
                         end;

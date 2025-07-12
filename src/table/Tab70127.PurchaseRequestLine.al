@@ -754,7 +754,7 @@ table 70127 "Purchase Request Line"
             var
                 myInt: Integer;
             begin
-                FIllItemTypefromSalesLine()
+                FIllItemTypefromSalesLine();
             end;
         }
         field(50038; "Total Available Stock"; Decimal)
@@ -904,12 +904,12 @@ table 70127 "Purchase Request Line"
         SalesLine: Record "Sales Line";
         JobPlanningLine: Record "Job Planning Line";
     begin
-        if ("Project No." = '') then begin
-            SalesLine.SetRange("Document No.", "MASQ Sales Order No.");
-            SalesLine.SetRange("Line No.", "MASQ Sales Order Line No.");
-            if SalesLine.FindFirst() then
-                "Item Type" := SalesLine."Meg Item Type";
-        end;
+        // if ("Project No." = '') then begin
+        SalesLine.SetRange("Document No.", "MASQ Sales Order No.");
+        SalesLine.SetRange("Line No.", "MASQ Sales Order Line No.");
+        if SalesLine.FindFirst() then
+            "Item Type" := SalesLine."Meg Item Type";
+        // end;
     end;
 
     procedure FIllItemTypefromPPLine()
