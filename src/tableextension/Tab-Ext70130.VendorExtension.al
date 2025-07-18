@@ -34,6 +34,11 @@ tableextension 70130 "Vendor Extension" extends Vendor
             Caption = 'Credit Limit';
             DataClassification = ToBeClassified;
         }
+        field(70106; "Contact per Departments"; Text[1000])
+        {
+            DataClassification = ToBeClassified;
+            
+        }
     }
 
     keys

@@ -5,29 +5,31 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
         addafter(PurchLines)
         {
             //AN 07/04/2025
-            // group("Additional Charges")
-            // {
-            //     field("Freight Charges"; Rec."Freight Charges")
-            //     {
-            //         ApplicationArea = All;
-            //         ToolTip = 'Specifies the value of the Freight Charges field.', Comment = '%';
-            //     }
-            //     field("Documentation Charges"; Rec."Documentation Charges")
-            //     {
-            //         ApplicationArea = All;
-            //         ToolTip = 'Specifies the value of the Documentation Charges field.', Comment = '%';
-            //     }
-            //     field("Finance Charges"; Rec."Finance Charges")
-            //     {
-            //         ApplicationArea = All;
-            //         ToolTip = 'Specifies the value of the Finance Charges field.', Comment = '%';
-            //     }
-            //     field(TotalWithCharges; Rec.TotalWithCharges)
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Total';
-            //     }
-            // }
+            group("Additional Charges")
+            {
+                field("Freight Charges"; Rec."Freight Charges")
+                {
+                    ApplicationArea = All;
+                }
+                field("Freight Charges Value"; Rec."Freight Charges Value")
+                {
+                    ApplicationArea = All;
+                }
+                field("Documentation Charges"; Rec."Documentation Charges")
+                {
+                    ApplicationArea = All;
+                }
+                field("Documentation Charges Value"; Rec."Documentation Charges Value")
+                {
+                    ApplicationArea = All;
+
+                }
+                field(TotalWithCharges; Rec.TotalWithCharges)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Total';
+                }
+            }
         }
 
         modify("Invoice Received Date")

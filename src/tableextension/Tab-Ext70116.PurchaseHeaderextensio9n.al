@@ -218,28 +218,18 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
         {
             Editable = false;
         }
-       
-        field(70123; "Freight Charges"; Decimal)
+
+        field(70123; "Freight Charges"; Code[20])
         {
             DataClassification = ToBeClassified;
-            trigger OnValidate()
-            var
-                myInt: Integer;
-            begin
-                CalculateTotalWithCharge();
-            end;
+            TableRelation = "Data MASQ Lookup".Code where(Type = const(Freight));
         }
-        field(70124; "Documentation Charges"; Decimal)
+        field(70124; "Documentation Charges"; Code[20])
         {
             DataClassification = ToBeClassified;
-            trigger OnValidate()
-            var
-                myInt: Integer;
-            begin
-                CalculateTotalWithCharge();
-            end;
+            TableRelation = "Data MASQ Lookup".Code where(Type = const(Documentation));
         }
-        field(70125; "Finance Charges"; Decimal)
+        field(70125; "Freight Charges Value"; Decimal)
         {
             DataClassification = ToBeClassified;
             trigger OnValidate()
@@ -253,6 +243,16 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
         {
             DataClassification = ToBeClassified;
             Editable = false;
+        }
+        field(70127; "Documentation Charges Value"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                myInt: Integer;
+            begin
+                CalculateTotalWithCharge();
+            end;
         }
 
     }
@@ -277,11 +277,11 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
     //     if Rec."Document Type" = Rec."Document Type"::"Credit Memo" then
     //         MASQEmail.SendEmailPurchCrMemo(Rec);
     // end;
-     procedure CalculateTotalWithCharge()
+    procedure CalculateTotalWithCharge()
     var
     begin
         CalcFields("Amount Including VAT");
-        TotalWithCharges := ("Amount Including VAT" + Rec."Freight Charges" + Rec."Documentation Charges" + Rec."Finance Charges");
+        TotalWithCharges := ("Amount Including VAT" + Rec."Freight Charges Value" + Rec."Documentation Charges Value");
         Modify();
     end;
 

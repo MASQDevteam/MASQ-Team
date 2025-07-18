@@ -112,6 +112,14 @@ page 70158 "Variation Order API"
                 {
                     Caption = 'New Vendor Item Code';
                 }
+                field(JobCategory; Rec."Job Category")
+                {
+                    Caption = 'Job Category';
+                }
+                field(PMApprovalRequired;Rec."PM Approval Required")
+                {
+                    
+                }
 
             }
         }

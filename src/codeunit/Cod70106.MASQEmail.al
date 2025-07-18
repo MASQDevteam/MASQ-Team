@@ -798,6 +798,14 @@ codeunit 70106 "MASQ Email"
             Body += StrSubstNo('<tr><td>Amount:  </td><td>%1 %2</td></tr>', PurchHeader."Amount", PurchHeader."Currency Code")
         else
             Body += StrSubstNo('<tr><td>Amount:  </td><td>%1 %2</td></tr>', PurchHeader."Amount", GLSetup."LCY Code");
+
+        //Added by aya 07/15/2025
+        PurchHeader.CalcFields("Invoice Discount Amount");
+        if PurchHeader."Invoice Discount Amount" <> 0 then
+            if PurchHeader."Currency Code" <> '' then
+                Body += StrSubstNo('<tr><td>Amount After Discount:  </td><td>%1 %2</td></tr>', PurchHeader."Amount" - PurchHeader."Invoice Discount Amount", PurchHeader."Currency Code")
+            else
+                Body += StrSubstNo('<tr><td>Amount After Discount:  </td><td>%1 %2</td></tr>', PurchHeader."Amount" - PurchHeader."Invoice Discount Amount", GLSetup."LCY Code");
         //AN 03/17/2025+
         PurchaseLine.SetRange("Document Type", PurchHeader."Document Type");
         PurchaseLine.SetRange("Document No.", PurchHeader."No.");

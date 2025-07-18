@@ -314,6 +314,11 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         {
             DataClassification = CustomerContent;
         }
+        field(44; "Payment Request Type"; Option)
+        {
+            DataClassification = ToBeClassified;
+            OptionMembers = "Materials to be Produced","Ready (In-Stock) Materials","General Payment on Account";
+        }
     }
 
 
