@@ -449,6 +449,7 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         GenJnlLines.INSERT(TRUE);
     end;
 
+    //AN
     procedure CheckPayments()
     var
         myInt: Integer;
