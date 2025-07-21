@@ -449,6 +449,19 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         GenJnlLines.INSERT(TRUE);
     end;
 
+    procedure CheckPayments()
+    var
+        myInt: Integer;
+    begin
+        If Rec."1st Payment" + Rec."2nd Payment" + Rec."3rd Payment" <> Rec."Total Requested Amount" then
+            Error('Please Fill Payments!');
+        if Rec."1st Payment" <> 0 then
+            Rec.TestField("1st Payment Date");
+        if Rec."2nd Payment" <> 0 then
+            Rec.TestField("2nd Payment Date");
+        if Rec."3rd Payment" <> 0 then
+            Rec.TestField("3rd Payment Date");
+    end;
 }
 
 

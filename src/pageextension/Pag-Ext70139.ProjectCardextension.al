@@ -44,6 +44,14 @@ pageextension 70139 "Project Card extension" extends "Job Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Box Mover field.', Comment = '%';
             }
+            field("Project Type"; Rec."Project Type")
+            {
+                ApplicationArea = All;
+            }
+            field("Project Submittal Type"; Rec."Project Submittal Type")
+            {
+                ApplicationArea = All;
+            }
             field("Apollo Total Offer Value"; Rec."Apollo Total Offer Value")
             {
                 ApplicationArea = All;

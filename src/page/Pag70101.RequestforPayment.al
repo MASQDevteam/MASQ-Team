@@ -300,6 +300,7 @@ page 70101 "Request for Payment"
                 begin
                     //  PurchReqWorkFlowFunctions.ChangePurchReqStatus(Rec);//EDM.YEHYA+-
                     Rec.TESTFIELD(Status, Rec.Status::Open);
+                    Rec.CheckPayments();
                     //EDM
                     // RequestLine.SETRANGE("Document No.", Rec."No.");
                     //  IF NOT RequestLine.FINDFIRST THEN
