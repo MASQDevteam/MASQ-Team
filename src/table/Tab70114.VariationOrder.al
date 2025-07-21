@@ -225,6 +225,15 @@ table 70114 "Variation Order"
         {
 
         }
+        field(39; "Job Category"; Option)
+        {
+            DataClassification = ToBeClassified;
+            OptionMembers = "Engineering Submittals","Box Movers","Approved Engineering Submittals";
+        }
+        field(40; "PM Approval Required"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

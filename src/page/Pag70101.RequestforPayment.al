@@ -25,6 +25,10 @@ page 70101 "Request for Payment"
                     ToolTip = 'Specifies the value of the Status field.', Comment = '%';
                     Editable = false;
                 }
+                field("Payment Request Type"; Rec."Payment Request Type")
+                {
+                    ApplicationArea = All;
+                }
                 field(Supplier; Rec.Supplier)
                 {
                     ToolTip = 'Specifies the value of the Supplier field.', Comment = '%';
@@ -165,10 +169,11 @@ page 70101 "Request for Payment"
                     ToolTip = 'Specifies the value of the Requested Amount field.', Comment = '%';
                     ShowMandatory = (Rec."Number" <> '');
                 }
-                field("Additional Charges"; Rec."Additional Charges")
-                {
-                    ToolTip = 'Specifies the value of the Additional Charges field.', Comment = '%';
-                }
+                //removed by aya 07/15/2025
+                // field("Additional Charges"; Rec."Additional Charges")
+                // {
+                //     ToolTip = 'Specifies the value of the Additional Charges field.', Comment = '%';
+                // }
                 field("Total Requested Amount"; Rec."Total Requested Amount")
                 {
                     ToolTip = 'Specifies the value of the Total Requested Amount field.', Comment = '%';
@@ -194,26 +199,32 @@ page 70101 "Request for Payment"
                 field("1st Payment"; Rec."1st Payment")
                 {
                     ToolTip = 'Specifies the value of the 1st Payment field.', Comment = '%';
+                    ShowMandatory = true;
                 }
                 field("1st Payment Date"; Rec."1st Payment Date")
                 {
                     ToolTip = 'Specifies the value of the 1st Payment Date field.', Comment = '%';
+                    ShowMandatory = true;
                 }
                 field("2nd Payment"; Rec."2nd Payment")
                 {
                     ToolTip = 'Specifies the value of the 2nd Payment field.', Comment = '%';
+                    ShowMandatory = true;
                 }
                 field("2nd Payment Date"; Rec."2nd Payment Date")
                 {
                     ToolTip = 'Specifies the value of the 2nd Payment Date field.', Comment = '%';
+                    ShowMandatory = true;
                 }
                 field("3rd Payment"; Rec."3rd Payment")
                 {
                     ToolTip = 'Specifies the value of the 3rd Payment field.', Comment = '%';
+                    ShowMandatory = true;
                 }
                 field("3rd Payment Date"; Rec."3rd Payment Date")
                 {
                     ToolTip = 'Specifies the value of the 3rd Payment Date field.', Comment = '%';
+                    ShowMandatory = true;
                 }
                 field("Balance on Order"; Rec."Balance on Order")
                 {
@@ -458,6 +469,23 @@ page 70101 "Request for Payment"
         ChangeUrgencyColor();
     end;
 
+    trigger OnQueryClosePage(CloseAction: Action): Boolean
+    var
+        myInt: Integer;
+    begin
+        CheckPayments();
+    end;
+
+    local procedure CheckPayments()
+    var
+        myInt: Integer;
+    begin
+        If Rec."1st Payment" + Rec."2nd Payment" + Rec."3rd Payment" <> Rec."Total Requested Amount" then
+            Error('Please Fill Payments!');
+        Rec.TestField("1st Payment Date");
+        Rec.TestField("2nd Payment Date");
+        Rec.TestField("3rd Payment Date");
+    end;
 
     var
         myInt: Integer;

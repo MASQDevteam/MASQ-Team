@@ -2,7 +2,7 @@
     "id": "d6509362-8039-47d1-9023-a627a460f969",
     "name": "MASQ Team",
     "publisher": "MASQ Publisher",
-    "version": "25.0.1.79",
+    "version": "25.0.1.80",
     "brief": "",
     "privacyStatement": "",
     "description": "",
@@ -14,13 +14,13 @@
         {
             "id": "e34a4b5d-f1db-4a0b-8473-fc0b1e1130ce",
             "name": "MASQ",
-            "version": "1.0.8.77",
+            "version": "1.0.8.82",
             "publisher": "Megatek"
         },
         {
             "id": "c54ea937-ca42-4532-913b-74e53387e06e",
             "name": "Apollo",
-            "version": "1.2.4.0",
+            "version": "1.2.4.1",
             "publisher": "Default publisher"
         }
     ],

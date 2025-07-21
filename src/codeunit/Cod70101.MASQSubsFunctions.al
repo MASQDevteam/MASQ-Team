@@ -1211,6 +1211,7 @@ codeunit 70101 "MASQ Subs & Functions"
         PurchaseRequestLine: Record "Purchase Request Line";
         PurchaseRequestHeader: Record "Purchase Request Header";
         PurchLine: Record "Purchase Line";
+        PurchaseRequestLine2: Record "Purchase Request Line";
     begin
         //AN 04/04/25
         Clear(PurchaseRequestHeader);
@@ -1236,6 +1237,14 @@ codeunit 70101 "MASQ Subs & Functions"
             //until PurchaseRequestHeader.Next() = 0;
 
             until PurchLine.Next() = 0;
+        Clear(PurchaseRequestLine2);
+        PurchaseRequestLine2.SetRange("PO No.", PurchOrderLine."Document No.");
+        PurchaseRequestLine2.SetRange("PO Line No", PurchOrderLine."Line No.");
+        if PurchaseRequestLine2.FindFirst() then begin
+            if PurchaseRequestLine2."Discount %" <> 0 then
+                PurchOrderLine.Validate("Line Discount %", PurchaseRequestLine2."Discount %");
+            PurchOrderLine.Modify();
+        end;
 
     end;
 

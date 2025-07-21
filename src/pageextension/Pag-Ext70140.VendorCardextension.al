@@ -2,6 +2,44 @@ pageextension 70140 "Vendor Card extension" extends "Vendor Card"
 {
     layout
     {
+        addafter(Contact)
+        {
+            //AN 07/17/2025
+            field("Contact per Departments"; Rec."Contact per Departments")
+            {
+                ApplicationArea = All;
+
+                trigger OnLookup(var Text: Text): Boolean
+                var
+                    ContactRec: Record Contact;
+                    ContactListPage: Page "Contact List";
+                    SelectedContacts: Record Contact;
+                    ContactNos: Text;
+                    CountSelected: Integer;
+                begin
+                    // Open the Contact List with multi-selection enabled
+                    ContactListPage.LookupMode(true);
+                    if ContactListPage.RunModal() = Action::LookupOK then begin
+
+                        // Get the selected records
+                        ContactListPage.SETSELECTIONFILTER(SelectedContacts);
+
+                        if SelectedContacts.FindSet() then begin
+                            repeat
+                                if ContactNos <> '' then
+                                    ContactNos += ', ';
+                                ContactNos += SelectedContacts."No.";
+                                CountSelected += 1;
+                            until SelectedContacts.Next() = 0;
+
+                            // Assign to field
+                            Rec."Contact per Departments" := ContactNos;
+                        end;
+                    end;
+                end;
+            }
+
+        }
         addafter("Payment Terms Code")
         {
             field("Payment Terms Description"; Rec."Payment Terms Description")
