@@ -468,25 +468,6 @@ page 70101 "Request for Payment"
     begin
         ChangeUrgencyColor();
     end;
-
-    trigger OnQueryClosePage(CloseAction: Action): Boolean
-    var
-        myInt: Integer;
-    begin
-        CheckPayments();
-    end;
-
-    local procedure CheckPayments()
-    var
-        myInt: Integer;
-    begin
-        If Rec."1st Payment" + Rec."2nd Payment" + Rec."3rd Payment" <> Rec."Total Requested Amount" then
-            Error('Please Fill Payments!');
-        Rec.TestField("1st Payment Date");
-        Rec.TestField("2nd Payment Date");
-        Rec.TestField("3rd Payment Date");
-    end;
-
     var
         myInt: Integer;
         Caneditfieldsafterpost:

@@ -17,9 +17,6 @@ page 70108 JobWithAutoJobTaskCreator
                 field(ApolloProjectNumber; Rec."Apollo Project Number") { }
                 field(ProjectName; Rec.Description) { }
                 field(JobNo; Rec."No.") { Editable = false; }
-<<<<<<< HEAD
-                field(JobTaskNo; JobTaskNo) { Editable = false; }
-=======
                 field(JobTaskNo; ProjectTaskNo) { Editable = false; }
                 field("SelltoCustomerNo"; Rec."Sell-to Customer No.")
                 {
@@ -54,28 +51,11 @@ page 70108 JobWithAutoJobTaskCreator
                 {
 
                 }
->>>>>>> origin
+
             }
         }
     }
     var
-<<<<<<< HEAD
-        JobTask: Record "Job Task";
-        JobTaskNo: Code[20];
-
-    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
-    begin
-        Rec.Insert();
-        JobTask.Init();
-        JobTask."Job No." := Rec."No.";
-        JobTask.Description := 'Main Task';
-        JobTask.Insert(true);
-        JobTaskNo := JobTask."Job Task No.";
-        exit(true);
-    end;
-
-=======
         ProjectTasks: Record "Job Task";
         ProjectTaskNo: Code[20];
->>>>>>> origin
 }
