@@ -199,26 +199,32 @@ page 70101 "Request for Payment"
                 field("1st Payment"; Rec."1st Payment")
                 {
                     ToolTip = 'Specifies the value of the 1st Payment field.', Comment = '%';
+                    ShowMandatory = true;
                 }
                 field("1st Payment Date"; Rec."1st Payment Date")
                 {
                     ToolTip = 'Specifies the value of the 1st Payment Date field.', Comment = '%';
+                    ShowMandatory = true;
                 }
                 field("2nd Payment"; Rec."2nd Payment")
                 {
                     ToolTip = 'Specifies the value of the 2nd Payment field.', Comment = '%';
+                    ShowMandatory = true;
                 }
                 field("2nd Payment Date"; Rec."2nd Payment Date")
                 {
                     ToolTip = 'Specifies the value of the 2nd Payment Date field.', Comment = '%';
+                    ShowMandatory = true;
                 }
                 field("3rd Payment"; Rec."3rd Payment")
                 {
                     ToolTip = 'Specifies the value of the 3rd Payment field.', Comment = '%';
+                    ShowMandatory = true;
                 }
                 field("3rd Payment Date"; Rec."3rd Payment Date")
                 {
                     ToolTip = 'Specifies the value of the 3rd Payment Date field.', Comment = '%';
+                    ShowMandatory = true;
                 }
                 field("Balance on Order"; Rec."Balance on Order")
                 {
