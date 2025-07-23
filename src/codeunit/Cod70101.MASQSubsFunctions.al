@@ -1281,7 +1281,37 @@ codeunit 70101 "MASQ Subs & Functions"
             until PurchaseRequest.Next() = 0;
     end;
 
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch. Post Invoice Events", OnPostBalancingEntryOnAfterGenJnlPostLine, '', false, false)]
+    // local procedure RunOnPostBalancingEntryOnBeforeGenJnlPostLine(var GenJnlLine: Record "Gen. Journal Line"; var TotalPurchLine: Record "Purchase Line")
+    // begin
+    //     GenJnlLine.dime := TotalPurchLine.;
+    // end;
 
+    //AN 07/21/2025 //underprogress
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", OnAfterInsertGLEntry, '', false, false)]
+    // local procedure OnAfterInsertGLEntry(GLEntry: Record "G/L Entry"; GenJnlLine: Record "Gen. Journal Line")
+    // var
+    //     DimensionSetEntry: Record "Dimension Set Entry";
+
+    // begin
+    //     Clear(DimensionSetEntry);
+    //     DimensionSetEntry.SetRange("Dimension Code", 'EXPENSE CATEGORY');
+    //     DimensionSetEntry.SetRange("Dimension Value Code", GLEntry."Shortcut Dimension 7 Code");
+    //     if DimensionSetEntry.FindFirst() then begin
+    //         DimensionSetEntry.CalcFields("Dimension Value Name");
+    //         GLEntry."Expense Category Description" := DimensionSetEntry."Dimension Value Name";
+    //         //GLEntry.Modify();
+    //     end;
+    //     Clear(DimensionSetEntry);
+    //     DimensionSetEntry.SetRange("Dimension Code", 'EMPLOYEE');
+    //     DimensionSetEntry.SetRange("Dimension Value Code", GLEntry."Shortcut Dimension 8 Code");
+    //     if DimensionSetEntry.FindFirst() then begin
+    //         DimensionSetEntry.CalcFields("Dimension Value Name");
+    //         GLEntry."Employee Name" := DimensionSetEntry."Dimension Value Name";
+    //         //GLEntry.Modify();
+    //     end
+
+    // end;
 
     //remove comment on go live
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePostPurchLine', '', false, false)]//for batch posting
@@ -1941,30 +1971,7 @@ codeunit 70101 "MASQ Subs & Functions"
         //     GLEntry."Employee Name" := DimensionSetEntry."Dimension Value Name";
         // end
     end;
-    //AN 07/21/2025
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", OnAfterInsertGLEntry, '', true, true)]
-    local procedure OnAfterInsertGLEntry(GLEntry: Record "G/L Entry"; GenJnlLine: Record "Gen. Journal Line")
-    var
-        DimensionSetEntry: Record "Dimension Set Entry";
-    begin
-        Clear(DimensionSetEntry);
-        DimensionSetEntry.SetRange("Dimension Code", 'EXPENSE CATEGORY');
-        DimensionSetEntry.SetRange("Dimension Value Code", GLEntry."Shortcut Dimension 7 Code");
-        if DimensionSetEntry.FindFirst() then begin
-            DimensionSetEntry.CalcFields("Dimension Value Name");
-            GLEntry."Expense Category Description" := DimensionSetEntry."Dimension Value Name";
-            GLEntry.Modify();
-        end;
-        Clear(DimensionSetEntry);
-        DimensionSetEntry.SetRange("Dimension Code", 'EMPLOYEE');
-        DimensionSetEntry.SetRange("Dimension Value Code", GLEntry."Shortcut Dimension 8 Code");
-        if DimensionSetEntry.FindFirst() then begin
-            DimensionSetEntry.CalcFields("Dimension Value Name");
-            GLEntry."Employee Name" := DimensionSetEntry."Dimension Value Name";
-            GLEntry.Modify();
-        end
 
-    end;
     //AN 03/17/25
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Job Create-Invoice", OnAfterCreateSalesInvoiceLines, '', true, true)]
     local procedure OnAfterCreateSalesInvoiceLines(SalesHeader: Record "Sales Header"; NewInvoice: Boolean)

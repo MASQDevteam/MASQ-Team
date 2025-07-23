@@ -8,5 +8,13 @@ tableextension 70140 "General Journal Ext " extends "Gen. Journal Line"
             DataClassification = ToBeClassified;
             TableRelation = "Travel Request".Number;
         }
+        field(70101; "Expense Category Description"; Text[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(70102; "Employee Name"; Text[50])
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 }
