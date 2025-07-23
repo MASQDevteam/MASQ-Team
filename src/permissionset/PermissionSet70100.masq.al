@@ -158,5 +158,11 @@ permissionset 70100 masq
         codeunit "Post Inventory to Apollo"=X,
         page "LC Card"=X,
         page "LC Lists"=X,
-        page "Hidden COA"=X;
+        page "Hidden COA"=X,
+        tabledata "Data MASQ Lookup"=RIMD,
+        table "Data MASQ Lookup"=X,
+        report "Apply PR Discount"=X,
+        report "Item by Location"=X,
+        page "Data MASQ Lookup"=X,
+        page JobWithAutoJobTaskCreator=X;
 }
