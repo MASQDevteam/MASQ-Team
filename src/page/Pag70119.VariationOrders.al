@@ -119,6 +119,14 @@ page 70119 "Variation Orders"
                     Editable = false;
                     Enabled = false;
                 }
+                field("Job Category"; Rec."Job Category")
+                {
+                    ApplicationArea = All;
+                }
+                field("PM Approval Required"; Rec."PM Approval Required")
+                {
+                    ApplicationArea = All;
+                }
                 field("Apollo project Number"; Rec."Apollo project Number")
                 {
                     ToolTip = 'Specifies the value of the Apollo project Number field.', Comment = '%';

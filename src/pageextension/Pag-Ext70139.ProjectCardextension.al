@@ -84,7 +84,80 @@ pageextension 70139 "Project Card extension" extends "Job Card"
                 ToolTip = 'Specifies the value of the Apollo Project Manager field.', Comment = '%';
             }
         }
+        addbefore("WIP and Recognition")
+        {
+            group(Opex)
+            {
+                part("Opex List"; "Opex ")
+                {
+                    ApplicationArea = All;
+                    SubPageLink = "Shortcut Dimension 1" = field("Global Dimension 1 Code");
+                }
+            }
+        }
     }
+    actions
+    {
+        addafter("&Job")
+        {
+            action("Insert Opex")
+            {
+                ApplicationArea = All;
+                Image = Add;
+                trigger OnAction()
+                begin
+                    InsertOpex(Rec."Global Dimension 1 Code");
+                end;
+            }
+        }
+
+    }
+
+    //AN 07/25/2025
+    procedure InsertOpex(ProjectCode: Code[20])
+    var
+        GLEntry: Record "G/L Entry";
+        LineNo: Integer;
+        Opex: Record Opex;
+        CurrentGLAcc: Code[20];
+    begin
+        Clear(GLEntry);
+        Clear(Opex);
+        CurrentGLAcc := '';
+
+        // Get the last Entry No. from Opex table
+        if Opex.FindLast() then
+            LineNo := Opex."Line No."
+        else
+            LineNo := 0;
+
+        GLEntry.Reset();
+        GLEntry.SetCurrentKey("G/L Account No.");
+        GLEntry.SetFilter("G/L Account No.", '62..699');
+        GLEntry.SetRange("Global Dimension 1 Code", ProjectCode);
+
+        if GLEntry.FindSet() then
+            repeat
+                if GLEntry."G/L Account No." <> CurrentGLAcc then begin
+                    CurrentGLAcc := GLEntry."G/L Account No.";
+
+                    // Check if this G/L Account No. already exists in Opex
+                    Opex.Reset();
+                    Opex.SetRange("GL Account No", CurrentGLAcc);
+                    Opex.SetRange("Shortcut Dimension 1", ProjectCode);
+                    if not Opex.FindFirst() then begin
+                        LineNo += 10000;
+                        Opex.Init();
+                        Opex."Line No." := LineNo;
+                        Opex."GL Account No" := CurrentGLAcc;
+                        Opex."Shortcut Dimension 1" := ProjectCode;
+                        Opex.Insert();
+                    end;
+                end;
+            until GLEntry.Next() = 0;
+    end;
+
+
     //AN 03/27/2025
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     var

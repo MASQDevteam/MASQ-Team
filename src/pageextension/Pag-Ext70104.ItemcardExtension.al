@@ -2,6 +2,10 @@ pageextension 70104 "Item card Extension" extends "Item Card"
 {
     layout
     {
+        modify("Meg Other Details")
+        {
+            Caption = 'Other Details';
+        }
         // Add changes to page layout here
 
         // modify("Meg Vendor Item Code")

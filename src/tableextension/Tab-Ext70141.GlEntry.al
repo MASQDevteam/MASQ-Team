@@ -10,13 +10,15 @@ tableextension 70141 GlEntry extends "G/L Entry"
         }
         field(70101; "Expense Category Description"; Text[50])
         {
-            // FieldClass = FlowField;
-            // CalcFormula = lookup("Default Dimension"."Dimension Value Name"
-            //     where("Dimension Code" = const('EXPENSE CATEGORY'), "Dimension Value Code" = field("Shortcut Dimension 7 Code")));
+            FieldClass = FlowField;
+            CalcFormula = lookup("Dimension Value".Name where("Dimension Code" = filter('EXPENSE CATEGORY'),
+                                                                Code = field("Shortcut Dimension 7 Code")));
         }
         field(70102; "Employee Name"; Text[50])
         {
-            DataClassification = ToBeClassified;
+            FieldClass = FlowField;
+            CalcFormula = lookup("Dimension Value".Name where("Dimension Code" = filter('EMPLOYEE'),
+                                                                Code = field("Shortcut Dimension 8 Code")));
         }
         field(70103; "Project Name"; Text[50])
         {

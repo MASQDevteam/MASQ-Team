@@ -57,34 +57,34 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
         }
     }
 
-    actions
-    {
-        addafter("&Navigate")
-        {
-            action(FillExpenseCatDesc)
-            {
-                ApplicationArea = All;
-                Caption = 'Fill Expense Category Description';
-                ToolTip = 'Fills the Expense Category Description based on the Default Dimension.';
-                Image = Edit;
-                trigger OnAction()
-                begin
-                    FillExpenseCatDesc();
-                end;
-            }
-            action(FillEmployeeDesc)
-            {
-                ApplicationArea = All;
-                Caption = 'Fill Employee Description';
-                ToolTip = 'Fills the Employee Description based on the Default Dimension.';
-                Image = Edit;
-                trigger OnAction()
-                begin
-                    FillEmpDesc();
-                end;
-            }
-        }
-    }
+    // actions
+    // {
+    //     addafter("&Navigate")
+    //     {
+    //         action(FillExpenseCatDesc)
+    //         {
+    //             ApplicationArea = All;
+    //             Caption = 'Fill Expense Category Description';
+    //             ToolTip = 'Fills the Expense Category Description based on the Default Dimension.';
+    //             Image = Edit;
+    //             trigger OnAction()
+    //             begin
+    //                 FillExpenseCatDesc();
+    //             end;
+    //         }
+    //         action(FillEmployeeDesc)
+    //         {
+    //             ApplicationArea = All;
+    //             Caption = 'Fill Employee Description';
+    //             ToolTip = 'Fills the Employee Description based on the Default Dimension.';
+    //             Image = Edit;
+    //             trigger OnAction()
+    //             begin
+    //                 FillEmpDesc();
+    //             end;
+    //         }
+    //     }
+    // }
 
 
     trigger OnAfterGetRecord()

@@ -347,7 +347,7 @@ page 70101 "Request for Payment"
             {
                 ApplicationArea = All;
                 Image = Journals;
-                Enabled = ((Rec."RFP Type" = Rec."RFP Type"::"Supplier payment") AND (REc.Executed = true));
+                Enabled = ((Rec."RFP Type" = Rec."RFP Type"::"Supplier payment") and (REc.Executed = true));
                 trigger OnAction()
                 begin
                     Rec.TestField("Sent to journals", false);
@@ -468,6 +468,7 @@ page 70101 "Request for Payment"
     begin
         ChangeUrgencyColor();
     end;
+
     var
         myInt: Integer;
         Caneditfieldsafterpost:
