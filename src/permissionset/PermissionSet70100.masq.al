@@ -164,5 +164,9 @@ permissionset 70100 masq
         report "Apply PR Discount"=X,
         report "Item by Location"=X,
         page "Data MASQ Lookup"=X,
-        page JobWithAutoJobTaskCreator=X;
+        page JobWithAutoJobTaskCreator=X,
+        tabledata Opex=RIMD,
+        table Opex=X,
+        codeunit "Insert Opex to Project"=X,
+        page "Opex "=X;
 }
