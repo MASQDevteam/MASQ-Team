@@ -884,6 +884,7 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
 
     end;
 
+    //AN 8/1/2025
     trigger OnAfterModify()
     var
         PurchaseHeader: Record "Purchase Header";
