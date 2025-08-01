@@ -5,31 +5,31 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
         addafter(PurchLines)
         {
             //AN 07/04/2025
-            // group("Additional Charges")
-            // {
-            //     field("Freight Charges"; Rec."Freight Charges")
-            //     {
-            //         ApplicationArea = All;
-            //     }
-            //     field("Freight Charges Value"; Rec."Freight Charges Value")
-            //     {
-            //         ApplicationArea = All;
-            //     }
-            //     field("Documentation Charges"; Rec."Documentation Charges")
-            //     {
-            //         ApplicationArea = All;
-            //     }
-            //     field("Documentation Charges Value"; Rec."Documentation Charges Value")
-            //     {
-            //         ApplicationArea = All;
+            group("Additional Charges")
+            {
+                field("Freight Charges"; Rec."Freight Charges")
+                {
+                    ApplicationArea = All;
+                }
+                field("Freight Charges Value"; Rec."Freight Charges Value")
+                {
+                    ApplicationArea = All;
+                }
+                field("Documentation Charges"; Rec."Documentation Charges")
+                {
+                    ApplicationArea = All;
+                }
+                field("Documentation Charges Value"; Rec."Documentation Charges Value")
+                {
+                    ApplicationArea = All;
 
-            //     }
-            //     field(TotalWithCharges; Rec.TotalWithCharges)
-            //     {
-            //         ApplicationArea = All;
-            //         Caption = 'Total';
-            //     }
-            // }
+                }
+                field(TotalWithCharges; Rec.TotalWithCharges)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Total';
+                }
+            }
         }
 
         modify("Invoice Received Date")

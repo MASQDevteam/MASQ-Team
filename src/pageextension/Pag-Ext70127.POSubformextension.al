@@ -911,8 +911,12 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
 
 
                                 PurchaseOrderLine."BL/AWB ID" := BLAWBNumber;
-                                PurchaseOrderLine."Container ID" := ContainerNumber;
-                                PurchaseOrderLine."Container Line No." := ContainerLineNumber;
+
+                                //AN 07/29/2025
+                                if ContainerNumber <> '' then
+                                    PurchaseOrderLine."Container ID" := ContainerNumber;
+                                if ContainerLineNumber <> 0 then
+                                    PurchaseOrderLine."Container Line No." := ContainerLineNumber;
                                 PurchaseOrderLine."Truck WayBill ID" := TruckWayBillID;//added on 27/01/2025
                                 PurchaseOrderLine."Truck Details Line No." := TruckDetailsLineNo;//added on 27/01/2025
                                 PurchaseOrderLine."InLand ID" := InLandID;//added on 06/04/2025
@@ -1041,6 +1045,39 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
             }
 
         }
+        addbefore("F&unctions")
+        {
+            action("Move Up")
+            {
+                Caption = 'Move Up';
+                ApplicationArea = All;
+                Image = MoveUp;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Move current line up.';
+
+                trigger OnAction()
+                begin
+                    MoveLine(-1);
+                end;
+            }
+            action("Move Down")
+            {
+                Caption = 'Move Down';
+                ApplicationArea = All;
+                Image = MoveDown;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Move current line down.';
+
+                trigger OnAction()
+                begin
+                    MoveLine(1);
+                end;
+            }
+        }
     }
     //AN 03/27/2025
     // trigger OnQueryClosePage(CloseAction: Action): Boolean
@@ -1049,38 +1086,76 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
     // begin
     //     MessagetoFillInitials();
     // end;
-
-    local procedure MessagetoFillInitials()
+    procedure MoveLine(Direction: Integer)
     var
-        myInt: Integer;
+        PurchaseLine: Record "Purchase Line";
+        SwapLine: Record "Purchase Line";
+        TempPurchaseLine: Record "Purchase Line";
+        TempSwapLine: Record "Purchase Line";
+        TempLineNo: Integer;
+        FilterOperator: Text;
     begin
-        if (Rec."Initial ETA" = 0D) or (Rec."Initial ETAW" = 0D) or (Rec."Initial ETD" = 0D) or (Rec."Initial ETR" = 0D) then
-            Message('Please Fill the Initials!');
-    end;
+        if Direction = 0 then
+            exit;
 
-    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
-    var
-        PO: Record "Purchase Header";
-    begin
-        Clear(PO);
-        PO.Get(Rec."Document Type", Rec."Document No.");
-        Rec."Initial ETA" := PO."Initial ETA";
-        Rec."Initial ETD" := PO."Initial ETD";
+        PurchaseLine := Rec;
+        PurchaseLine.LockTable();
 
-        Rec."Initial ETR" := PO."Initial ETR";
-        Rec."Initial ETAW" := PO."Initial ETAW";
+        SwapLine.Reset();
+        SwapLine.SetRange("Document Type", PurchaseLine."Document Type");
+        SwapLine.SetRange("Document No.", PurchaseLine."Document No.");
 
-    end;
+        if Direction = -1 then
+            FilterOperator := '<%1'
+        else
+            FilterOperator := '>%1';
 
+        SwapLine.SetFilter("Line No.", StrSubstNo(FilterOperator, PurchaseLine."Line No."));
+        // SwapLine.SetFilter(Type, '<>%1', SwapLine.Type::" "); // Optional
 
-    trigger OnOpenPage()
-    var
-    begin
-        MessagetoFillInitials();
-        Clear(UserSetup);
-        UserSetup.Get(UserId);
-        CanRemovePOLinesfromContainer := UserSetup."Remove PO lines from Container";
-        CanEditPO_SO_Lines := UserSetup."Can Edit SO/PO Details";
+        if Direction = -1 then begin
+            if SwapLine.FindLast() then begin
+                // Copy data
+                TempPurchaseLine := PurchaseLine;
+                TempSwapLine := SwapLine;
+
+                // Swap line numbers
+                TempLineNo := TempPurchaseLine."Line No.";
+                TempPurchaseLine."Line No." := TempSwapLine."Line No.";
+                TempSwapLine."Line No." := TempLineNo;
+
+                // Delete originals
+                PurchaseLine.Delete();
+                SwapLine.Delete();
+
+                // Insert new
+                TempSwapLine.Insert();
+                TempPurchaseLine.Insert();
+
+                CurrPage.Update(false);
+            end;
+        end else begin
+            if SwapLine.FindFirst() then begin
+                // Copy data
+                TempPurchaseLine := PurchaseLine;
+                TempSwapLine := SwapLine;
+
+                // Swap line numbers
+                TempLineNo := TempPurchaseLine."Line No.";
+                TempPurchaseLine."Line No." := TempSwapLine."Line No.";
+                TempSwapLine."Line No." := TempLineNo;
+
+                // Delete originals
+                PurchaseLine.Delete();
+                SwapLine.Delete();
+
+                // Insert new
+                TempSwapLine.Insert();
+                TempPurchaseLine.Insert();
+
+                CurrPage.Update(false);
+            end;
+        end;
     end;
 
     var

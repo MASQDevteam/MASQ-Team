@@ -25,6 +25,14 @@ page 70109 "Opex "
                     Editable = false;
                 }
             }
+            group("Total Opex")
+            {
+                field(Total; Rec.Total)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+            }
 
         }
 

@@ -449,6 +449,39 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
 
             }
         }
+        addbefore("F&unctions")
+        {
+            action("Move Up")
+            {
+                Caption = 'Move Up';
+                ApplicationArea = All;
+                Image = MoveUp;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Move current line up.';
+
+                trigger OnAction()
+                begin
+                    MoveLine(-1);
+                end;
+            }
+            action("Move Down")
+            {
+                Caption = 'Move Down';
+                ApplicationArea = All;
+                Image = MoveDown;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Move current line down.';
+
+                trigger OnAction()
+                begin
+                    MoveLine(1);
+                end;
+            }
+        }
     }
     local procedure SplitSOLines()
     var
@@ -553,6 +586,77 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
         visibleQTYSplit := UserSetup."Can Split SO";
     end;
 
+    procedure MoveLine(Direction: Integer)
+    var
+        SalesLine: Record "Sales Line";
+        SwapLine: Record "Sales Line";
+        TempSalesLine: Record "Sales Line";
+        TempSwapLine: Record "Sales Line";
+        TempLineNo: Integer;
+        FilterOperator: Text;
+    begin
+        if Direction = 0 then
+            exit;
+
+        SalesLine := Rec;
+        SalesLine.LockTable();
+
+        SwapLine.Reset();
+        SwapLine.SetRange("Document Type", SalesLine."Document Type");
+        SwapLine.SetRange("Document No.", SalesLine."Document No.");
+
+        if Direction = -1 then
+            FilterOperator := '<%1'
+        else
+            FilterOperator := '>%1';
+
+        SwapLine.SetFilter("Line No.", StrSubstNo(FilterOperator, SalesLine."Line No."));
+        // SwapLine.SetFilter(Type, '<>%1', SwapLine.Type::" "); // Optional
+
+        if Direction = -1 then begin
+            if SwapLine.FindLast() then begin
+                // Copy data
+                TempSalesLine := SalesLine;
+                TempSwapLine := SwapLine;
+
+                // Swap line numbers
+                TempLineNo := TempSalesLine."Line No.";
+                TempSalesLine."Line No." := TempSwapLine."Line No.";
+                TempSwapLine."Line No." := TempLineNo;
+
+                // Delete originals
+                SalesLine.Delete();
+                SwapLine.Delete();
+
+                // Insert new
+                TempSwapLine.Insert();
+                TempSalesLine.Insert();
+
+                CurrPage.Update(false);
+            end;
+        end else begin
+            if SwapLine.FindFirst() then begin
+                // Copy data
+                TempSalesLine := SalesLine;
+                TempSwapLine := SwapLine;
+
+                // Swap line numbers
+                TempLineNo := TempSalesLine."Line No.";
+                TempSalesLine."Line No." := TempSwapLine."Line No.";
+                TempSwapLine."Line No." := TempLineNo;
+
+                // Delete originals
+                SalesLine.Delete();
+                SwapLine.Delete();
+
+                // Insert new
+                TempSwapLine.Insert();
+                TempSalesLine.Insert();
+
+                CurrPage.Update(false);
+            end;
+        end;
+    end;
 
     var
         Text002: Label 'You can''t change %1 because the order line is associated with purchase order %2 line %3.', Comment = '%1=field name, %2=Document No., %3=Line No.';
