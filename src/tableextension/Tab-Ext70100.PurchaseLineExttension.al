@@ -884,9 +884,20 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
 
     end;
 
-    trigger OnInsert()
+    trigger OnAfterModify()
     var
+        PurchaseHeader: Record "Purchase Header";
     begin
+        if PurchaseHeader.Get("Document Type", "Document No.") then
+            PurchaseHeader.CalculateTotalWithCharge();
+    end;
+
+    trigger OnAfterDelete()
+    var
+        PurchaseHeader: Record "Purchase Header";
+    begin
+        if PurchaseHeader.Get("Document Type", "Document No.") then
+            PurchaseHeader.CalculateTotalWithCharge();
     end;
 
     var

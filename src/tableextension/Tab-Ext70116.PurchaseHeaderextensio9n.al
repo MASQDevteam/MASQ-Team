@@ -254,8 +254,7 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
                 CalculateTotalWithCharge();
             end;
         }
-
-
+    
     }
 
     keys
