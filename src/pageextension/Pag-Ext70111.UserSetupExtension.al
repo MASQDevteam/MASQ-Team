@@ -90,6 +90,11 @@ pageextension 70111 "User Setup Extension" extends "User Setup"
             {
                 ApplicationArea = All;
             }
+            //AN 08/04/2025
+            field("Sent Email Approved SQ"; Rec."Sent Email Approved SQ")
+            {
+                ApplicationArea = All;
+            }
             field("Input DynamicNum to Intermed."; Rec."Input DynamicNum to Intermed.")//added on 10/03/2025
             {
                 ApplicationArea = All;

@@ -302,6 +302,12 @@ pageextension 70129 "Purch. Order From Sales Ordere" extends "Purch. Order From 
                 if Project."Box Mover" = true then
                     Rec.Validate(Include, true);
             end;
+            //AN 08/04/2025
+            Clear(project);
+            if Project.Get(Rec."Demand Order No.") then begin
+                if Project."Project Type" = Project."Project Type"::BM then
+                    Rec.Validate(Include, true);
+            end;
         end;
 
 
@@ -495,7 +501,7 @@ pageextension 70129 "Purch. Order From Sales Ordere" extends "Purch. Order From 
                     PurchaseRequestLine."PO Status" := PurchaseRequestLine."PO Status"::"Not Ordered";
                     PurchaseRequestLine."PO No." := Rec."PO No.";
                     PurchaseRequestLine."PO Line No" := Rec."PO Line No";
-                
+
                     IF rec.Include then
                         PurchaseRequestLine.Check := true;
 

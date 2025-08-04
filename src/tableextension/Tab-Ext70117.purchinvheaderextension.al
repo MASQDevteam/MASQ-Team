@@ -38,6 +38,10 @@ tableextension 70117 "purch. inv. header extension" extends "Purch. Inv. Header"
         //     Caption = 'Actual (Total Cost) Insurance';
         //     Editable = false;
         // }
+        field(70128; "Sample"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

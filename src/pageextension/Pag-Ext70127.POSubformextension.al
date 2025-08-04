@@ -687,9 +687,6 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                                     ProjectLine.Validate("Unit Cost", ProjectLineunitCost);//added on 02/04/2025
                                 ProjectLine.Validate("Remaining Qty.");
                                 ProjectLine.Modify();
-
-
-
                                 //
 
                                 SalesLine.Validate(Quantity, Rec.Quantity);

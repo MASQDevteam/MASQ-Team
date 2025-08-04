@@ -42,6 +42,15 @@ page 70129 "Shipping Quotation Sea Subform"
                     ToolTip = 'Specifies the value of the currency Code field.', Comment = '%';
                     StyleExpr = StyleExprTxt;
                 }
+                field(Transshipment; Rec.Transhipment)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Transshipment';
+                }
+                field("1st Available Departure"; Rec."1st Available Departure")
+                {
+                    ApplicationArea = All;
+                }
                 field("Inland Transport Cost"; Rec."Inland Transport Cost")
                 {
                     ApplicationArea = All;

@@ -50,24 +50,15 @@ page 70130 "Shipping Quotation Card"
                 {
                     ApplicationArea = All;
                 }
-                field("Project No."; Rec."Project No.")
+                field("Apollo Project No."; Rec."Apollo Project No.")
                 {
                     ApplicationArea = All;
-                    DrillDownPageId = "Shipping Quotation Projects";
                 }
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
                 }
-                field(Transshipment; Rec.Transhipment)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Transshipment';
-                }
-                field("1st Available Departure"; Rec."1st Available Departure")
-                {
-                    ApplicationArea = All;
-                }
+
             }
 
             group("Sea Shipping Information")
@@ -288,10 +279,15 @@ page 70130 "Shipping Quotation Card"
                 ToolTip = 'Release the document to the next stage of processing. You must reopen the document before you can make changes to it.';
 
                 trigger OnAction()
+                var
+                    MASQEmail: Codeunit "MASQ Email";
                 begin
                     Rec.Status := Rec.Status::Approved;
                     CurrPage.Update();
 
+                    //AN 08/04/2025
+                    if Rec.Status = Rec.Status::Approved then
+                        MASQEmail.SendEmailAppSQ(Rec);
                 end;
             }
             action(Reopen)

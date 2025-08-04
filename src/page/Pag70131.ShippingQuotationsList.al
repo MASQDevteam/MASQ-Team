@@ -64,10 +64,9 @@ page 70131 "Shipping Quotations List"
                 {
                     Caption = 'PO #';
                 }
-                field("Project No."; Rec."Project No.")
+                field("Apollo Project No."; Rec."Apollo Project No.")
                 {
                     ApplicationArea = All;
-                    DrillDownPageId = "Shipping Quotation Projects";
                 }
                 field(Description; Rec.Description)
                 {

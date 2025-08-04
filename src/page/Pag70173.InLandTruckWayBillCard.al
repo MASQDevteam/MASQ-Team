@@ -19,10 +19,34 @@ page 70173 "In Land Truck WayBill Card"
                 {
                     Caption = 'InLand WayBill';
                 }
+                field("Waybill Date"; Rec."Waybill Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("WayBill Type"; Rec."WayBill Type")
+                {
+                    ApplicationArea = All;
+                }
+                field(Agent; Rec.Agent)
+                {
+                    ApplicationArea = All;
+                }
+                field("Packing Quantity"; Rec."Packing Quantity")
+                {
+                    ApplicationArea = All;
+                }
+                field("Unit of Measure"; Rec."Unit of Measure")
+                {
+                    ApplicationArea = All;
+                }
+                field("Invoiced Received Date"; Rec."Invoiced Received Date")
+                {
+                    ApplicationArea = All;
+                }
                 field("Line"; Rec."Line")
                 {
                 }
-            
+
                 field("Remarks"; Rec."Remarks")
                 {
                 }
@@ -30,14 +54,14 @@ page 70173 "In Land Truck WayBill Card"
                 {
                     ApplicationArea = All;
                 }
-                field("From Location"; Rec."From Location")
-                {
-                    ApplicationArea = All;
-                }
-                field("To Location"; Rec."To Location")
-                {
-                    ApplicationArea = All;
-                }
+                // field("From Location"; Rec."From Location")
+                // {
+                //     ApplicationArea = All;
+                // }
+                // field("To Location"; Rec."To Location")
+                // {
+                //     ApplicationArea = All;
+                // }
                 field("Project No."; Rec."Project No.")
                 {
                     ApplicationArea = All;

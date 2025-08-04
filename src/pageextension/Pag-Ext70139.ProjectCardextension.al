@@ -39,11 +39,11 @@ pageextension 70139 "Project Card extension" extends "Job Card"
                 ToolTip = 'Specifies the value of the Total Exported Quantity field.', Comment = '%';
                 DrillDownPageId = "Job Planning Lines";
             }
-            field("Box Mover"; Rec."Box Mover")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Box Mover field.', Comment = '%';
-            }
+            // field("Box Mover"; Rec."Box Mover")
+            // {
+            //     ApplicationArea = All;
+            //     ToolTip = 'Specifies the value of the Box Mover field.', Comment = '%';
+            // }
             field("Project Type"; Rec."Project Type")
             {
                 ApplicationArea = All;

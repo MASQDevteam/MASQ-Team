@@ -19,6 +19,30 @@ page 70171 "InLand List"
                 {
                     Caption = 'InLand Truck WayBill';
                 }
+                field("Waybill Date"; Rec."Waybill Date")
+                {
+                    Caption = 'Inland Waybill Date';
+                }
+                field("WayBill Type"; Rec."WayBill Type")
+                {
+                    ApplicationArea = All;
+                }
+                field(Agent; Rec.Agent)
+                {
+                    ApplicationArea = All;
+                }
+                field("Packing Quantity"; Rec."Packing Quantity")
+                {
+                    ApplicationArea = All;
+                }
+                field("Unit of Measure"; Rec."Unit of Measure")
+                {
+                    ApplicationArea = All;
+                }
+                field("Invoiced Received Date"; Rec."Invoiced Received Date")
+                {
+                    ApplicationArea = All;
+                }
                 field("Line"; Rec."Line")
                 {
                 }
@@ -39,10 +63,7 @@ page 70171 "InLand List"
                 {
                     Caption = 'Place of Discharge';
                 }
-                field("Waybill Date"; Rec."Waybill Date")
-                {
-                    Caption = 'Inland Waybill Date';
-                }
+
                 field("Clearing Agent"; Rec."Clearing Agent")
                 {
                 }
@@ -77,14 +98,14 @@ page 70171 "InLand List"
                 {
                     ApplicationArea = All;
                 }
-                field("From Location"; Rec."From Location")
-                {
-                    ApplicationArea = All;
-                }
-                field("To Location"; Rec."To Location")
-                {
-                    ApplicationArea = All;
-                }
+                // field("From Location"; Rec."From Location")
+                // {
+                //     ApplicationArea = All;
+                // }
+                // field("To Location"; Rec."To Location")
+                // {
+                //     ApplicationArea = All;
+                // }
                 field("Project No."; Rec."Project No.")
                 {
                     ApplicationArea = All;

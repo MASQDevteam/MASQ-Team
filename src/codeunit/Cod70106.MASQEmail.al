@@ -959,7 +959,39 @@ codeunit 70106 "MASQ Email"
             Email.Send(EmailMessage);
         end;
     end;
+    //AN 08/04/2025
+    procedure SendEmailAppSQ(ShippingQuotation: Record "Shipping Quotation")
+    var
+        Email: Codeunit Email;
+        EmailMessage: Codeunit "Email Message";
+        Subject: Text;
+        Body: Text;
+        MultiRecipients: Text;
+        UserSetup: Record "User Setup";
+    begin
+        Body := 'This is a system generated email to inform you that the Shipping Quotation is approved. <br><br>';
+        Body += '<table  style="margin-left:15px">';
+        Body += StrSubstNo('<tr><td>Shipping Quotation No. :  </td><td><b>%1</b></td></tr>', ShippingQuotation."Comparison ID");
+        ShippingQuotation.CalcFields("Apollo Project No.");
+        Body += StrSubstNo('<tr><td>Apollo Project Number:  </td><td>%1</td></tr>', ShippingQuotation."Apollo Project No.");
+        Body += '</table></br><br>';
+        Body += 'Thank you.<br><br>';
+        Body += 'Regards,';//<br><br>Nathalie Dimassi';
+        // Set Subject
+        Subject := 'Approved Shipping Quotation: ' + ShippingQuotation."Comparison ID";
 
+        // Add Recipient
+
+        UserSetup.SetRange("Sent Email Approved SQ", true);
+        IF UserSetup.FindFirst() then begin
+            repeat
+                MultiRecipients += UserSetup."E-Mail" + ';';
+            until UserSetup.Next() = 0;
+            MultiRecipients := DELCHR(MultiRecipients, '>', ';');
+            EmailMessage.Create(MultiRecipients, Subject, Body, true);
+            Email.Send(EmailMessage);
+        end;
+    end;
 
     var
         myInt: Integer;

@@ -120,6 +120,14 @@ table 70121 "Shipping Quotation Details"
             FieldClass = FlowField;
             CalcFormula = lookup("Payment Terms".Description where(Code = field("Payment Terms")));
         }
+        field(24; Transhipment; Option)
+        {
+            OptionMembers = Direct,Indirect;
+        }
+        field(25; "1st Available Departure"; Date)
+        {
+            DataClassification = ToBeClassified;
+        }
 
     }
 

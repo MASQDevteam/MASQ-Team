@@ -243,6 +243,23 @@ table 70128 "Truck WayBill"
             DataClassification = ToBeClassified;
             Caption = 'Invoice Received Date';
         }
+        field(50; "WayBill Type"; Option)
+        {
+            OptionMembers = " ","Express","Cargo","MASQ";
+        }
+        field(51; "Agent"; Option)
+        {
+            OptionMembers = " ","Net weight","Gross","Volumetric";
+        }
+        field(52; "Packing Quantity"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(53; "Unit of Measure"; Code[10])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Unit of Measure".Code;
+        }
     }
 
     keys

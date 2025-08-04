@@ -9,7 +9,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.0.20283.0</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-05-21T06:17:04.7397372Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-08-04T11:11:23.7179720Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -811,7 +811,6 @@
                                           <PaddingBottom>2pt</PaddingBottom>
                                         </Style>
                                       </Textbox>
-                                      <rd:Selected>true</rd:Selected>
                                     </CellContents>
                                   </TablixCell>
                                 </TablixCells>
@@ -3556,7 +3555,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Document_Date.Value</Value>
+                                  <Value>=Fields!Order_Date.Value</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -5175,6 +5174,9 @@ tst7ePyzwxPZIxLwRPaIBDyRPSIBT2SPSMAT2SMS8ET2iAQ8kT0iAU9kj0jAE9kjEvBE9ogEPJE9IgFP
         </Field>
         <Field Name="Description">
           <DataField>Description</DataField>
+        </Field>
+        <Field Name="Order_Date">
+          <DataField>Order_Date</DataField>
         </Field>
         <Field Name="PurchLineType">
           <DataField>PurchLineType</DataField>

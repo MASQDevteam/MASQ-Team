@@ -120,6 +120,10 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
         {
             DataClassification = ToBeClassified;
         }
+        field(70126; "Sent Email Approved SQ"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

@@ -3,6 +3,13 @@ reportextension 70104 PurchOrderExtKSA50011 extends "Meg Purchase Order KSA"
     RDLCLayout = 'MegPurchaseOrderKSANew.rdl';
     dataset
     {
+        add("Purchase Header")
+        {
+            column(Order_Date; "Order Date")
+            {
+
+            }
+        }
         add("Purchase Line")
         {
             column(PurchLineType; Type)
@@ -20,6 +27,7 @@ reportextension 70104 PurchOrderExtKSA50011 extends "Meg Purchase Order KSA"
             {
 
             }
+        
         }
         modify("Purchase Line")
         {

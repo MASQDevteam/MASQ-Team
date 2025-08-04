@@ -265,7 +265,7 @@ table 70120 "Shipping Quotation"
             Editable = false;
             CalcFormula = lookup("Shipping Quotation Project"."Project Name" where("Comparison ID" = field("Comparison ID")));
             FieldClass = FlowField;
-            Caption = 'Apollo Project No.';
+            Caption = 'Project No.';
         }
         field(34; Transhipment; Option)
         {
@@ -274,6 +274,13 @@ table 70120 "Shipping Quotation"
         field(35; "1st Available Departure"; Date)
         {
             DataClassification = ToBeClassified;
+        }
+        field(36; "Apollo Project No."; Code[50])
+        {
+            Editable = false;
+            CalcFormula = lookup(Job."Apollo Project Number" where("No." = field("Project No.")));
+            FieldClass = FlowField;
+            Caption = 'Project No.';
         }
     }
 

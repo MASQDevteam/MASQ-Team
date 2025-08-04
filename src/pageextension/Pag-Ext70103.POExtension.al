@@ -39,6 +39,10 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
         // Add changes to page layout here
         addafter(Status)
         {
+            field(Sample; Rec.Sample)
+            {
+                ApplicationArea = All;
+            }
             field("Shipping Quotation No."; Rec."Shipping Quotation No.")
             {
                 ApplicationArea = All;
