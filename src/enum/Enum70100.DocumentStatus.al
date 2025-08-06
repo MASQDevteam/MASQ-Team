@@ -7,4 +7,7 @@ enum 70100 "Document Status"
     value(1; Released) { Caption = 'Released'; }
     value(2; "Pending Approval") { Caption = 'Pending Approval'; }
     value(3; "Declined") { Caption = 'Declined'; }
+    value(4; "Paid")
+    {
+    }
 }

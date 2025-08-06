@@ -157,7 +157,7 @@ codeunit 70106 "MASQ Email"
 
           Mail.Send();
       end;*/
-    procedure SendEmailPaymentRequest(User: Record User; PaymentRequest: Record "SUPPLIER PAYMENT REQUEST"; ApprovalEntry: Record "Approval Entry")
+    procedure SendEmailPaymentRequest(User: Record User; PaymentRequest: Record "Payment Line"; ApprovalEntry: Record "Approval Entry")
     var
         GenJournLine: Record "Gen. Journal Line";
         GenJournLine2: Record "Gen. Journal Line";
@@ -223,7 +223,7 @@ codeunit 70106 "MASQ Email"
         Body += '<table  style="margin-left:15px">';
         Body += StrSubstNo('<tr><td>Payment Request:  </td><td>%1</td></tr>', PaymentRequest.Number);
         Body += StrSubstNo('<tr><td>SenderID : </td><td>%1</td></tr>', ApprovalEntry."Sender ID");
-        Body += StrSubstNo('<tr><td>Amount :  </td><td>%1</td></tr>', FORMAT(PaymentRequest."Total Requested Amount") + ' ' + PaymentRequest.Currency);
+        Body += StrSubstNo('<tr><td>Amount :  </td><td>%1</td></tr>', FORMAT(PaymentRequest."PO Value") + ' ' + PaymentRequest.Currency);
         Body += StrSubstNo('<tr><td>URL :  </td><td>%1</td></tr>', GetUrl(ClientTypeManagement.GetCurrentClientType(), CompanyName, OBJECTTYPE::Page, Page::"Requests to Approve"));
         // //     Body += StrSubstNo('<tr><td>Cheque:</td><td>%1</td></tr>', GenJournLine."Check No");
 
@@ -983,6 +983,41 @@ codeunit 70106 "MASQ Email"
         // Add Recipient
 
         UserSetup.SetRange("Sent Email Approved SQ", true);
+        IF UserSetup.FindFirst() then begin
+            repeat
+                MultiRecipients += UserSetup."E-Mail" + ';';
+            until UserSetup.Next() = 0;
+            MultiRecipients := DELCHR(MultiRecipients, '>', ';');
+            EmailMessage.Create(MultiRecipients, Subject, Body, true);
+            Email.Send(EmailMessage);
+        end;
+    end;
+
+    //AN 08/05/2025
+    procedure SendEmailProjectCard(Job: Record Job)
+    var
+        Email: Codeunit Email;
+        EmailMessage: Codeunit "Email Message";
+        Subject: Text;
+        Body: Text;
+        MultiRecipients: Text;
+        UserSetup: Record "User Setup";
+    begin
+        Body := 'This is a system generated email to inform you that new project is being exported. <br><br>';
+        Body += '<table  style="margin-left:15px">';
+        Body += StrSubstNo('<tr><td>Project No. :  </td><td><b>%1</b></td></tr>', Job."No.");
+        Body += StrSubstNo('<tr><td>Project Name:  </td><td>%1</td></tr>', Job.Description);
+        Body += StrSubstNo('<tr><td>Customer Name:  </td><td>%1</td></tr>', Job."Sell-to Customer Name");
+        Body += StrSubstNo('<tr><td>Apollo Project Number:  </td><td>%1</td></tr>', Job."Apollo Project Number");
+        Body += '</table></br><br>';
+        Body += 'Thank you.<br><br>';
+        Body += 'Regards,';//<br><br>Nathalie Dimassi';
+        // Set Subject
+        Subject := 'Project No: ' + Job."No.";
+
+        // Add Recipient
+
+        UserSetup.SetRange("Sent Email Project Card", true);
         IF UserSetup.FindFirst() then begin
             repeat
                 MultiRecipients += UserSetup."E-Mail" + ';';

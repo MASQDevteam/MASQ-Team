@@ -319,6 +319,18 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
             DataClassification = ToBeClassified;
             OptionMembers = "Materials to be Produced","Ready (In-Stock) Materials","General Payment on Account";
         }
+        field(45; "Payment Status 1"; Enum "Document Status")
+        {
+
+        }
+        field(46; "Payment Status 2"; Enum "Document Status")
+        {
+
+        }
+        field(47; "Payment Status 3"; Enum "Document Status")
+        {
+
+        }
     }
 
 
@@ -459,7 +471,7 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
     var
         myInt: Integer;
     begin
-        If Rec."1st Payment" + Rec."2nd Payment" + Rec."3rd Payment" <> Rec."Total Requested Amount" then
+        If Rec."1st Payment" + Rec."2nd Payment" + Rec."3rd Payment" <> Rec."PO Value" then
             Error('Please Fill Payments!');
         if Rec."1st Payment" <> 0 then
             Rec.TestField("1st Payment Date");

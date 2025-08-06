@@ -124,6 +124,10 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
         {
             DataClassification = ToBeClassified;
         }
+        field(70127; "Sent Email Project Card"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

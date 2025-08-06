@@ -398,7 +398,7 @@ table 70103 "Travel Request"
         IsHandled: Boolean;
         GLSetup: Record "General Ledger Setup";
         NoSeriesManagement: Codeunit NoSeriesManagement;
-        "SUPPLIERPAYMENTREQUEST": Record "SUPPLIER PAYMENT REQUEST";
+        TravelRequest: Record "Travel Request";
     begin
         //    if "Number" = '' then begin
         GLSetup.Get();
@@ -411,9 +411,9 @@ table 70103 "Travel Request"
             Rec."No. Series" := GLSetup."Travel Request No. Series";
 
         Rec."Number" := NoSeries.GetNextNo(Rec."No. Series");
-        SUPPLIERPAYMENTREQUEST.ReadIsolation(IsolationLevel::ReadUncommitted);
-        SUPPLIERPAYMENTREQUEST.SetLoadFields("Number");
-        while SUPPLIERPAYMENTREQUEST.Get(Rec."Number") do
+        TravelRequest.ReadIsolation(IsolationLevel::ReadUncommitted);
+        TravelRequest.SetLoadFields("Number");
+        while TravelRequest.Get(Rec."Number") do
             Rec."Number" := NoSeries.GetNextNo(Rec."No. Series");
         NoSeriesManagement.RaiseObsoleteOnAfterInitSeries(Rec."No. Series", GLSetup."Travel Request No. Series", 0D, Rec."Number");
         //   end;

@@ -81,7 +81,14 @@ tableextension 70124 "Project Extension" extends Job
     {
         // Add changes to field groups here
     }
-
+    //AN 08/05/2025
+    trigger OnInsert()
     var
         myInt: Integer;
+    begin
+        MASQEmail.SendEmailProjectCard(Rec);
+    end;
+
+    var
+        MASQEmail: Codeunit "MASQ Email";
 }

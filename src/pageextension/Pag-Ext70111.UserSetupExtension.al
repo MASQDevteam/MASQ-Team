@@ -132,6 +132,10 @@ pageextension 70111 "User Setup Extension" extends "User Setup"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Hide/Unhide Accounts in COA field.', Comment = '%';
             }
+            field("Sent Email Project Card"; Rec."Sent Email Project Card")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 
