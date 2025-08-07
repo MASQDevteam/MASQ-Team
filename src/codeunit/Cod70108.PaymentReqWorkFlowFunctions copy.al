@@ -176,7 +176,7 @@ codeunit 70108 "Payment Req WorkFlow Functions"
                                 Clear(User);
                                 User.SetRange("User Name", ApprovalEntry2."Approver ID");
                                 User.FindFirst();
-                                MASQEmail.SendEmailPaymentRequest(User, PaymentRequest, ApprovalEntry2);//SendEmail
+                            //MASQEmail.SendEmailPaymentRequest(User, PaymentRequest, ApprovalEntry2);//SendEmail
                             until ApprovalEntry2.Next() = 0;
                         ResponseExecuted := true;
                     end;
