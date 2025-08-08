@@ -157,102 +157,7 @@ codeunit 70106 "MASQ Email"
 
           Mail.Send();
       end;*/
-    // procedure SendEmailPaymentRequest(User: Record User; PaymentRequest: Record "Payment Line"; ApprovalEntry: Record "Approval Entry")
-    // var
-    //     GenJournLine: Record "Gen. Journal Line";
-    //     GenJournLine2: Record "Gen. Journal Line";
-    //     Vendor: Record Vendor;
-    //     Curr: Code[10];
-    //     GLSetup: Record "General Ledger Setup";
-    //     Bank: Record "Bank Account";
-    //     checkText: Text;
-    //     checkText2: Text;
-    //     SmtpMailSetup: Record "Email Account";
-    //     Mail: Codeunit Mail;
-    //     Email: Codeunit Email;
-    //     EmailMessage: Codeunit "Email Message";
-    //     Subject: Text;
-    //     Body: Text;
-    //     Recipients: text[100];
-    //     BCCList: List of [Text];
-    //     UserSetup: Record "User Setup";
-    //     ErrorMessage: record "Error Message";
-    //     ClientTypeManagement: Codeunit "Client Type Management";
-
-
-    // // User: Record User;
-
-    // begin
-    //     //  Clear(UserSetup);
-    //     //   UserSetup.Get(UserId);
-
-    //     //   Clear(User);
-    //     //  User.SetRange("User Name", UserId);
-
-    //     //IF User.FindFirst() then;
-
-    //     //  if not SmtpMailSetup.Get() then
-    //     //    exit;
-
-
-    //     // // Find Gen Journ Line
-    //     // GenJournLine.SetRange("Journal Template Name", JournTempName);
-    //     // GenJournLine.SetRange("Journal Batch Name", JournBatchName);
-    //     // GenJournLine.SetRange("Line No.", LineNo);
-    //     // GenJournLine.SetRange("Account Type", GenJournLine."Account Type"::Vendor);
-    //     // if not GenJournLine.FindFirst() then
-    //     //     Error('Vendor Line was not found ');
-
-    //     //    Vendor.get(GenJournLine."Account No.");
-    //     GLSetup.get();
-    //     //   ErrorMessage.SetRange("Register ID", JobQueueEntry."Error Message Register Id");
-    //     //   IF ErrorMessage.FindFirst() then;
-
-
-    //     // if not Confirm('Are you sure you want to send an email to ' + Vendor.Name) then exit;
-
-    //     // Set Currency
-    //     // Curr := GenJournLine."Currency Code";
-    //     // if Curr = '' then
-    //     //     Curr := GLSetup."LCY Code";
-
-    //     // Write Body
-    //     // JobQueueEntry.CalcFields("Object Caption to Run");
-    //     //  Body := StrSubstNo('Dear Mr. %1,<br><br>', User."Full Name");
-    //     Body := 'This is a system generated email to inform you about the new Payment Request with the below details: <br><br>';
-    //     Body += '<table  style="margin-left:15px">';
-    //     Body += StrSubstNo('<tr><td>Payment Request:  </td><td>%1</td></tr>', PaymentRequest.Number);
-    //     Body += StrSubstNo('<tr><td>SenderID : </td><td>%1</td></tr>', ApprovalEntry."Sender ID");
-    //     Body += StrSubstNo('<tr><td>Amount :  </td><td>%1</td></tr>', FORMAT(PaymentRequest."PO Value") + ' ' + PaymentRequest.Currency);
-    //     Body += StrSubstNo('<tr><td>URL :  </td><td>%1</td></tr>', GetUrl(ClientTypeManagement.GetCurrentClientType(), CompanyName, OBJECTTYPE::Page, Page::"Requests to Approve"));
-    //     // //     Body += StrSubstNo('<tr><td>Cheque:</td><td>%1</td></tr>', GenJournLine."Check No");
-
-    //     Body += '</table></br><br>';
-
-
-
-    //     Body += 'Thank you.<br><br>';
-    //     Body += 'Regards,';//<br><br>Nathalie Dimassi';
-
-    //     // Set Subject
-    //     IF PaymentRequest.Supplier <> '' then
-    //         Vendor.get(PaymentRequest.Supplier);
-
-    //     Subject := 'Payment Request PO# ' + PaymentRequest."PO#" + ' Vendor Name ' + Vendor.Name + ' Level of Urgency ' + Format(PaymentRequest."Level of Urgency");
-
-
-    //     // Add Recipient
-    //     UserSetup.Get(User."User Name");
-    //     Recipients := UserSetup."E-Mail";// 'tech@thecohort.com';// UserSetup."E-Mail";
-
-    //     //   Email.CreateMessage(Recipients, '', '', Subject, Body, true, true);//, User);
-
-
-    //     EmailMessage.Create(Recipients, Subject, Body, true);
-    //     Email.Send(EmailMessage);
-
-    // end;
-    procedure SendEmailPaymentRequest(User: Record User; PaymentRequest: Record "SUPPLIER PAYMENT REQUEST"; ApprovalEntry: Record "Approval Entry")
+    procedure SendEmailPaymentRequest(User: Record User; PaymentRequest: Record "Payment Line"; ApprovalEntry: Record "Approval Entry")
     var
         GenJournLine: Record "Gen. Journal Line";
         GenJournLine2: Record "Gen. Journal Line";
@@ -318,7 +223,7 @@ codeunit 70106 "MASQ Email"
         Body += '<table  style="margin-left:15px">';
         Body += StrSubstNo('<tr><td>Payment Request:  </td><td>%1</td></tr>', PaymentRequest.Number);
         Body += StrSubstNo('<tr><td>SenderID : </td><td>%1</td></tr>', ApprovalEntry."Sender ID");
-        Body += StrSubstNo('<tr><td>Amount :  </td><td>%1</td></tr>', FORMAT(PaymentRequest."Total Requested Amount") + ' ' + PaymentRequest.Currency);
+        Body += StrSubstNo('<tr><td>Amount :  </td><td>%1</td></tr>', FORMAT(PaymentRequest."PO Value") + ' ' + PaymentRequest.Currency);
         Body += StrSubstNo('<tr><td>URL :  </td><td>%1</td></tr>', GetUrl(ClientTypeManagement.GetCurrentClientType(), CompanyName, OBJECTTYPE::Page, Page::"Requests to Approve"));
         // //     Body += StrSubstNo('<tr><td>Cheque:</td><td>%1</td></tr>', GenJournLine."Check No");
 
@@ -347,6 +252,101 @@ codeunit 70106 "MASQ Email"
         Email.Send(EmailMessage);
 
     end;
+    // procedure SendEmailPaymentRequest(User: Record User; PaymentRequest: Record "SUPPLIER PAYMENT REQUEST"; ApprovalEntry: Record "Approval Entry")
+    // var
+    //     GenJournLine: Record "Gen. Journal Line";
+    //     GenJournLine2: Record "Gen. Journal Line";
+    //     Vendor: Record Vendor;
+    //     Curr: Code[10];
+    //     GLSetup: Record "General Ledger Setup";
+    //     Bank: Record "Bank Account";
+    //     checkText: Text;
+    //     checkText2: Text;
+    //     SmtpMailSetup: Record "Email Account";
+    //     Mail: Codeunit Mail;
+    //     Email: Codeunit Email;
+    //     EmailMessage: Codeunit "Email Message";
+    //     Subject: Text;
+    //     Body: Text;
+    //     Recipients: text[100];
+    //     BCCList: List of [Text];
+    //     UserSetup: Record "User Setup";
+    //     ErrorMessage: record "Error Message";
+    //     ClientTypeManagement: Codeunit "Client Type Management";
+
+
+    // // User: Record User;
+
+    // begin
+    //     //  Clear(UserSetup);
+    //     //   UserSetup.Get(UserId);
+
+    //     //   Clear(User);
+    //     //  User.SetRange("User Name", UserId);
+
+    //     //IF User.FindFirst() then;
+
+    //     //  if not SmtpMailSetup.Get() then
+    //     //    exit;
+
+
+    //     // // Find Gen Journ Line
+    //     // GenJournLine.SetRange("Journal Template Name", JournTempName);
+    //     // GenJournLine.SetRange("Journal Batch Name", JournBatchName);
+    //     // GenJournLine.SetRange("Line No.", LineNo);
+    //     // GenJournLine.SetRange("Account Type", GenJournLine."Account Type"::Vendor);
+    //     // if not GenJournLine.FindFirst() then
+    //     //     Error('Vendor Line was not found ');
+
+    //     //    Vendor.get(GenJournLine."Account No.");
+    //     GLSetup.get();
+    //     //   ErrorMessage.SetRange("Register ID", JobQueueEntry."Error Message Register Id");
+    //     //   IF ErrorMessage.FindFirst() then;
+
+
+    //     // if not Confirm('Are you sure you want to send an email to ' + Vendor.Name) then exit;
+
+    //     // Set Currency
+    //     // Curr := GenJournLine."Currency Code";
+    //     // if Curr = '' then
+    //     //     Curr := GLSetup."LCY Code";
+
+    //     // Write Body
+    //     // JobQueueEntry.CalcFields("Object Caption to Run");
+    //     //  Body := StrSubstNo('Dear Mr. %1,<br><br>', User."Full Name");
+    //     Body := 'This is a system generated email to inform you about the new Payment Request with the below details: <br><br>';
+    //     Body += '<table  style="margin-left:15px">';
+    //     Body += StrSubstNo('<tr><td>Payment Request:  </td><td>%1</td></tr>', PaymentRequest.Number);
+    //     Body += StrSubstNo('<tr><td>SenderID : </td><td>%1</td></tr>', ApprovalEntry."Sender ID");
+    //     Body += StrSubstNo('<tr><td>Amount :  </td><td>%1</td></tr>', FORMAT(PaymentRequest."Total Requested Amount") + ' ' + PaymentRequest.Currency);
+    //     Body += StrSubstNo('<tr><td>URL :  </td><td>%1</td></tr>', GetUrl(ClientTypeManagement.GetCurrentClientType(), CompanyName, OBJECTTYPE::Page, Page::"Requests to Approve"));
+    //     // //     Body += StrSubstNo('<tr><td>Cheque:</td><td>%1</td></tr>', GenJournLine."Check No");
+
+    //     Body += '</table></br><br>';
+
+
+
+    //     Body += 'Thank you.<br><br>';
+    //     Body += 'Regards,';//<br><br>Nathalie Dimassi';
+
+    //     // Set Subject
+    //     IF PaymentRequest.Supplier <> '' then
+    //         Vendor.get(PaymentRequest.Supplier);
+
+    //     Subject := 'Payment Request PO# ' + PaymentRequest."PO#" + ' Vendor Name ' + Vendor.Name + ' Level of Urgency ' + Format(PaymentRequest."Level of Urgency");
+
+
+    //     // Add Recipient
+    //     UserSetup.Get(User."User Name");
+    //     Recipients := UserSetup."E-Mail";// 'tech@thecohort.com';// UserSetup."E-Mail";
+
+    //     //   Email.CreateMessage(Recipients, '', '', Subject, Body, true, true);//, User);
+
+
+    //     EmailMessage.Create(Recipients, Subject, Body, true);
+    //     Email.Send(EmailMessage);
+
+    // end;
 
     procedure SendEmailVariationOrder(VariationOrder: Record "Variation Order")
     var

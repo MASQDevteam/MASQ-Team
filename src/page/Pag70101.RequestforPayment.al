@@ -257,11 +257,11 @@ page 70101 "Request for Payment"
                     ShowMandatory = (Rec."Number" <> '');
                 }
             }
-            // part("Request for Payment Subform"; "Request for Payment Subform")
-            // {
-            //     ApplicationArea = All;
-            //     SubPageLink = Number = field(Number);
-            // }
+            part("Request for Payment Subform"; "Request for Payment Subform")
+            {
+                ApplicationArea = All;
+                SubPageLink = Number = field(Number);
+            }
             group(Execution)
             {
                 Enabled = Caneditfieldsafterpost;

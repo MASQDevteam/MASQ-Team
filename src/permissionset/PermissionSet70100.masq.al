@@ -168,5 +168,8 @@ permissionset 70100 masq
         tabledata Opex=RIMD,
         table Opex=X,
         codeunit "Insert Opex to Project"=X,
-        page "Opex "=X;
+        page "Opex "=X,
+        tabledata "Payment Line"=RIMD,
+        table "Payment Line"=X,
+        page "Request for Payment Subform"=X;
 }
