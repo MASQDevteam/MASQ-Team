@@ -25,17 +25,21 @@ table 70139 "Payment Line"
                 PaymentLine: Record "Payment Line";
             begin
                 Modify();
+                PaymentLine.SetRange(Number, Rec.Number);
                 if PaymentLine.FindFirst() then
                     repeat
                         PaymentLine.CalcSums("Payment Value");
                         if PaymentLine."Payment Value" > "PO Value" then
                             Error('Sum of Payments must be equal to the PO Value');
                     until PaymentLine.Next() = 0;
+                if "PO Value" <> 0 then
+                    "Payment %" := ("Payment Value" * 100) / "PO Value";
             end;
         }
         field(5; "Payment %"; Decimal)
         {
             Caption = 'Payment %';
+            Editable = false;
         }
         field(6; "Payment Date"; Date)
         {
@@ -71,6 +75,13 @@ table 70139 "Payment Line"
             DataClassification = CustomerContent;
             TableRelation = "Dimension Value".Code WHERE("Dimension Code" = const('PROJECT'));
         }
+        field(13; "Requested By (Person)"; Text[100])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = User."User Name";
+            ValidateTableRelation = false;
+        }
+
     }
     keys
     {

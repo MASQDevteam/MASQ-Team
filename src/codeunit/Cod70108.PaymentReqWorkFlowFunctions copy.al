@@ -106,6 +106,7 @@ codeunit 70115 "Payment Req WorkFlow Functions"
 
 
                     IsHandled := true;
+                    Message('Approved');
                 end;
         end;
     end;
@@ -124,6 +125,7 @@ codeunit 70115 "Payment Req WorkFlow Functions"
         MASQEmail: Codeunit "MASQ Email";
         User: Record User;
         ApprovalEntry2: Record "Approval Entry";
+        RecId: RecordId;
     begin
         IF WorkflowResponse.GET(ResponseWorkflowStepInstance."Function Name") THEN
             CASE WorkflowResponse."Function Name" OF
@@ -134,7 +136,6 @@ codeunit 70115 "Payment Req WorkFlow Functions"
                         PaymentRequest."Payment Status" := PaymentRequest."Payment Status"::"Pending Approval";
                         PaymentRequest.Modify();
                         ResponseExecuted := true;
-
                     END;
                 PaymentReqCancelCode1()://Response
                     BEGIN

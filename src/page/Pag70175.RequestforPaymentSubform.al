@@ -105,6 +105,7 @@ page 70175 "Request for Payment Subform"
             Rec."PO Value" := SUPPLIERPAYMENTREQUEST."PO Value";
             Rec."Level of Urgency" := SUPPLIERPAYMENTREQUEST."Level of Urgency";
             Rec."Project Name" := SUPPLIERPAYMENTREQUEST."Project Name";
+            Rec."Requested By (Person)" := SUPPLIERPAYMENTREQUEST."Requested By (Person)";
         end;
     end;
 
@@ -121,6 +122,7 @@ page 70175 "Request for Payment Subform"
     begin
         Clear(ApprovedEntries);
         ApprovedEntries.SetRange("Document No.", Rec.Number);
+        ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
         ApprovedEntries.SetRange(Status, ApprovedEntries.Status::Approved);
         ApprovedEntries.SetRange("Pending Approvals", 0);
         IF ApprovedEntries.FindFirst() then begin
@@ -130,6 +132,7 @@ page 70175 "Request for Payment Subform"
 
         Clear(CancelledEntries);
         CancelledEntries.SetRange("Document No.", Rec.Number);
+        ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
         CancelledEntries.SetRange(Status, CancelledEntries.Status::Canceled);
         IF CancelledEntries.FindFirst() then begin
 
@@ -138,6 +141,7 @@ page 70175 "Request for Payment Subform"
 
             Clear(CancelledEntries);
             CancelledEntries.SetRange("Document No.", Rec.Number);
+            ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
             CancelledEntries.SetRange(Status, CancelledEntries.Status::Canceled);
             IF AllApprovalEntries.Count = CancelledEntries.Count then begin
                 Rec."Payment Status" := Rec."Payment Status"::Open;
@@ -147,6 +151,7 @@ page 70175 "Request for Payment Subform"
 
         Clear(RejectedEntries);
         RejectedEntries.SetRange("Document No.", Rec.Number);
+        ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
         RejectedEntries.SetRange(Status, RejectedEntries.Status::Rejected);
         IF RejectedEntries.FindFirst() then begin
             Rec."Payment Status" := Rec."Payment Status"::Declined;
