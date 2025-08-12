@@ -103,8 +103,6 @@ codeunit 70108 "Payment Req WorkFlow Functions"
                     PaymentRequest.Validate("Payment Status", PaymentRequest."Payment Status"::"Pending Approval");
                     PaymentRequest.Modify(true);
                     Variant := PaymentRequest;
-
-
                     IsHandled := true;
                 end;
         end;
@@ -219,8 +217,8 @@ codeunit 70108 "Payment Req WorkFlow Functions"
     local procedure RPurchAppAdd()
     var
         WorkflowEventHandling: Codeunit "Workflow Event Handling";
-        EventText: Label 'Payment Request, Ask For Approval';
-        PurchaseReqApprReqCancelledEventDescTxt: Label 'An Approval Request for Payment Request is Canceled';
+        EventText: Label 'Payment Line Request, Ask For Approval';//Changed event name 
+        PurchaseReqApprReqCancelledEventDescTxt: Label 'An Approval Request for Payment Line Request is Canceled';//Changed event name 
     begin
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnSendPaymentReqForApprovalCode, 70139, EventText, 0, FALSE);
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelPaymentReqApprovalRequestCode, DATABASE::"Payment Line",

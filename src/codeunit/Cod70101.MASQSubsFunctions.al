@@ -1693,7 +1693,6 @@ codeunit 70101 "MASQ Subs & Functions"
                 JobLedgerEntry."Actual (Total Cost) Custom" := CUSTOMS;
                 JobLedgerEntry."Actual (Total Cost) Clearance" := CLEARING;
                 JobLedgerEntry."Actual (Total Cost) Others" := OTHERS;
-
                 JobLedgerEntry."Actual (Total Cost) Insurance" := INSURANCE;//all cost related to insurance is added on 10/02/2025
 
 
