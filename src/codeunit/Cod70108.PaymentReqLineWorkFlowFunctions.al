@@ -218,13 +218,8 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
     local procedure RPurchAppAdd()
     var
         WorkflowEventHandling: Codeunit "Workflow Event Handling";
-<<<<<<< HEAD
         EventText: Label 'Payment Line Request, Ask For Approval';//Changed event name 
         PurchaseReqApprReqCancelledEventDescTxt: Label 'An Approval Request for Payment Line Request is Canceled';//Changed event name 
-=======
-        EventText: Label 'Payment Line Request, Ask For Approval';
-        PurchaseReqApprReqCancelledEventDescTxt: Label 'An Approval Request for Payment Line Request is Canceled';
->>>>>>> 4347c1d7f16063f50e78aeb98363d5babfdd4325
     begin
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnSendPaymentReqForApprovalCode1, 70139, EventText, 0, FALSE);
         WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelPaymentReqApprovalRequestCode1, DATABASE::"Payment Line",
