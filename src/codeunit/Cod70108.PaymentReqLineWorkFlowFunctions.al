@@ -104,7 +104,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
                     PaymentRequest.Modify(true);
                     Variant := PaymentRequest;
                     IsHandled := true;
-                    Message('Approved');
+                    Message('Pending Approval1');
                 end;
         end;
     end;
@@ -123,7 +123,6 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
         MASQEmail: Codeunit "MASQ Email";
         User: Record User;
         ApprovalEntry2: Record "Approval Entry";
-        RecId: RecordId;
     begin
         IF WorkflowResponse.GET(ResponseWorkflowStepInstance."Function Name") THEN
             CASE WorkflowResponse."Function Name" OF
@@ -134,6 +133,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
                         PaymentRequest."Payment Status" := PaymentRequest."Payment Status"::"Pending Approval";
                         PaymentRequest.Modify();
                         ResponseExecuted := true;
+                        Message('Pending Approval2');
                     END;
                 PaymentReqCancelCode1()://Response
                     BEGIN
@@ -212,6 +212,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
         Admin: Record "User Setup";
     begin
         WorkflowManagment.HandleEvent(RunWorkflowOnSendPaymentReqForApprovalCode1(), Rec);
+        Message('Sent');
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 1520, 'OnAddWorkflowEventsToLibrary', '', false, false)]//add Events to library
