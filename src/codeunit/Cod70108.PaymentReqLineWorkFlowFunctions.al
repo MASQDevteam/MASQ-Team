@@ -1,4 +1,4 @@
-codeunit 70115 "Payment Req WorkFlow Functions"
+codeunit 70115 "PaymentRLineWorkFlowFunctions"
 {
     // Workflow Functions for Purchase Request Object
 
