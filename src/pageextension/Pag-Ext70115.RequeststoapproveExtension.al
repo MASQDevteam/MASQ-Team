@@ -30,9 +30,21 @@ pageextension 70115 "Requests to approve Extension" extends "Requests to Approve
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Project Code field.', Comment = '%';
             }
-            field("RFP 1st Payment Date"; Rec."RFP 1st Payment Date") { ApplicationArea = All; }
-            field("RFP 2nd Payment Date"; Rec."RFP 2nd Payment Date") { ApplicationArea = All; }
-            field("RFP 3rd Payment Date"; Rec."RFP 3rd Payment Date") { ApplicationArea = All; }
+            // field("RFP 1st Payment Date"; Rec."RFP 1st Payment Date") { ApplicationArea = All; }
+            // field("RFP 2nd Payment Date"; Rec."RFP 2nd Payment Date") { ApplicationArea = All; }
+            // field("RFP 3rd Payment Date"; Rec."RFP 3rd Payment Date") { ApplicationArea = All; }
+            field(Payment; Rec.Payment)
+            {
+                ApplicationArea = All;
+            }
+            field("Payment %"; Rec."Payment %")
+            {
+                ApplicationArea = All;
+            }
+            field("Payment Date"; Rec."Payment Date")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

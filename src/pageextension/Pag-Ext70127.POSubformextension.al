@@ -1155,6 +1155,39 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
         end;
     end;
 
+    local procedure MessagetoFillInitials()
+    var
+        myInt: Integer;
+    begin
+        if (Rec."Initial ETA" = 0D) or (Rec."Initial ETAW" = 0D) or (Rec."Initial ETD" = 0D) or (Rec."Initial ETR" = 0D) then
+            Message('Please Fill the Initials!');
+    end;
+
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    var
+        PO: Record "Purchase Header";
+    begin
+        Clear(PO);
+        PO.Get(Rec."Document Type", Rec."Document No.");
+        Rec."Initial ETA" := PO."Initial ETA";
+        Rec."Initial ETD" := PO."Initial ETD";
+
+        Rec."Initial ETR" := PO."Initial ETR";
+        Rec."Initial ETAW" := PO."Initial ETAW";
+
+    end;
+
+
+    trigger OnOpenPage()
+    var
+    begin
+        MessagetoFillInitials();
+        Clear(UserSetup);
+        UserSetup.Get(UserId);
+        CanRemovePOLinesfromContainer := UserSetup."Remove PO lines from Container";
+        CanEditPO_SO_Lines := UserSetup."Can Edit SO/PO Details";
+    end;
+
     var
         myInt: Integer;
         UserSetup: Record "User Setup";

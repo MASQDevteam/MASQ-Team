@@ -471,7 +471,8 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
     var
         myInt: Integer;
     begin
-        If Rec."1st Payment" + Rec."2nd Payment" + Rec."3rd Payment" <> Rec."PO Value" then
+        If Rec."1st Payment" + Rec."2nd Payment" + Rec."3rd Payment" <> Rec."Total Requested Amount" then
+            // If Rec."1st Payment" + Rec."2nd Payment" + Rec."3rd Payment" <> Rec."PO Value" then
             Error('Please Fill Payments!');
         if Rec."1st Payment" <> 0 then
             Rec.TestField("1st Payment Date");

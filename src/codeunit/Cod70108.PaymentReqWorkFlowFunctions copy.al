@@ -1,4 +1,4 @@
-codeunit 70108 "Payment Req WorkFlow Functions"
+codeunit 70115 "Payment Req WorkFlow Functions"
 {
     // Workflow Functions for Purchase Request Object
 
@@ -16,7 +16,7 @@ codeunit 70108 "Payment Req WorkFlow Functions"
     var
         WorkflowManagement: Codeunit "Workflow Management";
 
-    local procedure PaymentReqAppCode(): Code[128]//Response
+    local procedure PaymentReqAppCode1(): Code[128]//Response
     begin
         EXIT(UPPERCASE('PaymentReqRes'));
     end;
@@ -24,15 +24,15 @@ codeunit 70108 "Payment Req WorkFlow Functions"
 
 
     [EventSubscriber(ObjectType::Codeunit, 1521, 'OnAddWorkflowResponsesToLibrary', '', false, false)]//add Response library
-    local procedure PaymentReqAppAdd()
+    local procedure PaymentReqAppAdd1()
     var
-        Resptxt: Label 'Change "Payment Status" of the Payment Request';
+        Resptxt: Label 'Change "Payment Status" of the Payment Line Request';
         WorkflowResponseHandling: Codeunit "Workflow Response Handling";
     begin
-        WorkflowResponseHandling.AddResponseToLibrary(PaymentReqAppCode, 70139, Resptxt, 'Group 0');
+        WorkflowResponseHandling.AddResponseToLibrary(PaymentReqAppCode1, 70139, Resptxt, 'Group 0');
     end;
 
-    local procedure PaymentReqCancelCode(): Code[128]//Response
+    local procedure PaymentReqCancelCode1(): Code[128]//Response
     begin
         EXIT(UPPERCASE('PaymentReqCancel'));
     end;
@@ -40,54 +40,54 @@ codeunit 70108 "Payment Req WorkFlow Functions"
 
 
     [EventSubscriber(ObjectType::Codeunit, 1521, 'OnAddWorkflowResponsesToLibrary', '', false, false)]//add Response library
-    local procedure PaymentReqCancel()
+    local procedure PaymentReqCancel1()
     var
-        Resptxt: Label 'Change "Payment Status" of the Payment Request Cancel';
+        Resptxt: Label 'Change "Payment Status" of the Payment Line Request Cancel';
         WorkflowResponseHandling: Codeunit "Workflow Response Handling";
     begin
-        WorkflowResponseHandling.AddResponseToLibrary(PaymentReqCancelCode, 70139, Resptxt, 'Group 2');
+        WorkflowResponseHandling.AddResponseToLibrary(PaymentReqCancelCode1, 70139, Resptxt, 'Group 2');
     end;
 
-    local procedure PaymentReqRejectCode(): Code[128]//Response
+    local procedure PaymentReqRejectCode1(): Code[128]//Response
     begin
         EXIT(UPPERCASE('PaymentReqResReject'));
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 1521, 'OnAddWorkflowResponsesToLibrary', '', false, false)]//add Response library
-    local procedure PaymentReqAppAddReject()
+    local procedure PaymentReqAppAddReject1()
     var
-        Resptxt: Label 'Change "Payment Status" of the Payment Request Reject';
+        Resptxt: Label 'Change "Payment Status" of the Payment Line Request Reject';
         WorkflowResponseHandling: Codeunit "Workflow Response Handling";
     begin
-        WorkflowResponseHandling.AddResponseToLibrary(PaymentReqRejectCode, 70139, Resptxt, 'Group 0');
+        WorkflowResponseHandling.AddResponseToLibrary(PaymentReqRejectCode1, 70139, Resptxt, 'Group 0');
     end;
 
-    local procedure PaymentReqApprovedCode(): Code[128]//Response
+    local procedure PaymentReqApprovedCode1(): Code[128]//Response
     begin
         EXIT(UPPERCASE('PaymentReqResApproved'));
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 1521, 'OnAddWorkflowResponsesToLibrary', '', false, false)]//add Response library
-    local procedure PaymentReqApprovedAdd()
+    local procedure PaymentReqApprovedAdd1()
     var
-        Resptxt: Label 'Change "Payment Status" of the Payment Request Approved';
+        Resptxt: Label 'Change "Payment Status" of the Payment Line Request Approved';
         WorkflowResponseHandling: Codeunit "Workflow Response Handling";
     begin
-        WorkflowResponseHandling.AddResponseToLibrary(PaymentReqApprovedCode, 70139, Resptxt, 'Group 0');
+        WorkflowResponseHandling.AddResponseToLibrary(PaymentReqApprovedCode1, 70139, Resptxt, 'Group 0');
     end;
 
-    local procedure PaymentReqSendEmailCode(): Code[128]//Response
+    local procedure PaymentReqSendEmailCode1(): Code[128]//Response
     begin
         EXIT(UPPERCASE('PaymentReqSendEmailRes'));
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 1521, 'OnAddWorkflowResponsesToLibrary', '', false, false)]//add Response library
-    local procedure PaymentReqSendEmailAdd()
+    local procedure PaymentReqSendEmailAdd1()
     var
-        Resptxt: Label 'Send Email to Approver Payment Request';
+        Resptxt: Label 'Send Email to Approver Payment Line Request';
         WorkflowResponseHandling: Codeunit "Workflow Response Handling";
     begin
-        WorkflowResponseHandling.AddResponseToLibrary(PaymentReqSendEmailCode, 70139, Resptxt, 'Group 0');
+        WorkflowResponseHandling.AddResponseToLibrary(PaymentReqSendEmailCode1, 70139, Resptxt, 'Group 0');
     end;
 
 
@@ -104,6 +104,7 @@ codeunit 70108 "Payment Req WorkFlow Functions"
                     PaymentRequest.Modify(true);
                     Variant := PaymentRequest;
                     IsHandled := true;
+                    Message('Approved');
                 end;
         end;
     end;
@@ -122,19 +123,19 @@ codeunit 70108 "Payment Req WorkFlow Functions"
         MASQEmail: Codeunit "MASQ Email";
         User: Record User;
         ApprovalEntry2: Record "Approval Entry";
+        RecId: RecordId;
     begin
         IF WorkflowResponse.GET(ResponseWorkflowStepInstance."Function Name") THEN
             CASE WorkflowResponse."Function Name" OF
-                PaymentReqAppCode://Response
+                PaymentReqAppCode1://Response
                     BEGIN
                         IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
                             PaymentRequest.GET(PRref.RECORDID);
                         PaymentRequest."Payment Status" := PaymentRequest."Payment Status"::"Pending Approval";
                         PaymentRequest.Modify();
                         ResponseExecuted := true;
-
                     END;
-                PaymentReqCancelCode()://Response
+                PaymentReqCancelCode1()://Response
                     BEGIN
                         IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
                             PaymentRequest.GET(PRref.RECORDID);
@@ -142,7 +143,7 @@ codeunit 70108 "Payment Req WorkFlow Functions"
                         PaymentRequest.Modify();
                         ResponseExecuted := true;
                     END;
-                PaymentReqRejectCode(): //Response
+                PaymentReqRejectCode1(): //Response
                     BEGIN
                         IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
                             ApprovalEntry.GET(PRref.RECORDID);
@@ -152,7 +153,7 @@ codeunit 70108 "Payment Req WorkFlow Functions"
                         PaymentRequest.Modify();
                         ResponseExecuted := true;
                     END;
-                PaymentReqApprovedCode(): //Response
+                PaymentReqApprovedCode1(): //Response
                     BEGIN
                         IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
                             ApprovalEntry.GET(PRref.RECORDID);
@@ -162,7 +163,7 @@ codeunit 70108 "Payment Req WorkFlow Functions"
                         PaymentRequest.Modify();
                         ResponseExecuted := true;
                     END;
-                PaymentReqSendEmailCode(): //Response
+                PaymentReqSendEmailCode1(): //Response
                     begin
                         IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
                             PaymentRequest.GET(PRref.RECORDID);
@@ -174,29 +175,29 @@ codeunit 70108 "Payment Req WorkFlow Functions"
                                 Clear(User);
                                 User.SetRange("User Name", ApprovalEntry2."Approver ID");
                                 User.FindFirst();
-                            //MASQEmail.SendEmailPaymentRequest(User, PaymentRequest, ApprovalEntry2);//SendEmail
+                                MASQEmail.SendEmailPaymentRequest(User, PaymentRequest, ApprovalEntry2);//SendEmail
                             until ApprovalEntry2.Next() = 0;
                         ResponseExecuted := true;
                     end;
             END;
     end;
 
-    local procedure PaymentReqNotifyCode(): Code[128]//Response
+    local procedure PaymentReqNotifyCode1(): Code[128]//Response
     begin
         EXIT(UPPERCASE('NotifyApp'));
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 1521, 'OnAddWorkflowResponsesToLibrary', '', false, false)]//add Response library
-    local procedure PurchReqNotifyAdd()
+    local procedure PurchReqNotifyAdd1()
     var
-        Resptxt: Label 'Notify the Approver';
+        Resptxt: Label 'Notify Approver';
         workflowresponsehandling: Codeunit "Workflow Response Handling";
     begin
-        workflowresponsehandling.AddResponseToLibrary(PaymentReqNotifyCode, 454, Resptxt, 'Group 0');
+        workflowresponsehandling.AddResponseToLibrary(PaymentReqNotifyCode1, 454, Resptxt, 'Group 0');
     end;
 
 
-    local procedure RunWorkflowOnSendPaymentReqForApprovalCode(): Code[128]//Event
+    local procedure RunWorkflowOnSendPaymentReqForApprovalCode1(): Code[128]//Event
     begin
         EXIT(UPPERCASE('RunWorkflowOnSendPaymentReqForApprovalCode'));
     end;
@@ -210,38 +211,43 @@ codeunit 70108 "Payment Req WorkFlow Functions"
         Request: Code[50];
         Admin: Record "User Setup";
     begin
-        WorkflowManagment.HandleEvent(RunWorkflowOnSendPaymentReqForApprovalCode(), Rec);
+        WorkflowManagment.HandleEvent(RunWorkflowOnSendPaymentReqForApprovalCode1(), Rec);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 1520, 'OnAddWorkflowEventsToLibrary', '', false, false)]//add Events to library
     local procedure RPurchAppAdd()
     var
         WorkflowEventHandling: Codeunit "Workflow Event Handling";
+<<<<<<< HEAD
         EventText: Label 'Payment Line Request, Ask For Approval';//Changed event name 
         PurchaseReqApprReqCancelledEventDescTxt: Label 'An Approval Request for Payment Line Request is Canceled';//Changed event name 
+=======
+        EventText: Label 'Payment Line Request, Ask For Approval';
+        PurchaseReqApprReqCancelledEventDescTxt: Label 'An Approval Request for Payment Line Request is Canceled';
+>>>>>>> 4347c1d7f16063f50e78aeb98363d5babfdd4325
     begin
-        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnSendPaymentReqForApprovalCode, 70139, EventText, 0, FALSE);
-        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelPaymentReqApprovalRequestCode, DATABASE::"Payment Line",
+        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnSendPaymentReqForApprovalCode1, 70139, EventText, 0, FALSE);
+        WorkflowEventHandling.AddEventToLibrary(RunWorkflowOnCancelPaymentReqApprovalRequestCode1, DATABASE::"Payment Line",
           PurchaseReqApprReqCancelledEventDescTxt, 0, FALSE);
     end;
 
-    local procedure SetAppCode(): Code[128]//Response
+    local procedure SetAppCode1(): Code[128]//Response
     begin
         EXIT(UPPERCASE('SetAppRes'));
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 1521, 'OnAddWorkflowResponsesToLibrary', '', false, false)]//add Response to library
-    local procedure SetAppAdd()
+    local procedure SetAppAdd1()
     var
-        Resptxt: Label 'Set Approver';
+        Resptxt: Label 'Set the Approver';
         WorkflowResponseHandling: Codeunit "Workflow Response Handling";
     begin
-        WorkflowResponseHandling.AddResponseToLibrary(SetAppCode, 91, Resptxt, 'Group 0');
+        WorkflowResponseHandling.AddResponseToLibrary(SetAppCode1, 91, Resptxt, 'Group 0');
     end;
 
 
 
-    local procedure RunWorkflowOnCancelPaymentReqApprovalRequestCode(): Code[128]//Event
+    local procedure RunWorkflowOnCancelPaymentReqApprovalRequestCode1(): Code[128]//Event
     begin
         EXIT(UPPERCASE('RunWorkflowOnCancelPaymentReqApprovalRequest'));
     end;
@@ -249,7 +255,7 @@ codeunit 70108 "Payment Req WorkFlow Functions"
     [EventSubscriber(ObjectType::Page, 70175, 'OnAfterActionEvent', 'CancelApprovalRequest', false, false)]
     local procedure PurchaseReqPageOnCancelApprovalRequestAction(var Rec: Record "Payment Line")//Handle the Event
     begin
-        WorkflowManagement.HandleEvent(RunWorkflowOnCancelPaymentReqApprovalRequestCode, Rec);
+        WorkflowManagement.HandleEvent(RunWorkflowOnCancelPaymentReqApprovalRequestCode1, Rec);
     end;
 
     //To register workflow event/response combinations needed for the new workflow response
@@ -281,73 +287,73 @@ codeunit 70108 "Payment Req WorkFlow Functions"
                 BEGIN
 
                     //EDM.PayReq+
-                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SetStatusToPendingApprovalCode, RunWorkflowOnSendPaymentReqForApprovalCode);
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SetStatusToPendingApprovalCode, RunWorkflowOnSendPaymentReqForApprovalCode1);
                     //EDM.PayReq-
                 END;
             WorkflowResponseHandling.CreateApprovalRequestsCode://response
                 BEGIN
                     //EDM.PayReq+
-                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CreateApprovalRequestsCode, RunWorkflowOnSendPaymentReqForApprovalCode);//1 is response 2 is event
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CreateApprovalRequestsCode, RunWorkflowOnSendPaymentReqForApprovalCode1);//1 is response 2 is event
                     //EDM.PayReq-
                 END;
             WorkflowResponseHandling.SendApprovalRequestForApprovalCode:
                 BEGIN
                     //EDM.PayReq+
                     WorkflowResponseHandling.AddResponsePredecessor(
-                      WorkflowResponseHandling.SendApprovalRequestForApprovalCode, RunWorkflowOnSendPaymentReqForApprovalCode);
+                      WorkflowResponseHandling.SendApprovalRequestForApprovalCode, RunWorkflowOnSendPaymentReqForApprovalCode1);
                     //EDM.PayReq-
                 END;
             WorkflowResponseHandling.OpenDocumentCode:
                 BEGIN
                     //EDM.PayReq+
-                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.OpenDocumentCode, RunWorkflowOnCancelPaymentReqApprovalRequestCode());
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.OpenDocumentCode, RunWorkflowOnCancelPaymentReqApprovalRequestCode1());
                     //EDM.PayReq-
                 END;
             WorkflowResponseHandling.CancelAllApprovalRequestsCode:
                 BEGIN
                     //EDM.PayReq+
-                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CancelAllApprovalRequestsCode, RunWorkflowOnCancelPaymentReqApprovalRequestCode());
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CancelAllApprovalRequestsCode, RunWorkflowOnCancelPaymentReqApprovalRequestCode1());
                     //EDM.PayReq-
                 END;
-            PaymentReqAppCode():
+            PaymentReqAppCode1():
                 begin
-                    WorkflowResponseHandling.AddResponsePredecessor(PaymentReqAppCode(), RunWorkflowOnSendPaymentReqForApprovalCode());
-                    WorkflowResponseHandling.AddResponsePredecessor(PaymentReqAppCode(), WorkflowResponseHandling.CreateApprovalRequestsCode());
+                    WorkflowResponseHandling.AddResponsePredecessor(PaymentReqAppCode1(), RunWorkflowOnSendPaymentReqForApprovalCode1());
+                    WorkflowResponseHandling.AddResponsePredecessor(PaymentReqAppCode1(), WorkflowResponseHandling.CreateApprovalRequestsCode());
 
                 end;
-            PaymentReqCancelCode():
+            PaymentReqCancelCode1():
                 begin
-                    WorkflowResponseHandling.AddResponsePredecessor(PaymentReqCancelCode(), RunWorkflowOnCancelPaymentReqApprovalRequestCode());
+                    WorkflowResponseHandling.AddResponsePredecessor(PaymentReqCancelCode1(), RunWorkflowOnCancelPaymentReqApprovalRequestCode1());
                 end;
-            PaymentReqRejectCode():
+            PaymentReqRejectCode1():
                 begin
-                    WorkflowResponseHandling.AddResponsePredecessor(PaymentReqRejectCode(), WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode());
+                    WorkflowResponseHandling.AddResponsePredecessor(PaymentReqRejectCode1(), WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode());
                 end;
-            PaymentReqApprovedCode():
+            PaymentReqApprovedCode1():
                 begin
-                    WorkflowResponseHandling.AddResponsePredecessor(PaymentReqApprovedCode(), WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode());
+                    WorkflowResponseHandling.AddResponsePredecessor(PaymentReqApprovedCode1(), WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode());
                 end;
-            PaymentReqSendEmailCode():
+            PaymentReqSendEmailCode1():
                 begin
-                    WorkflowResponseHandling.AddResponsePredecessor(PaymentReqSendEmailCode(), RunWorkflowOnSendPaymentReqForApprovalCode());
+                    WorkflowResponseHandling.AddResponsePredecessor(PaymentReqSendEmailCode1(), RunWorkflowOnSendPaymentReqForApprovalCode1());
                 end;
             WorkflowResponseHandling.CreateApprovalRequestsCode():
                 begin
-                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CreateApprovalRequestsCode(), RunWorkflowOnSendPaymentReqForApprovalCode());
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CreateApprovalRequestsCode(), RunWorkflowOnSendPaymentReqForApprovalCode1());
 
                 end;
             WorkflowResponseHandling.SendApprovalRequestForApprovalCode():
                 begin
-                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SendApprovalRequestForApprovalCode(), RunWorkflowOnSendPaymentReqForApprovalCode());
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.SendApprovalRequestForApprovalCode(), RunWorkflowOnSendPaymentReqForApprovalCode1());
 
                 end;
             WorkflowResponseHandling.CancelAllApprovalRequestsCode():
                 begin
-                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CancelAllApprovalRequestsCode(), RunWorkflowOnCancelPaymentReqApprovalRequestCode());
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.CancelAllApprovalRequestsCode(), RunWorkflowOnCancelPaymentReqApprovalRequestCode1());
                 end;
             WorkflowResponseHandling.OpenDocumentCode():
                 begin
-                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.OpenDocumentCode(), RunWorkflowOnCancelPaymentReqApprovalRequestCode());
+                    WorkflowResponseHandling.AddResponsePredecessor(WorkflowResponseHandling.OpenDocumentCode(), RunWorkflowOnCancelPaymentReqApprovalRequestCode1());
                 end;
 
 
@@ -361,7 +367,7 @@ codeunit 70108 "Payment Req WorkFlow Functions"
     var
         WorkflowSetup: Codeunit "Workflow Setup";
     begin
-        WorkflowSetup.InsertTableRelation(Database::"Payment Line", 0, Database::"Approval Entry", 22);//link the pk to approval entry
+        WorkflowSetup.InsertTableRelation(Database::"Payment Line", 1, Database::"Approval Entry", 22);//link the pk to approval entry
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Event Handling", 'OnAddWorkflowEventPredecessorsToLibrary', '', false, false)]// add the event predecessor to the event
@@ -370,42 +376,42 @@ codeunit 70108 "Payment Req WorkFlow Functions"
         WorkflowEventHandling: codeunit "Workflow Event Handling";
     begin
         Case EventFunctionName of
-            // RunWorkflowOnSendPaymentReqForApprovalCode():
+            // RunWorkflowOnSendPaymentReqForApprovalCode1():
             //     begin
             //         //WorkflowEventHandling.AddEventPredecessor(MyWorkflowEventCode(), WorkflowEventHandling./*[Add your predecessor event code]*/);
-            //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode(), WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode());
-            //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode(), WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode());
-            //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode(), WorkflowEventHandling.RunWorkflowOnDelegateApprovalRequestCode());
+            //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode1(), WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode());
+            //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode1(), WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode());
+            //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode1(), WorkflowEventHandling.RunWorkflowOnDelegateApprovalRequestCode());
             //     end;
             // RunWorkflowOnCancelPaymentReqApprovalRequestCode():
             //     BEGIN
             //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnCancelPaymentReqApprovalRequestCode(), WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode());
-            //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode(), WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode());
-            //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode(), WorkflowEventHandling.RunWorkflowOnDelegateApprovalRequestCode());
+            //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode1(), WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode());
+            //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode1(), WorkflowEventHandling.RunWorkflowOnDelegateApprovalRequestCode());
             //     END;
 
             WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode():
                 begin
-                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode(), RunWorkflowOnSendPaymentReqForApprovalCode());
-                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode(), RunWorkflowOnCancelPaymentReqApprovalRequestCode());
+                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode(), RunWorkflowOnSendPaymentReqForApprovalCode1());
+                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode(), RunWorkflowOnCancelPaymentReqApprovalRequestCode1());
                 end;
 
             WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode():
                 begin
-                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode(), RunWorkflowOnSendPaymentReqForApprovalCode());
-                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode(), RunWorkflowOnCancelPaymentReqApprovalRequestCode());
+                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode(), RunWorkflowOnSendPaymentReqForApprovalCode1());
+                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode(), RunWorkflowOnCancelPaymentReqApprovalRequestCode1());
                 end;
 
 
             WorkflowEventHandling.RunWorkflowOnDelegateApprovalRequestCode():
                 begin
-                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnDelegateApprovalRequestCode(), RunWorkflowOnSendPaymentReqForApprovalCode());
-                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnDelegateApprovalRequestCode(), RunWorkflowOnCancelPaymentReqApprovalRequestCode());
+                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnDelegateApprovalRequestCode(), RunWorkflowOnSendPaymentReqForApprovalCode1());
+                    WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnDelegateApprovalRequestCode(), RunWorkflowOnCancelPaymentReqApprovalRequestCode1());
                 end;
 
-            RunWorkflowOnCancelPaymentReqApprovalRequestCode():
+            RunWorkflowOnCancelPaymentReqApprovalRequestCode1():
                 begin
-                    WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnCancelPaymentReqApprovalRequestCode(), RunWorkflowOnSendPaymentReqForApprovalCode());
+                    WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnCancelPaymentReqApprovalRequestCode1(), RunWorkflowOnSendPaymentReqForApprovalCode1());
 
                 end;
 
@@ -446,6 +452,7 @@ codeunit 70108 "Payment Req WorkFlow Functions"
 
                     ApprovalEntryArgument."PO Number" := PaymentRequest."PO#";
                     ApprovalEntryArgument."Project Code" := PaymentRequest."Project Name";
+                    ApprovalEntryArgument."RFP Line No." := PaymentRequest."Line No";
                 end;
         end;
     end;
@@ -457,6 +464,7 @@ codeunit 70108 "Payment Req WorkFlow Functions"
         ApprovalEntry."Supplier Name" := ApprovalEntryArgument."Supplier Name";
         ApprovalEntry."PO Number" := ApprovalEntryArgument."PO Number";
         ApprovalEntry."Project Code" := ApprovalEntryArgument."Project Code";
+        ApprovalEntry."RFP Line No." := ApprovalEntryArgument."RFP Line No.";
     end;
     //to send emails for senders of approvals upon creation approval reject on cancelation
     /* [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnAfterCreateApprovalEntryNotification', '', false, false)]
@@ -539,6 +547,10 @@ codeunit 70108 "Payment Req WorkFlow Functions"
             until ApprovalEntry.Next() = 0;
     end;
 
+    procedure LogDebug(TextToLog: Text)
+    begin
+        Message('DEBUG: %1', TextToLog);
+    end;
     // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Event Handling", 'OnEvaluateEventCondition', '', false, false)]
     // local procedure OnEvaluateEventCondition(EventFunctionName: Code[128]; var RecRef: RecordRef; var IsConditionMet: Boolean; WorkflowStepInstance: Record "Workflow Step Instance")
     // var
@@ -546,7 +558,7 @@ codeunit 70108 "Payment Req WorkFlow Functions"
     //     Vendor: Record Vendor;
     // begin
     //     // Optional: narrow down to your specific workflow event
-    //     if EventFunctionName <> RunWorkflowOnSendPaymentReqForApprovalCode() then
+    //     if EventFunctionName <> RunWorkflowOnSendPaymentReqForApprovalCode1() then
     //         exit;
 
     //     // Make sure record type is correct

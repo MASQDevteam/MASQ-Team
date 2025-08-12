@@ -59,6 +59,25 @@ tableextension 70110 "Approval Entries extension" extends "Approval Entry"
             FieldClass = FlowField;
             CalcFormula = lookup("SUPPLIER PAYMENT REQUEST"."3rd Payment Date" where(Number = field("Document No.")));
         }
+        field(70118; "RFP Line No."; Integer)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(70119; "Payment"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."Payment Value" where(Number = field("Document No."), "Line No" = field("RFP Line No.")));
+        }
+        field(70120; "Payment Date"; Date)
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."Payment Date" where(Number = field("Document No."), "Line No" = field("RFP Line No.")));
+        }
+        field(70121; "Payment %"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."Payment %" where(Number = field("Document No."), "Line No" = field("RFP Line No.")));
+        }
     }
 
     keys
