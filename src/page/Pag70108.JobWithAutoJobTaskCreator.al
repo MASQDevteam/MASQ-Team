@@ -51,7 +51,10 @@ page 70108 JobWithAutoJobTaskCreator
                 {
 
                 }
+                field("ApplyUsageLink"; Rec."Apply Usage Link")
+                {
 
+                }
             }
         }
     }
