@@ -318,14 +318,46 @@ tableextension 70135 "Job Task Extension" extends "Job Task"
             FieldClass = FlowField;
             CalcFormula = exist("Job Planning Line" WHERE("Email Sent" = const(false), "Job No." = field("Job No."), "Job Task No." = field("Job Task No.")));
         }
+        //Added by FQ on 13082025 **Start**
+
         field(70120; "Usage (Total Cost) Freight1"; Decimal)//added on 13082025
         {
             AutoFormatType = 1;
             BlankZero = true;
-            Caption = 'Actual (Total Cost) Freight new';
+            Caption = 'Actual (Total Cost) Freight New';
             Editable = false;
 
         }
+        field(70121; "Usage (Total Cost) Customs1"; Decimal)//added on 13082025
+        {
+            AutoFormatType = 1;
+            BlankZero = true;
+            Caption = 'Actual (Total Cost) Customs New';
+            Editable = false;
+
+        }
+        field(70122; "Usage (Total Cost) Clearance1"; Decimal)//added on 13082025
+        {
+            AutoFormatType = 1;
+            BlankZero = true;
+            Caption = 'Actual (Total Cost) Clearance New';
+            Editable = false;
+        }
+        field(70123; "Usage (Total Cost) Others1"; Decimal)//added on 13082025
+        {
+            AutoFormatType = 1;
+            BlankZero = true;
+            Caption = 'Actual (Total Cost) Others New';
+            Editable = false;
+        }
+        field(70124; "Usage (Total Cost) Insurance1"; Decimal)//added on 13082025
+        {
+            AutoFormatType = 1;
+            BlankZero = true;
+            Caption = 'Actual (Total Cost) Insurance New';
+            Editable = false;
+        }
+        //Added by FQ on 13082025 **End**
 
     }
 

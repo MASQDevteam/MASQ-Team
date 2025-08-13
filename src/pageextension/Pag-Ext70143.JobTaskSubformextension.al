@@ -17,6 +17,34 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
                 ToolTip = 'Calculated from G/L Entries using Job No. or Global Dimension 1 Code when Job No. is blank.', Comment = '%';
                 Editable = false;
             }
+            field("Usage (Total Cost) Customs1"; UsageTotalCostCustoms1)
+            {
+                ApplicationArea = All;
+                Caption = 'Actual (Total Cost) Customs new';
+                ToolTip = 'Calculated from G/L Entries using Job No. or Global Dimension 1 Code when Job No. is blank.', Comment = '%';
+                Editable = false;
+            }
+            field("Usage (Total Cost) Clearance1"; UsageTotalCostClearance1)
+            {
+                ApplicationArea = All;
+                Caption = 'Actual (Total Cost) Clearance new';
+                ToolTip = 'Calculated from G/L Entries using Job No. or Global Dimension 1 Code when Job No. is blank.', Comment = '%';
+                Editable = false;
+            }
+            field("Usage (Total Cost) Insurance1"; UsageTotalCostInsurance1)
+            {
+                ApplicationArea = All;
+                Caption = 'Actual (Total Cost) Insurance new';
+                ToolTip = 'Calculated from G/L Entries using Job No. or Global Dimension 1 Code when Job No. is blank.', Comment = '%';
+                Editable = false;
+            }
+            field("Usage (Total Cost) Others1"; UsageTotalCostOthers1)
+            {
+                ApplicationArea = All;
+                Caption = 'Actual (Total Cost) Others new';
+                ToolTip = 'Calculated from G/L Entries using Job No. or Global Dimension 1 Code when Job No. is blank.', Comment = '%';
+                Editable = false;
+            }
             field("Usage (Total Cost) Customs"; Rec."Usage (Total Cost) Customs")
             {
                 ApplicationArea = All;
@@ -127,22 +155,27 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
     trigger OnAfterGetRecord()
     var
     begin
+        //Added by FQ on 13082025 **Start**
         RecalculateUsageTotalCostFreight1();
+        RecalculateUsageTotalCostCustoms1();
+        RecalculateUsageTotalCostClearance1();
+        RecalculateUsageTotalCostInsurance1();
+        RecalculateUsageTotalCostOthers1();
+        Rec.CalcFields("Usage (Total Cost)", "Usage (Total Cost) Freight", "Usage (Total Cost) Clearance", "Usage (Total Cost) Customs", "Usage (Total Cost) Others", "Usage (Total Cost) Insurance");
+        Rec."Usage (Total Landed Cost)" := Rec."Usage (Total Cost)" + Rec."Usage (Total Cost) Freight" + Rec."Usage (Total Cost) Clearance"
+        + Rec."Usage (Total Cost) Customs" + Rec."Usage (Total Cost) Others" + Rec."Usage (Total Cost) Insurance";
+        //Added by FQ on 13082025 **End**
         REc.CalcFields("Schedule (Total Cost)", "Schedule (Total Cost) C & C", "Schedule (Total Cost) Freight", "Schedule (Total Cost) COF", "Schedule (Total Cost) Insurance");
         Rec."Schedule (Total Landed Cost)" := rec."Schedule (Total Cost)" +
         Rec."Schedule (Total Cost) C & C" + Rec."Schedule (Total Cost) Freight" + Rec."Schedule (Total Cost) COF" + Rec."Schedule (Total Cost) Insurance";
-        Rec.CalcFields("Usage (Total Cost)", "Usage (Total Cost) Clearance", "Usage (Total Cost) Customs", "Usage (Total Cost) Freight", "Usage (Total Cost) Others", "Usage (Total Cost) Insurance");//added on 10022025
-        Rec."Usage (Total Landed Cost)" := Rec."Usage (Total Cost)" + rec."Usage (Total Cost) Freight" + Rec."Usage (Total Cost) Clearance"
-        + Rec."Usage (Total Cost) Customs" + Rec."Usage (Total Cost) Others" + Rec."Usage (Total Cost) Insurance";//updated on 10022025
+        //Rec.CalcFields("Usage (Total Cost)", "Usage (Total Cost) Clearance", "Usage (Total Cost) Customs", "Usage (Total Cost) Freight", "Usage (Total Cost) Others", "Usage (Total Cost) Insurance");//added on 10022025
+        // Rec."Usage (Total Landed Cost)" := Rec."Usage (Total Cost)" + rec."Usage (Total Cost) Freight" + Rec."Usage (Total Cost) Clearance"
+        //+ Rec."Usage (Total Cost) Customs" + Rec."Usage (Total Cost) Others" + Rec."Usage (Total Cost) Insurance";//updated on 10022025
+
+
     end;
 
-    /*  trigger OnOpenPage()
-     var
-         myInt: Integer;
-     begin
-         RecalculateUsageTotalCostFreight1();
-     end; */
-
+    //Added by FQ on 13082025 **Start**
     local procedure RecalculateUsageTotalCostFreight1()
     var
         glByJob: Record "G/L Entry";
@@ -179,7 +212,155 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
         Rec."Usage (Total Cost) Freight1" := UsageTotalCostFreight1;
     end;
 
+    local procedure RecalculateUsageTotalCostCustoms1()
+    var
+        glByJob: Record "G/L Entry";
+        glByDim: Record "G/L Entry";
+        job: Record Job;
+        dim1Code: Code[20];
+        sumJob: Decimal;
+        sumDim: Decimal;
+    begin
+        UsageTotalCostCustoms1 := 0;
+        sumJob := 0;
+        sumDim := 0;
+
+        // Sum entries linked to the Job directly
+        glByJob.Reset();
+        glByJob.SetRange("Gen. Prod. Posting Group", 'CUSTOMS');
+        glByJob.SetRange("Job No.", rec."Job No.");
+        if glByJob."Job No." <> '' then begin
+            glByJob.CalcSums(Amount);
+            sumJob := glByJob.Amount;
+        end;
+        // Sum entries posted without Job No. but tagged with the Job's Apollo Project Number via Global Dimension 1 Code (Project Code)
+        if (glByJob."Job No." = '') and job.Get(Rec."Job No.") then begin
+            dim1Code := job."Apollo Project Number";
+            if dim1Code <> '' then begin
+                glByDim.Reset();
+                glByDim.SetRange("Gen. Prod. Posting Group", 'CUSTOMS');
+                glByDim.SetRange("Global Dimension 1 Code", dim1Code);
+                glByDim.CalcSums(Amount);
+                sumDim := glByDim.Amount;
+            end;
+        end;
+        UsageTotalCostCustoms1 := sumJob + sumDim;
+        Rec."Usage (Total Cost) Customs1" := UsageTotalCostCustoms1;
+    end;
+
+    local procedure RecalculateUsageTotalCostClearance1()
+    var
+        glByJob: Record "G/L Entry";
+        glByDim: Record "G/L Entry";
+        job: Record Job;
+        dim1Code: Code[20];
+        sumJob: Decimal;
+        sumDim: Decimal;
+    begin
+        UsageTotalCostClearance1 := 0;
+        sumJob := 0;
+        sumDim := 0;
+
+        // Sum entries linked to the Job directly
+        glByJob.Reset();
+        glByJob.SetRange("Gen. Prod. Posting Group", 'CLEARING');
+        glByJob.SetRange("Job No.", rec."Job No.");
+        if glByJob."Job No." <> '' then begin
+            glByJob.CalcSums(Amount);
+            sumJob := glByJob.Amount;
+        end;
+        // Sum entries posted without Job No. but tagged with the Job's Apollo Project Number via Global Dimension 1 Code (Project Code)
+        if (glByJob."Job No." = '') and job.Get(Rec."Job No.") then begin
+            dim1Code := job."Apollo Project Number";
+            if dim1Code <> '' then begin
+                glByDim.Reset();
+                glByDim.SetRange("Gen. Prod. Posting Group", 'CLEARING');
+                glByDim.SetRange("Global Dimension 1 Code", dim1Code);
+                glByDim.CalcSums(Amount);
+                sumDim := glByDim.Amount;
+            end;
+        end;
+        UsageTotalCostClearance1 := sumJob + sumDim;
+        Rec."Usage (Total Cost) Clearance1" := UsageTotalCostClearance1;
+    end;
+
+    local procedure RecalculateUsageTotalCostInsurance1()
+    var
+        glByJob: Record "G/L Entry";
+        glByDim: Record "G/L Entry";
+        job: Record Job;
+        dim1Code: Code[20];
+        sumJob: Decimal;
+        sumDim: Decimal;
+    begin
+        UsageTotalCostInsurance1 := 0;
+        sumJob := 0;
+        sumDim := 0;
+
+        // Sum entries linked to the Job directly
+        glByJob.Reset();
+        glByJob.SetRange("Gen. Prod. Posting Group", 'INSURANCE');
+        glByJob.SetRange("Job No.", rec."Job No.");
+        if glByJob."Job No." <> '' then begin
+            glByJob.CalcSums(Amount);
+            sumJob := glByJob.Amount;
+        end;
+        // Sum entries posted without Job No. but tagged with the Job's Apollo Project Number via Global Dimension 1 Code (Project Code)
+        if (glByJob."Job No." = '') and job.Get(Rec."Job No.") then begin
+            dim1Code := job."Apollo Project Number";
+            if dim1Code <> '' then begin
+                glByDim.Reset();
+                glByDim.SetRange("Gen. Prod. Posting Group", 'INSURANCE');
+                glByDim.SetRange("Global Dimension 1 Code", dim1Code);
+                glByDim.CalcSums(Amount);
+                sumDim := glByDim.Amount;
+            end;
+        end;
+        UsageTotalCostInsurance1 := sumJob + sumDim;
+        Rec."Usage (Total Cost) Insurance1" := UsageTotalCostInsurance1;
+    end;
+
+    local procedure RecalculateUsageTotalCostOthers1()
+    var
+        glByJob: Record "G/L Entry";
+        glByDim: Record "G/L Entry";
+        job: Record Job;
+        dim1Code: Code[20];
+        sumJob: Decimal;
+        sumDim: Decimal;
+    begin
+        UsageTotalCostOthers1 := 0;
+        sumJob := 0;
+        sumDim := 0;
+
+        // Sum entries linked to the Job directly
+        glByJob.Reset();
+        glByJob.SetRange("Gen. Prod. Posting Group", 'OTHEREXP TAXABLE');
+        glByJob.SetRange("Job No.", rec."Job No.");
+        if glByJob."Job No." <> '' then begin
+            glByJob.CalcSums(Amount);
+            sumJob := glByJob.Amount;
+        end;
+        // Sum entries posted without Job No. but tagged with the Job's Apollo Project Number via Global Dimension 1 Code (Project Code)
+        if (glByJob."Job No." = '') and job.Get(Rec."Job No.") then begin
+            dim1Code := job."Apollo Project Number";
+            if dim1Code <> '' then begin
+                glByDim.Reset();
+                glByDim.SetRange("Gen. Prod. Posting Group", 'OTHEREXP TAXABLE');
+                glByDim.SetRange("Global Dimension 1 Code", dim1Code);
+                glByDim.CalcSums(Amount);
+                sumDim := glByDim.Amount;
+            end;
+        end;
+        UsageTotalCostOthers1 := sumJob + sumDim;
+        Rec."Usage (Total Cost) Others1" := UsageTotalCostOthers1;
+    end;
+    //Added by FQ on 13082025 **End**
     var
         myInt: Integer;
         UsageTotalCostFreight1: Decimal;
+        UsageTotalCostCustoms1: Decimal;
+        UsageTotalCostClearance1: Decimal;
+        UsageTotalCostInsurance1: Decimal;
+        UsageTotalCostOthers1: Decimal;
 }
