@@ -104,7 +104,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
                     PaymentRequest.Modify(true);
                     Variant := PaymentRequest;
                     IsHandled := true;
-                    Message('Approved');
+                    Message('Pending Approval1');
                 end;
         end;
     end;
@@ -123,7 +123,6 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
         MASQEmail: Codeunit "MASQ Email";
         User: Record User;
         ApprovalEntry2: Record "Approval Entry";
-        RecId: RecordId;
     begin
         IF WorkflowResponse.GET(ResponseWorkflowStepInstance."Function Name") THEN
             CASE WorkflowResponse."Function Name" OF
@@ -134,6 +133,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
                         PaymentRequest."Payment Status" := PaymentRequest."Payment Status"::"Pending Approval";
                         PaymentRequest.Modify();
                         ResponseExecuted := true;
+                        Message('Pending Approval2');
                     END;
                 PaymentReqCancelCode1()://Response
                     BEGIN
@@ -212,6 +212,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
         Admin: Record "User Setup";
     begin
         WorkflowManagment.HandleEvent(RunWorkflowOnSendPaymentReqForApprovalCode1(), Rec);
+        Message('Sent');
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 1520, 'OnAddWorkflowEventsToLibrary', '', false, false)]//add Events to library
@@ -541,41 +542,5 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
 
             until ApprovalEntry.Next() = 0;
     end;
-
-    procedure LogDebug(TextToLog: Text)
-    begin
-        Message('DEBUG: %1', TextToLog);
-    end;
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Event Handling", 'OnEvaluateEventCondition', '', false, false)]
-    // local procedure OnEvaluateEventCondition(EventFunctionName: Code[128]; var RecRef: RecordRef; var IsConditionMet: Boolean; WorkflowStepInstance: Record "Workflow Step Instance")
-    // var
-    //     PaymentLine: Record "Payment Line";
-    //     Vendor: Record Vendor;
-    // begin
-    //     // Optional: narrow down to your specific workflow event
-    //     if EventFunctionName <> RunWorkflowOnSendPaymentReqForApprovalCode1() then
-    //         exit;
-
-    //     // Make sure record type is correct
-    //     if RecRef.Number <> DATABASE::"Payment Line" then
-    //         exit;
-
-    //     // Get the Payment Line
-    //     RecRef.SetTable(PaymentLine);
-
-    //     // Example: read related vendor record
-    //     if Vendor.Get(PaymentLine."Supplier") then begin
-    //         if Vendor."Blocked" = Vendor."Blocked"::All then begin
-    //             // Reject the workflow condition if vendor is blocked
-    //             IsConditionMet := false;
-    //             exit;
-    //         end;
-    //     end;
-
-    //     // All custom checks passed
-    //     IsConditionMet := true;
-    // end;
-
-
 }
 

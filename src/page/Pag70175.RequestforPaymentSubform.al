@@ -94,20 +94,20 @@ page 70175 "Request for Payment Subform"
             }
         }
     }
-    trigger OnAfterGetCurrRecord()
-    var
-        SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
-    begin
-        if SUPPLIERPAYMENTREQUEST.Get(Rec.Number) then begin
-            Rec.Currency := SUPPLIERPAYMENTREQUEST.Currency;
-            Rec.Supplier := SUPPLIERPAYMENTREQUEST.Supplier;
-            Rec."PO#" := SUPPLIERPAYMENTREQUEST."PO#";
-            Rec."PO Value" := SUPPLIERPAYMENTREQUEST."PO Value";
-            Rec."Level of Urgency" := SUPPLIERPAYMENTREQUEST."Level of Urgency";
-            Rec."Project Name" := SUPPLIERPAYMENTREQUEST."Project Name";
-            Rec."Requested By (Person)" := SUPPLIERPAYMENTREQUEST."Requested By (Person)";
-        end;
-    end;
+    // trigger OnAfterGetCurrRecord()
+    // var
+    //     SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
+    // begin
+    //     if SUPPLIERPAYMENTREQUEST.Get(Rec.Number) then begin
+    //         Rec.Currency := SUPPLIERPAYMENTREQUEST.Currency;
+    //         Rec.Supplier := SUPPLIERPAYMENTREQUEST.Supplier;
+    //         Rec."PO#" := SUPPLIERPAYMENTREQUEST."PO#";
+    //         Rec."PO Value" := SUPPLIERPAYMENTREQUEST."PO Value";
+    //         Rec."Level of Urgency" := SUPPLIERPAYMENTREQUEST."Level of Urgency";
+    //         Rec."Project Name" := SUPPLIERPAYMENTREQUEST."Project Name";
+    //         Rec."Requested By (Person)" := SUPPLIERPAYMENTREQUEST."Requested By (Person)";
+    //     end;
+    // end;
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     var
