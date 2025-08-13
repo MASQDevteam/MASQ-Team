@@ -30,6 +30,7 @@ tableextension 70141 GlEntry extends "G/L Entry"
             FieldClass = FlowField;
             CalcFormula = lookup("G/L Account".Name where("No." = field("G/L Account No.")));
         }
+       
 
     }
 }
