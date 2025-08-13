@@ -96,6 +96,7 @@ tableextension 70132 "Project Planning Lines exte" extends "Job Planning Line"
             Editable = false;
             FieldClass = FlowField;
         }
+
         field(70114; "Usage (Total Cost) Customs"; Decimal)//added on 05022025
         {
             AutoFormatType = 1;
