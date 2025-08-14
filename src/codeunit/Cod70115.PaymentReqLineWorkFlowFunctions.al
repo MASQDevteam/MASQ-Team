@@ -109,7 +109,88 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
     end;
 
 
-    [EventSubscriber(ObjectType::Codeunit, 1521, OnExecuteWorkflowResponse, '', false, false)]//execute the Response WHAT TO DO
+    // [EventSubscriber(ObjectType::Codeunit, 1521, OnExecuteWorkflowResponse, '', false, false)]//execute the Response WHAT TO DO
+    // local procedure PurchReqAppRes(var ResponseExecuted: Boolean; Variant: Variant; xVariant: Variant; ResponseWorkflowStepInstance: Record "Workflow Step Instance")
+    // var
+    //     WorkflowResponse: Record "Workflow Response";
+    //     Admin: Record "User Setup";
+    //     ReqNo: Code[50];
+    //     Request: Code[50];
+    //     Appentry: Record "Approval Entry";
+    //     PRref: RecordRef;
+    //     PaymentRequest: Record "Payment Line";
+    //     ApprovalEntry: Record "Approval Entry";
+    //     MASQEmail: Codeunit "MASQ Email";
+    //     User: Record User;
+    //     ApprovalEntry2: Record "Approval Entry";
+    // begin
+    //     Message('Workflow trying to execute function: %1', WorkflowResponse."Function Name");
+    //     IF WorkflowResponse.GET(ResponseWorkflowStepInstance."Function Name") THEN
+    //         CASE WorkflowResponse."Function Name" OF
+    //             PaymentReqAppCode://Response
+    //                 BEGIN
+    //                     IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
+    //                         PRref.SetTable(PaymentRequest);
+    //                     PaymentRequest."Payment Status" := PaymentRequest."Payment Status"::"Pending Approval";
+    //                     PaymentRequest.Modify();
+    //                     ResponseExecuted := true;
+    //                 END;
+    //             PaymentReqCancelCode()://Response
+    //                 BEGIN
+    //                     IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
+    //                         PRref.SetTable(PaymentRequest);
+    //                     PaymentRequest."Payment Status" := PaymentRequest."Payment Status"::Open;
+    //                     PaymentRequest.Modify();
+    //                     ResponseExecuted := true;
+    //                 END;
+    //             PaymentReqRejectCode(): //Response
+    //                 BEGIN
+    //                     IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
+    //                         ApprovalEntry.GET(PRref.RECORDID);
+    //                     PaymentRequest.Reset();
+    //                     PaymentRequest.Reset();
+    //                     PaymentRequest.SetRange(Number, ApprovalEntry."Document No.");
+    //                     PaymentRequest.SetRange("Line No", ApprovalEntry."RFP Line No.");
+    //                     IF NOT PaymentRequest.FindFirst() THEN
+    //                         EXIT; // record not found
+    //                     PaymentRequest."Payment Status" := PaymentRequest."Payment Status"::Declined;
+    //                     PaymentRequest.Modify();
+    //                     ResponseExecuted := true;
+    //                 END;
+    //             PaymentReqApprovedCode(): //Response
+    //                 BEGIN
+    //                     IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
+    //                         ApprovalEntry.GET(PRref.RECORDID);
+    //                     PaymentRequest.Reset();
+    //                     PaymentRequest.Reset();
+    //                     PaymentRequest.SetRange(Number, ApprovalEntry."Document No.");
+    //                     PaymentRequest.SetRange("Line No", ApprovalEntry."RFP Line No.");
+    //                     IF NOT PaymentRequest.FindFirst() THEN
+    //                         EXIT; // record not found
+    //                     PaymentRequest."Payment Status" := PaymentRequest."Payment Status"::Released;
+    //                     PaymentRequest.Modify();
+    //                     ResponseExecuted := true;
+    //                 END;
+    //             PaymentReqSendEmailCode(): //Response
+    //                 begin
+    //                     IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
+    //                         PRref.SetTable(PaymentRequest);
+    //                     Clear(ApprovalEntry2);
+    //                     ApprovalEntry2.SetRange("Document No.", PaymentRequest.Number);
+    //                     ApprovalEntry2.SetFilter(Status, '<> %1', ApprovalEntry2.Status::Canceled);
+    //                     IF ApprovalEntry2.FindSet() then
+    //                         repeat
+    //                             Clear(User);
+    //                             User.SetRange("User Name", ApprovalEntry2."Approver ID");
+    //                             User.FindFirst();
+    //                             MASQEmail.SendEmailPaymentRequest(User, PaymentRequest, ApprovalEntry2);//SendEmail
+    //                         until ApprovalEntry2.Next() = 0;
+    //                     ResponseExecuted := true;
+    //                 end;
+
+    //         END;
+    // end;
+    [EventSubscriber(ObjectType::Codeunit, 1521, 'OnExecuteWorkflowResponse', '', false, false)]//execute the Response WHAT TO DO
     local procedure PurchReqAppRes(var ResponseExecuted: Boolean; Variant: Variant; xVariant: Variant; ResponseWorkflowStepInstance: Record "Workflow Step Instance")
     var
         WorkflowResponse: Record "Workflow Response";
@@ -124,21 +205,22 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
         User: Record User;
         ApprovalEntry2: Record "Approval Entry";
     begin
-        Message('Workflow trying to execute function: %1', WorkflowResponse."Function Name");
         IF WorkflowResponse.GET(ResponseWorkflowStepInstance."Function Name") THEN
             CASE WorkflowResponse."Function Name" OF
                 PaymentReqAppCode://Response
                     BEGIN
+
                         IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
-                            PRref.SetTable(PaymentRequest);
+                            PaymentRequest.GET(PRref.RECORDID);
                         PaymentRequest."Payment Status" := PaymentRequest."Payment Status"::"Pending Approval";
                         PaymentRequest.Modify();
                         ResponseExecuted := true;
+
                     END;
                 PaymentReqCancelCode()://Response
                     BEGIN
                         IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
-                            PRref.SetTable(PaymentRequest);
+                            PaymentRequest.GET(PRref.RECORDID);
                         PaymentRequest."Payment Status" := PaymentRequest."Payment Status"::Open;
                         PaymentRequest.Modify();
                         ResponseExecuted := true;
@@ -148,11 +230,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
                         IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
                             ApprovalEntry.GET(PRref.RECORDID);
                         PaymentRequest.Reset();
-                        PaymentRequest.Reset();
-                        PaymentRequest.SetRange(Number, ApprovalEntry."Document No.");
-                        PaymentRequest.SetRange("Line No", ApprovalEntry."RFP Line No.");
-                        IF NOT PaymentRequest.FindFirst() THEN
-                            EXIT; // record not found
+                        PaymentRequest.Get(ApprovalEntry."Document No.", ApprovalEntry."RFP Line No.");
                         PaymentRequest."Payment Status" := PaymentRequest."Payment Status"::Declined;
                         PaymentRequest.Modify();
                         ResponseExecuted := true;
@@ -162,11 +240,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
                         IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
                             ApprovalEntry.GET(PRref.RECORDID);
                         PaymentRequest.Reset();
-                        PaymentRequest.Reset();
-                        PaymentRequest.SetRange(Number, ApprovalEntry."Document No.");
-                        PaymentRequest.SetRange("Line No", ApprovalEntry."RFP Line No.");
-                        IF NOT PaymentRequest.FindFirst() THEN
-                            EXIT; // record not found
+                        PaymentRequest.Get(ApprovalEntry."Document No.", ApprovalEntry."RFP Line No.");
                         PaymentRequest."Payment Status" := PaymentRequest."Payment Status"::Released;
                         PaymentRequest.Modify();
                         ResponseExecuted := true;
@@ -174,9 +248,10 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
                 PaymentReqSendEmailCode(): //Response
                     begin
                         IF PRref.GET(ResponseWorkflowStepInstance."Record ID") THEN
-                            PRref.SetTable(PaymentRequest);
+                            PaymentRequest.GET(PRref.RECORDID);
                         Clear(ApprovalEntry2);
                         ApprovalEntry2.SetRange("Document No.", PaymentRequest.Number);
+                        ApprovalEntry2.SetRange("RFP Line No.", PaymentRequest."Line No");
                         ApprovalEntry2.SetFilter(Status, '<> %1', ApprovalEntry2.Status::Canceled);
                         IF ApprovalEntry2.FindSet() then
                             repeat
@@ -187,7 +262,6 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
                             until ApprovalEntry2.Next() = 0;
                         ResponseExecuted := true;
                     end;
-
             END;
     end;
 
@@ -373,8 +447,8 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
     var
         WorkflowSetup: Codeunit "Workflow Setup";
     begin
-       // WorkflowSetup.InsertTableRelation(Database::"Payment Line", 1, Database::"Approval Entry", 3);
-       // WorkflowSetup.InsertTableRelation(Database::"Payment Line", 2, Database::"Approval Entry", 70118);
+        // WorkflowSetup.InsertTableRelation(Database::"Payment Line", 1, Database::"Approval Entry", 3);
+        // WorkflowSetup.InsertTableRelation(Database::"Payment Line", 2, Database::"Approval Entry", 70118);
         WorkflowSetup.InsertTableRelation(Database::"Payment Line", 0, Database::"Approval Entry", 22);//link the pk to approval entry
     end;
 

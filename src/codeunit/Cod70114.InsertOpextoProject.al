@@ -31,7 +31,7 @@ codeunit 70114 "Insert Opex to Project"
         GLEntry.Reset();
         GLEntry.SetCurrentKey("G/L Account No.");
         GLEntry.SetFilter("G/L Account No.", '62..699');
-        GLEntry.SetRange("Global Dimension 1 Code", ProjectCode);
+        GLEntry.SetRange("Global Dimension 1 Code", ProjectCode); //they are not filling it on the project card level
 
         if GLEntry.FindSet() then
             repeat
