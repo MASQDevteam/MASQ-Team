@@ -16,7 +16,7 @@ permissionset 70100 masq
         page "Travel Request Form" = X,
         page "Travel Requests Form" = X,
         query "Top 10 Vendor Sales" = X,
-        codeunit "PaymentRLineWorkFlowFunctions" = X,
+        codeunit "Custom Workflow PaymentLine" = X,
         report "Item Type - Update" = X,
         report "Item Type Value Entry- Update" = X,
         report "MASQ Delivery Order KSA" = X,
