@@ -1,4 +1,4 @@
-codeunit 70115 "PaymentRLineWorkFlowFunctions"
+/* codeunit 70115 "PaymentRLineWorkFlowFunctions"
 {
     // Workflow Functions for Purchase Request Object
 
@@ -265,7 +265,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
     end;
 
     //To register workflow event/response combinations needed for the new workflow response
-    /*
+    
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Response Handling", 'OnAddWorkflowResponsePredecessorsToLibrary', '', false, false)]
     local procedure AddMyworkflowEventOnAddWorkflowResponsePredecessorsToLibrary(ResponseFunctionName: Code[128])
     var
@@ -279,7 +279,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
 
         //MyWorkflowResponseCode new reponse
         // MyWorkflowEvents.MyWorkflowEventCode() new event
-    end;*/
+    end;
     [EventSubscriber(ObjectType::Codeunit, 1521, 'OnAddWorkflowResponsePredecessorsToLibrary', '', false, false)]
     local procedure OnAddWorkflowResponsePredecessorsToLibrary(ResponseFunctionName: Code[128])
     var
@@ -373,8 +373,8 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
     var
         WorkflowSetup: Codeunit "Workflow Setup";
     begin
-       // WorkflowSetup.InsertTableRelation(Database::"Payment Line", 1, Database::"Approval Entry", 3);
-       // WorkflowSetup.InsertTableRelation(Database::"Payment Line", 2, Database::"Approval Entry", 70118);
+        // WorkflowSetup.InsertTableRelation(Database::"Payment Line", 1, Database::"Approval Entry", 3);
+        // WorkflowSetup.InsertTableRelation(Database::"Payment Line", 2, Database::"Approval Entry", 70118);
         WorkflowSetup.InsertTableRelation(Database::"Payment Line", 0, Database::"Approval Entry", 22);//link the pk to approval entry
     end;
 
@@ -386,7 +386,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
         Case EventFunctionName of
             // RunWorkflowOnSendPaymentReqForApprovalCode():
             //     begin
-            //         //WorkflowEventHandling.AddEventPredecessor(MyWorkflowEventCode(), WorkflowEventHandling./*[Add your predecessor event code]*/);
+            //         //WorkflowEventHandling.AddEventPredecessor(MyWorkflowEventCode(), WorkflowEventHandling./*[Add your predecessor event code]);
             //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode(), WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode());
             //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode(), WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode());
             //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode(), WorkflowEventHandling.RunWorkflowOnDelegateApprovalRequestCode());
@@ -397,7 +397,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
             //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode(), WorkflowEventHandling.RunWorkflowOnRejectApprovalRequestCode());
             //         WorkflowEventHandling.AddEventPredecessor(RunWorkflowOnSendPaymentReqForApprovalCode(), WorkflowEventHandling.RunWorkflowOnDelegateApprovalRequestCode());
             //     END;
-
+/*
             WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode():
                 begin
                     WorkflowEventHandling.AddEventPredecessor(WorkflowEventHandling.RunWorkflowOnApproveApprovalRequestCode(), RunWorkflowOnSendPaymentReqForApprovalCode());
@@ -475,7 +475,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
         ApprovalEntry."RFP Line No." := ApprovalEntryArgument."RFP Line No.";
     end;
     //to send emails for senders of approvals upon creation approval reject on cancelation
-    /* [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnAfterCreateApprovalEntryNotification', '', false, false)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnAfterCreateApprovalEntryNotification', '', false, false)]
      local procedure OnAfterCreateApprovalEntryNotification(var ApprovalEntryArgument: Record "Approval Entry"; var WorkflowStepArgument: Record "Workflow Step Argument")
      var
          NotificationEntry: Record "Notification Entry";
@@ -485,7 +485,7 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
                  NotificationEntry.Type::Approval, ApprovalEntryArgument."Sender ID",
                  ApprovalEntryArgument, WorkflowStepArgument."Link Target Page", WorkflowStepArgument."Custom Link", CopyStr(UserId(), 1, 50));
 
-     end;*/
+     end;
 
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnBeforeCreateApprovalEntryNotification', '', false, false)]
@@ -556,3 +556,4 @@ codeunit 70115 "PaymentRLineWorkFlowFunctions"
     end;
 }
 
+ */

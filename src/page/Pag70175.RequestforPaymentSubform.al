@@ -43,15 +43,21 @@ page 70175 "Request for Payment Subform"
                 trigger OnAction()
                 var
                     PurchReqWorkFlowFunctions: Codeunit "Travel Req. WorkFlow Functions";
+                    RecRef: RecordRef;
+                    productionBom: page "Production BOM";
                 begin
                     //  PurchReqWorkFlowFunctions.ChangePurchReqStatus(Rec);//EDM.YEHYA+-
-                    Rec.TESTFIELD("Payment Status", Rec."Payment Status"::Open);
+                    //  Rec.TESTFIELD("Payment Status", Rec."Payment Status"::Open);
                     // Rec.CheckPayments();
                     //EDM
                     // RequestLine.SETRANGE("Document No.", Rec."No.");
                     //  IF NOT RequestLine.FINDFIRST THEN
                     //     ERROR('You have to enter your request description in the purchase request line to send approval request');
                     //EDM
+
+                    RecRef.GetTable(Rec);
+                    if customWorkMgmt.CheckApprovalsWorkflowEnabled(RecRef) then
+                        customWorkMgmt.OnSendWorkFlowForApproval(RecRef);
                 end;
             }
             action(CancelApprovalRequest)
@@ -71,11 +77,14 @@ page 70175 "Request for Payment Subform"
                 var
                     ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     Sub: Codeunit "Travel Req. WorkFlow Functions";
+                    RecRef: RecordRef;
                 begin
-                    Rec.TESTFIELD("Payment Status", Rec."Payment Status"::"Pending Approval");
-
+                    //Rec.TESTFIELD("Payment Status", Rec."Payment Status"::"Pending Approval");
                     // Sub.OnCancelPurchaseReqApprovalRequest(Rec);
-                    Rec."Payment Status" := Rec."Payment Status"::Open;//to be removed
+                    //Rec."Payment Status" := Rec."Payment Status"::Open;//to be removed
+                    RecRef.GetTable(Rec);
+                    customWorkMgmt.OnCancelWorkFlowForApproval(RecRef);
+
                 end;
             }
             action("Send to Payment journal")
@@ -125,54 +134,57 @@ page 70175 "Request for Payment Subform"
 
     end;
 
-    trigger OnOpenPage()//to be removed
+    /*  trigger OnOpenPage()//to be removed
+     var
+         UserSetup: Record "User Setup";
+         ApprovedEntries: Record "Approval Entry";
+         CancelledEntries: Record "Approval Entry";
+         RejectedEntries: Record "Approval Entry";
+         AllApprovalEntries: Record "Approval Entry";
+
+         PurchaseOrder: Record "Purchase Header";
+         POEnum: Enum "Purchase Document Type";
+     begin
+         Clear(ApprovedEntries);
+         ApprovedEntries.SetRange("Document No.", Rec.Number);
+         ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
+         ApprovedEntries.SetRange(Status, ApprovedEntries.Status::Approved);
+         ApprovedEntries.SetRange("Pending Approvals", 0);
+         IF ApprovedEntries.FindFirst() then begin
+             Rec."Payment Status" := Rec."Payment Status"::Released;
+             Rec.Modify();
+         end;
+
+         Clear(CancelledEntries);
+         CancelledEntries.SetRange("Document No.", Rec.Number);
+         ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
+         CancelledEntries.SetRange(Status, CancelledEntries.Status::Canceled);
+         IF CancelledEntries.FindFirst() then begin
+
+             Clear(AllApprovalEntries);
+             AllApprovalEntries.SetRange("Document No.", Rec.Number);
+
+             Clear(CancelledEntries);
+             CancelledEntries.SetRange("Document No.", Rec.Number);
+             ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
+             CancelledEntries.SetRange(Status, CancelledEntries.Status::Canceled);
+             IF AllApprovalEntries.Count = CancelledEntries.Count then begin
+                 Rec."Payment Status" := Rec."Payment Status"::Open;
+                 Rec.Modify();
+             end;
+         end;
+
+         Clear(RejectedEntries);
+         RejectedEntries.SetRange("Document No.", Rec.Number);
+         ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
+         RejectedEntries.SetRange(Status, RejectedEntries.Status::Rejected);
+         IF RejectedEntries.FindFirst() then begin
+             Rec."Payment Status" := Rec."Payment Status"::Declined;
+             Rec.Modify();
+         end;
+     end; */
+
     var
-        UserSetup: Record "User Setup";
-        ApprovedEntries: Record "Approval Entry";
-        CancelledEntries: Record "Approval Entry";
-        RejectedEntries: Record "Approval Entry";
-        AllApprovalEntries: Record "Approval Entry";
-
-        PurchaseOrder: Record "Purchase Header";
-        POEnum: Enum "Purchase Document Type";
-    begin
-        Clear(ApprovedEntries);
-        ApprovedEntries.SetRange("Document No.", Rec.Number);
-        ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
-        ApprovedEntries.SetRange(Status, ApprovedEntries.Status::Approved);
-        ApprovedEntries.SetRange("Pending Approvals", 0);
-        IF ApprovedEntries.FindFirst() then begin
-            Rec."Payment Status" := Rec."Payment Status"::Released;
-            Rec.Modify();
-        end;
-
-        Clear(CancelledEntries);
-        CancelledEntries.SetRange("Document No.", Rec.Number);
-        ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
-        CancelledEntries.SetRange(Status, CancelledEntries.Status::Canceled);
-        IF CancelledEntries.FindFirst() then begin
-
-            Clear(AllApprovalEntries);
-            AllApprovalEntries.SetRange("Document No.", Rec.Number);
-
-            Clear(CancelledEntries);
-            CancelledEntries.SetRange("Document No.", Rec.Number);
-            ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
-            CancelledEntries.SetRange(Status, CancelledEntries.Status::Canceled);
-            IF AllApprovalEntries.Count = CancelledEntries.Count then begin
-                Rec."Payment Status" := Rec."Payment Status"::Open;
-                Rec.Modify();
-            end;
-        end;
-
-        Clear(RejectedEntries);
-        RejectedEntries.SetRange("Document No.", Rec.Number);
-        ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
-        RejectedEntries.SetRange(Status, RejectedEntries.Status::Rejected);
-        IF RejectedEntries.FindFirst() then begin
-            Rec."Payment Status" := Rec."Payment Status"::Declined;
-            Rec.Modify();
-        end;
-    end;
+        customWorkMgmt: Codeunit "Custom Workflow PaymentLine";
 
 }
