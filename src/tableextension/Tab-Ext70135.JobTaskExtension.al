@@ -357,7 +357,21 @@ tableextension 70135 "Job Task Extension" extends "Job Task"
             Caption = 'Actual (Total Cost) Insurance New';
             Editable = false;
         }
-        //Added by FQ on 13082025 **End**
+        field(70125; "Usage (Total Cost)1."; Decimal)//added on 14082025
+        {
+            AutoFormatType = 1;
+            BlankZero = true;
+            Caption = 'Actual (Total Cost) New.';
+            Editable = false;
+        }
+        field(70126; "Usage (Total Landed Cost)1"; Decimal)//added on 14082025
+        {
+            AutoFormatType = 1;
+            BlankZero = true;
+            Caption = 'Actual (Landed Cost) New.';
+            Editable = false;
+        }
+        //Added by FQ on 14082025 **End**
 
     }
 
