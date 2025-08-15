@@ -4,8 +4,8 @@ page 70109 "Opex "
     Caption = 'Opex ';
     PageType = ListPart;
     SourceTable = Opex;
-    SourceTableView = where(Amount = filter('<>0'));
-    Editable = false;
+    //SourceTableView = where(Amount = filter('<>0'));
+    //Editable = false;
     InsertAllowed = true;
     ModifyAllowed = true;
     DeleteAllowed = true;

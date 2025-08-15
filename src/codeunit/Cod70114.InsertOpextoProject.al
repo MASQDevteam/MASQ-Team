@@ -27,7 +27,7 @@ codeunit 70114 "Insert Opex to Project"
             LineNo := Opex."Line No."
         else
             LineNo := 0;
-
+      
         GLEntry.Reset();
         GLEntry.SetCurrentKey("G/L Account No.");
         GLEntry.SetFilter("G/L Account No.", '62..699');
