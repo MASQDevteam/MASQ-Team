@@ -7,7 +7,8 @@ codeunit 70114 "Insert Opex to Project"
         //Run InsertOpex for all Jobs
         If Job.FindSet() then
             repeat
-                InsertOpex(Job."Global Dimension 1 Code");
+                // InsertOpex(Job."Global Dimension 1 Code");
+                InsertOpex(Job."Apollo Project Number");
             until Job.Next() = 0;
     end;
     //AN 07/25/2025
