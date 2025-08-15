@@ -2,6 +2,69 @@ pageextension 70139 "Project Card extension" extends "Job Card"
 {
     layout
     {
+        addlast(Content)
+        {
+            group("Work In Progress")
+            {
+                Caption = 'Work In Progress';
+                group("Value")
+                {
+                    field("Project Markup Value"; Rec."Project Markup Value")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the Project Markup Value.';
+                    }
+                    field("Invoiced Not Delivered Value"; Rec."Invoiced Not Delivered Value")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the Invoiced Not Delivered Value.';
+                    }
+                    field("Delivered Not Invoiced Value"; Rec."Delivered Not Invoiced Value")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the Delivered Not Invoiced Value.';
+                    }
+                    field("Invoiced and Delivered Value"; Rec."Invoiced and Delivered Value")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the Invoiced and Delivered Value.';
+                    }
+                    field("Not Invoiced Not Delivered Value"; Rec."Not Invoiced Not Delivered Value")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the Not Invoiced Not Delivered Value.';
+                    }
+                }
+                group("Percentage")
+                {
+                    field("Project Markup %"; Rec."Project Markup %")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the Project Markup Percentage.';
+                    }
+                    field("Invoiced Not Delivered %"; Rec."Invoiced Not Delivered %")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the Invoiced Not Delivered Percentage.';
+                    }
+                    field("Delivered Not Invoiced %"; Rec."Delivered Not Invoiced %")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the Delivered Not Invoiced Percentage.';
+                    }
+                    field("Invoiced and Delivered %"; Rec."Invoiced and Delivered %")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the Invoiced and Delivered Percentage.';
+                    }
+                    field("Not Invoiced Not Delivered %"; Rec."Not Invoiced Not Delivered %")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the Not Invoiced Not Delivered Percentage.';
+                    }
+                }
+            }
+        }
         modify(Description)
         {
             ShowMandatory = true;
