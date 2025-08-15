@@ -27,6 +27,7 @@ page 70175 "Request for Payment Subform"
                 field("Payment Status"; Rec."Payment Status")
                 {
                     ToolTip = 'Specifies the value of the Payment Status field.', Comment = '%';
+                    StyleExpr = PaymentApprovalStatus;
                 }
             }
         }
@@ -39,6 +40,7 @@ page 70175 "Request for Payment Subform"
             {
                 Image = SendApprovalRequest;
                 Enabled = (Rec."Payment Status" = Rec."Payment Status"::Open);
+
 
                 trigger OnAction()
                 var
@@ -78,6 +80,7 @@ page 70175 "Request for Payment Subform"
                     ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     Sub: Codeunit "Travel Req. WorkFlow Functions";
                     RecRef: RecordRef;
+
                 begin
                     //Rec.TESTFIELD("Payment Status", Rec."Payment Status"::"Pending Approval");
                     // Sub.OnCancelPurchaseReqApprovalRequest(Rec);
@@ -103,20 +106,29 @@ page 70175 "Request for Payment Subform"
             }
         }
     }
-    // trigger OnAfterGetCurrRecord()
-    // var
+    trigger OnAfterGetCurrRecord()
+    var
     //     SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
-    // begin
-    //     if SUPPLIERPAYMENTREQUEST.Get(Rec.Number) then begin
-    //         Rec.Currency := SUPPLIERPAYMENTREQUEST.Currency;
-    //         Rec.Supplier := SUPPLIERPAYMENTREQUEST.Supplier;
-    //         Rec."PO#" := SUPPLIERPAYMENTREQUEST."PO#";
-    //         Rec."PO Value" := SUPPLIERPAYMENTREQUEST."PO Value";
-    //         Rec."Level of Urgency" := SUPPLIERPAYMENTREQUEST."Level of Urgency";
-    //         Rec."Project Name" := SUPPLIERPAYMENTREQUEST."Project Name";
-    //         Rec."Requested By (Person)" := SUPPLIERPAYMENTREQUEST."Requested By (Person)";
-    //     end;
-    // end;
+    begin
+        //     if SUPPLIERPAYMENTREQUEST.Get(Rec.Number) then begin
+        //         Rec.Currency := SUPPLIERPAYMENTREQUEST.Currency;
+        //         Rec.Supplier := SUPPLIERPAYMENTREQUEST.Supplier;
+        //         Rec."PO#" := SUPPLIERPAYMENTREQUEST."PO#";
+        //         Rec."PO Value" := SUPPLIERPAYMENTREQUEST."PO Value";
+        //         Rec."Level of Urgency" := SUPPLIERPAYMENTREQUEST."Level of Urgency";
+        //         Rec."Project Name" := SUPPLIERPAYMENTREQUEST."Project Name";
+        //         Rec."Requested By (Person)" := SUPPLIERPAYMENTREQUEST."Requested By (Person)";
+        //     end;
+
+        /*  OpenApprovalEntriesExistCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
+         OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
+         CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
+         HasApprovalEntries := ApprovalsMgmt.HasApprovalEntries(Rec.RecordId); */
+
+        PaymentApprovalStatus := PaymentLineStatus.ChangeColorBasedonCustomStatusPaymentLine(rec);
+        CurrPage.Update(false);
+
+    end;
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     var
@@ -184,7 +196,25 @@ page 70175 "Request for Payment Subform"
          end;
      end; */
 
+
+
+
+    /* local procedure GetCurrentlySelectedLines(var PaymentLines: Record "Payment Line"): Boolean
+    begin
+        CurrPage.SetSelectionFilter(PaymentLines);
+        PaymentLines.SetFilter("Payment Status", '%1', PaymentLines."Payment Status"::Open);
+        exit(PaymentLines.FindSet());
+    end; */
+
     var
         customWorkMgmt: Codeunit "Custom Workflow PaymentLine";
+
+        OpenApprovalEntriesExistCurrUser,
+         OpenApprovalEntriesExist, CanCancelApprovalForRecord, ShowWorkflowStatus
+        , StatusEdit, HasApprovalEntries : Boolean;
+
+        ApprovalsMgmt: Codeunit "Approvals Mgmt.";
+        PaymentApprovalStatus: Text;
+        PaymentLineStatus: Codeunit StatusColorChange;
 
 }

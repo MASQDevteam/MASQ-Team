@@ -142,7 +142,12 @@ codeunit 70116 "Custom Workflow PaymentLine"
 
     //==========================================
 
-
+    [EventSubscriber(ObjectType::Codeunit, 1521, 'OnAddWorkflowResponsePredecessorsToLibrary', '', false, false)]
+    local procedure OnAddWorkflowResponsePredecessorsToLibrary(ResponseFunctionName: Code[128])
+    var
+    begin
+        
+    end;
 
 
     var
