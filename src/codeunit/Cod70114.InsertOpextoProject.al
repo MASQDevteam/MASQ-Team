@@ -7,8 +7,7 @@ codeunit 70114 "Insert Opex to Project"
         //Run InsertOpex for all Jobs
         If Job.FindSet() then
             repeat
-                // InsertOpex(Job."Global Dimension 1 Code");
-                InsertOpex(Job."Apollo Project Number");
+                InsertOpex(Job."Global Dimension 1 Code");
             until Job.Next() = 0;
     end;
     //AN 07/25/2025
@@ -28,7 +27,7 @@ codeunit 70114 "Insert Opex to Project"
             LineNo := Opex."Line No."
         else
             LineNo := 0;
-
+      
         GLEntry.Reset();
         GLEntry.SetCurrentKey("G/L Account No.");
         GLEntry.SetFilter("G/L Account No.", '62..699');
