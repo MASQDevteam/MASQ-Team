@@ -9,33 +9,37 @@ tableextension 70110 "Approval Entries extension" extends "Approval Entry"
             FieldClass = FlowField;
             CalcFormula = lookup("User Setup"."Travel request Position" where("User ID" = field("Approver ID")));
         }
-        field(70111; "Supplier Number"; Code[20])
+        field(70111; "Supplier Number"; Code[50])
         {
-            DataClassification = ToBeClassified;
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line".Supplier where(Number = field("Document No."), "Line No" = field("RFP Line No.")));
+            // trigger OnLookup()
+            // var
+            //     Vendor: Record Vendor;
+            // begin
+            //     Clear(Vendor);
+            //     Vendor.Get(Rec."Supplier Number");
+            //     Page.Run(page::"Vendor Card", Vendor);
 
-            trigger OnLookup()
-            var
-                Vendor: Record Vendor;
-            begin
-                Clear(Vendor);
-                Vendor.Get(Rec."Supplier Number");
-                Page.Run(page::"Vendor Card", Vendor);
-
-            end;
+            // end;
 
         }
-        field(70112; "Project Code"; Code[50])
+        field(70112; "Project Code"; Text[100])
         {
-            DataClassification = ToBeClassified;
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."Project Name" where(Number = field("Document No."), "Line No" = field("RFP Line No.")));
         }
         field(70113; "PO Number"; Code[50])
         {
-            DataClassification = ToBeClassified;
-        }
-        field(70114; "Supplier Name"; Text[250])
-        {
-            DataClassification = ToBeClassified;
 
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."PO#" where(Number = field("Document No."), "Line No" = field("RFP Line No.")));
+        }
+        field(70114; "Supplier Name"; Text[100])
+        {
+
+            FieldClass = FlowField;
+            CalcFormula = lookup(Vendor.Name where("No." = field("Supplier Number")));
         }
 
         field(70115; "RFP 1st Payment Date"; Date)
