@@ -79,6 +79,12 @@ pageextension 70132 "SO Extension" extends "Sales Order"
                 ToolTip = 'Specifies the value of the Apollo Total Offer Value field.', Comment = '%';
                 Editable = false;
             }
+            field("SO Type"; Rec."SO Type")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the type of the Sales Order.';
+                Caption = 'SO Type';
+            }
         }
         // Add changes to page layout here
         addafter("Attached Documents")

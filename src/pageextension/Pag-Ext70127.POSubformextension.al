@@ -976,6 +976,8 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                     Usersetup: Record "User Setup";
                     TruckWayBillID: Code[20];
                     TruckDetailsLineNo: Integer;
+                    InlandTruckWayBillID: Code[20];
+                    InlandTruckDetailsLineNo: Integer;
                 begin
                     Clear(Usersetup);
                     Usersetup.Get(UserId);
@@ -994,6 +996,11 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                     IF rec.GetFilter("Truck Details Line No.") <> '' then
                         EVALUATE(TruckDetailsLineNo, rec.GetFilter("Truck Details Line No."));
 
+                    //AN 08/19/2025
+                    InlandTruckWayBillID := Rec.GetFilter("InLand ID");
+                    IF rec.GetFilter("Inland Details Line No") <> '' then
+                        EVALUATE(InlandTruckDetailsLineNo, rec.GetFilter("Inland Details Line No"));
+
                     Clear(PurchaseOrderLine);
                     PurchaseOrderLine.SetRange("Document Type", PurchaseOrderLine."Document Type"::Order);
                     PurchaseOrderLine.SetRange("BL/AWB ID", BLAWBNumber);
@@ -1001,6 +1008,9 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                     PurchaseOrderLine.SetRange("Container Line No.", ContainerLineNumber);
                     PurchaseOrderLine.SetRange("Truck WayBill ID", TruckWayBillID);//added on 27/01/2025
                     PurchaseOrderLine.SetRange("Truck Details Line No.", TruckDetailsLineNo);//added on 27/01/2025
+                    //AN 08/19/2025
+                    PurchaseOrderLine.SetRange("InLand ID", InlandTruckWayBillID);
+                    PurchaseOrderLine.SetRange("Inland Details Line No", InlandTruckDetailsLineNo);
                     Clear(PurchaseOrderLinepage);
                     PurchaseOrderLinepage.SetTableView(PurchaseOrderLine);
                     PurchaseOrderLinepage.LookupMode(true);
@@ -1009,12 +1019,13 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                         PurchaseOrderLinepage.SetSelectionFilter(PurchaseOrderLine);
                         if PurchaseOrderLine.FindSet() then
                             repeat
-
                                 PurchaseOrderLine."BL/AWB ID" := '';
                                 PurchaseOrderLine."Container ID" := '';
                                 PurchaseOrderLine."Container Line No." := 0;
                                 PurchaseOrderLine."Truck WayBill ID" := '';//added on 27/01/2025
-                                PurchaseOrderLine."Truck Details Line No." := 0;//added on 27/01/2025       
+                                PurchaseOrderLine."Truck Details Line No." := 0;//added on 27/01/2025   
+                                PurchaseOrderLine."InLand ID" := ''; //An 08/19/2025
+                                PurchaseOrderLine."Inland Details Line No" := 0;  //An 08/19/2025
                                 PurchaseOrderLine.Validate("Shipping By", PurchaseOrderLine."Shipping By"::" ");//added on 27/01/2025
                                 PurchaseOrderLine."Final ETA" := 0D;
                                 PurchaseOrderLine."Final ETR" := 0D;

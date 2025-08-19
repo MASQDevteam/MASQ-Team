@@ -18,6 +18,10 @@ tableextension 70118 "Sales inv. header extension" extends "Sales Invoice Header
         {
             DataClassification = ToBeClassified;
         }
+        field(70103; "SO Type"; Option)
+        {
+            OptionMembers = "","Sample","Mockup","Main Project";
+        }
     }
 
     keys

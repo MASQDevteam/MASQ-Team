@@ -27,8 +27,19 @@ page 70173 "In Land Truck WayBill Card"
                 {
                     ApplicationArea = All;
                 }
-                field(Agent; Rec.Agent)
+                field("GROSS Weight in KG"; Rec."GROSS Weight in KG")
                 {
+                    ToolTip = 'Specifies the value of the GROSS Weight in KG field.', Comment = '%';
+                    ApplicationArea = All;
+                }
+                field("VOLUMETRIC Weight in KG"; Rec."VOLUMETRIC Weight in KG")
+                {
+                    ToolTip = 'Specifies the value of the VOLUMETRIC Weight in KG field.', Comment = '%';
+                    ApplicationArea = All;
+                }
+                field("NET Weight in KG"; Rec."NET Weight in KG")
+                {
+                    ToolTip = 'Specifies the value of the Weight in KG field.', Comment = '%';
                     ApplicationArea = All;
                 }
                 field("Packing Quantity"; Rec."Packing Quantity")
@@ -43,16 +54,15 @@ page 70173 "In Land Truck WayBill Card"
                 {
                     ApplicationArea = All;
                 }
-                field("Line"; Rec."Line")
-                {
-                }
+
 
                 field("Remarks"; Rec."Remarks")
                 {
                 }
-                field("PO No."; Rec."PO No.")
+                field("PO No. (Inland)"; Rec."PO No. (Inland)")
                 {
                     ApplicationArea = All;
+                    Caption = 'PO No.';
                 }
                 // field("From Location"; Rec."From Location")
                 // {
@@ -62,9 +72,10 @@ page 70173 "In Land Truck WayBill Card"
                 // {
                 //     ApplicationArea = All;
                 // }
-                field("Project No."; Rec."Project No.")
+                field("Project No. (Inland)"; Rec."Project No. (Inland)")
                 {
                     ApplicationArea = All;
+                    Caption = 'Apollo Project No.';
                 }
             }
             part(InLandDetailsSubform; InLandDetailsSubform)

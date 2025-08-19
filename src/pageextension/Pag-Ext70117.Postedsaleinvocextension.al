@@ -13,6 +13,12 @@ pageextension 70117 "Posted sale invoc extension" extends "Posted Sales Invoice"
                 Editable = false;
                 Enabled = false;
             }
+            field("SO Type"; Rec."SO Type")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the type of the Sales Order.';
+                Caption = 'SO Type';
+            }
         }
     }
 

@@ -254,9 +254,9 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
                 CalculateTotalWithCharge();
             end;
         }
-        field(70128; "Sample"; Boolean)
+        field(70128; "PO Type"; Option)
         {
-            DataClassification = ToBeClassified;
+            OptionMembers = "","Sample","Mockup","Main Project";
         }
 
     }

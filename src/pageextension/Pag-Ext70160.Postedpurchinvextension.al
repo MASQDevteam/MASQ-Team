@@ -35,7 +35,7 @@ pageextension 70160 "Posted purch inv extension" extends "Posted Purchase Invoic
         }
         addafter("Meg SO No.")
         {
-            field(Sample; Rec.Sample)
+            field("PO Type"; Rec."PO Type")
             {
                 ApplicationArea = All;
             }

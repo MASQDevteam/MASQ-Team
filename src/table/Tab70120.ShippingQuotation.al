@@ -280,7 +280,6 @@ table 70120 "Shipping Quotation"
             Editable = false;
             CalcFormula = lookup(Job."Apollo Project Number" where("No." = field("Project No.")));
             FieldClass = FlowField;
-            Caption = 'Project No.';
         }
     }
 

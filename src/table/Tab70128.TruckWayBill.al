@@ -260,6 +260,109 @@ table 70128 "Truck WayBill"
             DataClassification = ToBeClassified;
             TableRelation = "Unit of Measure".Code;
         }
+        field(54; "PO No. (Inland)"; Text[1000])
+        {
+            trigger OnLookup()
+            var
+                PurchaseHeader: Record "Purchase Header";
+                PurchaseLine: Record "Purchase Line";
+                PurchaseOrderList: Page "Purchase Order List";
+            begin
+                Rec."PO No. (Inland)" := '';
+                Clear(PurchaseOrderList);
+                Clear(PurchaseLine);
+                Clear(PurchaseHeader);
+                PurchaseLine.SetRange("InLand ID", Rec."Truck WayBill ID");
+                if PurchaseLine.FindFirst() then
+                    repeat
+                        PurchaseHeader.Get(PurchaseLine."Document Type", PurchaseLine."Document No.");
+                        PurchaseHeader.Mark(true);
+                    until PurchaseLine.Next() = 0;
+
+                PurchaseHeader.MarkedOnly(true);
+                PurchaseOrderList.SetTableView(PurchaseHeader);
+                PurchaseOrderList.LookupMode(true);
+                IF PurchaseOrderList.RunModal() = Action::LookupOK then begin
+                    PurchaseOrderList.SetSelectionFilter(PurchaseHeader);
+                    if PurchaseHeader.FindSet() then
+                        repeat
+                            Rec."PO No. (Inland)" += PurchaseHeader."No." + ' , ';
+                        until PurchaseHeader.Next() = 0;
+                end;
+                If Rec."PO No. (Inland)" <> '' then
+                    Rec."PO No. (Inland)" := CopyStr(Rec."PO No. (Inland)", 1, StrLen("PO No. (Inland)") - 3);
+            end;
+        }
+        field(55; "Location Code (Inland)"; Text[1000])
+        {
+            trigger OnLookup()
+            var
+                Location: Record Location;
+                PurchaseLine: Record "Purchase Line";
+                LocationList: Page "Location List";
+            begin
+                Rec."Location Code (Inland)" := '';
+                Clear(LocationList);
+                Clear(PurchaseLine);
+                Clear(Location);
+                PurchaseLine.SetRange("InLand ID", Rec."Truck WayBill ID");
+                if PurchaseLine.FindFirst() then
+                    repeat
+                        Location.Get(PurchaseLine."Location Code");
+                        Location.Mark(true);
+                    until PurchaseLine.Next() = 0;
+
+                Location.MarkedOnly(true);
+                LocationList.SetTableView(Location);
+                LocationList.LookupMode(true);
+                IF LocationList.RunModal() = Action::LookupOK then begin
+                    LocationList.SetSelectionFilter(Location);
+                    if Location.FindSet() then
+                        repeat
+                            Rec."Location Code (Inland)" += Location.Code + ' , ';
+                        until Location.Next() = 0;
+                end;
+                If Rec."Location Code (Inland)" <> '' then
+                    Rec."Location Code (Inland)" := CopyStr(Rec."Location Code (Inland)", 1, StrLen(Rec."Location Code (Inland)") - 3);
+            end;
+        }
+
+        field(56; "Project No. (Inland)"; Text[1000])
+        {
+            trigger OnLookup()
+            var
+                Job: Record Job;
+                PurchaseLine: Record "Purchase Line";
+                JobList: Page "Job List";
+            begin
+                Rec."Project No. (Inland)" := '';
+                Clear(JobList);
+                Clear(PurchaseLine);
+                Clear(Job);
+                PurchaseLine.SetRange("InLand ID", Rec."Truck WayBill ID");
+                if PurchaseLine.FindFirst() then
+                    repeat
+                        Job.Get(PurchaseLine."Job No.");
+                        Job.Mark(true);
+                    until PurchaseLine.Next() = 0;
+
+                Job.MarkedOnly(true);
+                JobList.SetTableView(Job);
+                JobList.LookupMode(true);
+                IF JobList.RunModal() = Action::LookupOK then begin
+                    JobList.SetSelectionFilter(Job);
+                    if Job.FindSet() then
+                        repeat
+                            Rec."Project No. (Inland)" += Job."Apollo Project Number" + ' , ';
+                        until Job.Next() = 0;
+                end;
+                If Rec."Project No. (Inland)" <> '' then
+                    Rec."Project No. (Inland)" := CopyStr(Rec."Project No. (Inland)", 1, StrLen("Project No. (Inland)") - 3);
+            end;
+        }
+        field(57; "GROSS Weight in KG"; Decimal) { }
+        field(58; "VOLUMETRIC Weight in KG"; Decimal) { }
+        field(59; "NET Weight in KG"; Decimal) { }
     }
 
     keys

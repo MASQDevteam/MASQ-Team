@@ -15,6 +15,10 @@ tableextension 70139 "Sales Header Extension" extends "Sales Header"
         {
             DataClassification = ToBeClassified;
         }
+        field(70103; "SO Type"; Option)
+        {
+            OptionMembers = "","Sample","Mockup","Main Project";
+        }
 
     }
 
