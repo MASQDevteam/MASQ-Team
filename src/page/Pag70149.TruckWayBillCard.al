@@ -90,6 +90,7 @@ page 70149 "Truck WayBill Card"
                 field("Location Code"; Rec."Location Code")
                 {
                     ApplicationArea = All;
+                    Caption = 'Apollo Project No.';
                 }
                 field("Project No."; Rec."Project No.")
                 {
