@@ -37,7 +37,11 @@ tableextension 70130 "Vendor Extension" extends Vendor
         field(70106; "Contact per Departments"; Text[1000])
         {
             DataClassification = ToBeClassified;
-            
+
+        }
+        field(70107; "MASQ Group"; Boolean)
+        {
+            DataClassification = ToBeClassified;
         }
     }
 

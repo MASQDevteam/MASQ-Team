@@ -53,6 +53,12 @@ pageextension 70140 "Vendor Card extension" extends "Vendor Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Credit Limit field.';
             }
+            field("MASQ Group"; Rec."MASQ Group")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies if the vendor is part of MASQ Group.';
+                Caption = 'MASQ Group';
+            }
 
         }
         // Add changes to page layout here

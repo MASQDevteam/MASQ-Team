@@ -55,11 +55,11 @@ pageextension 70144 "Job List Extension" extends "Job List"
                 ToolTip = 'Specifies the value of the Total Exported Quantity field.', Comment = '%';
                 DrillDownPageId = "Job Planning Lines";
             }
-            field("Box Mover"; Rec."Box Mover")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Box Mover field.', Comment = '%';
-            }
+            // field("Box Mover"; Rec."Box Mover")
+            // {
+            //     ApplicationArea = All;
+            //     ToolTip = 'Specifies the value of the Box Mover field.', Comment = '%';
+            // }
             field("Apollo Total Offer Value"; Rec."Apollo Total Offer Value")
             {
                 ApplicationArea = All;
