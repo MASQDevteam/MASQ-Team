@@ -15,6 +15,7 @@ page 70175 "Request for Payment Subform"
                 field("Payment Value"; Rec."Payment Value")
                 {
                     ToolTip = 'Specifies the value of the Payment Value field.', Comment = '%';
+                    Editable = Rec."Payment Status" = Rec."Payment Status"::Open;
                 }
                 field("Payment %"; Rec."Payment %")
                 {
@@ -23,6 +24,7 @@ page 70175 "Request for Payment Subform"
                 field("Payment Date"; Rec."Payment Date")
                 {
                     ToolTip = 'Specifies the value of the Payment Date field.', Comment = '%';
+                    Editable = Rec."Payment Status" = Rec."Payment Status"::Open;
                 }
                 field("Payment Status"; Rec."Payment Status")
                 {
@@ -40,8 +42,6 @@ page 70175 "Request for Payment Subform"
             {
                 Image = SendApprovalRequest;
                 Enabled = (Rec."Payment Status" = Rec."Payment Status"::Open);
-
-
                 trigger OnAction()
                 var
                     PurchReqWorkFlowFunctions: Codeunit "Travel Req. WorkFlow Functions";
@@ -66,44 +66,43 @@ page 70175 "Request for Payment Subform"
             {
                 ApplicationArea = Suite;
                 Caption = 'Cancel Approval Re&quest';
-                // Enabled = CanCancelApprovalForRecord;
                 Image = CancelApprovalRequest;
-                Promoted = true;
-                PromotedCategory = Category9;
-                PromotedIsBig = true;
-                PromotedOnly = true;
                 ToolTip = 'Cancel the approval request.';
-                Enabled = (Rec."Payment Status" = Rec."Payment Status"::"Pending Approval");
-
+                //Start NB MASQ
+                Enabled = (Rec."Payment Status" = Rec."Payment Status"::"Pending Approval") or
+                        ((Rec."Payment Status" = Rec."Payment Status"::Released) and (Rec."Sent to journals" = false));
+                //End NB MASQ
                 trigger OnAction()
                 var
                     ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     Sub: Codeunit "Travel Req. WorkFlow Functions";
                     RecRef: RecordRef;
-
                 begin
                     //Rec.TESTFIELD("Payment Status", Rec."Payment Status"::"Pending Approval");
                     // Sub.OnCancelPurchaseReqApprovalRequest(Rec);
                     //Rec."Payment Status" := Rec."Payment Status"::Open;//to be removed
                     RecRef.GetTable(Rec);
                     customWorkMgmt.OnCancelWorkFlowForApproval(RecRef);
-
                 end;
             }
+
+            //Start NB MASQ
             action("Send to Payment journal")
             {
                 ApplicationArea = All;
                 Image = Journals;
-                //Enabled = ((Rec."RFP Type" = Rec."RFP Type"::"Supplier payment") and (REc.Executed = true));
-                // trigger OnAction()
-                // begin
-                //     Rec.TestField("Sent to journals", false);
-                //     Rec.TestField(Supplier);
-                //     Rec.TestField("Bank Number");
-                //     Rec.SendtoPaymentJournal();
-                //     Rec."Sent to journals" := true;
-                // end;
+                Enabled = (Rec."RFP Type" = Rec."RFP Type"::"Supplier payment") And (Rec.Executed = true);
+                trigger OnAction()
+                begin
+                    Rec.TestField("Sent to journals", false);
+                    Rec.TestField(Supplier);
+                    Rec.TestField("Bank Number");
+                    Rec.SendtoPaymentJournal();
+                    Rec."Sent to journals" := true;
+                end;
             }
+            //End NB MASQ
+
         }
     }
     trigger OnAfterGetCurrRecord()
@@ -142,9 +141,34 @@ page 70175 "Request for Payment Subform"
             Rec."Level of Urgency" := SUPPLIERPAYMENTREQUEST."Level of Urgency";
             Rec."Project Name" := SUPPLIERPAYMENTREQUEST."Project Name";
             Rec."Requested By (Person)" := SUPPLIERPAYMENTREQUEST."Requested By (Person)";
+
+            //Start NB MASQ
+            Rec."Bank Number" := SUPPLIERPAYMENTREQUEST."Bank Number";
+            Rec.Executed := SUPPLIERPAYMENTREQUEST.Executed;
+            Rec.Branch := SUPPLIERPAYMENTREQUEST.Branch;
+            Rec."Payment Terms" := SUPPLIERPAYMENTREQUEST."Payment Terms";
+            Rec."Payment Method" := SUPPLIERPAYMENTREQUEST."Payment Method";
+            Rec."Requested By / Department" := SUPPLIERPAYMENTREQUEST."Requested By / Department";
+            //End NB MASQ
+
         end;
 
     end;
+
+    //Start NB MASQ
+    trigger OnQueryClosePage(CloseAction: Action): Boolean
+    var
+        PaymentLine: Record "Payment Line";
+    begin
+        PaymentLine.Reset();
+        PaymentLine.SetRange(Number, Rec.Number);
+        if PaymentLine.FindSet() then begin
+            PaymentLine.CalcSums("Payment Value");
+            if PaymentLine."Payment Value" <> Rec."PO Value" then
+                Error('Sum of Payments must be equal to the PO Value');
+        end;
+    end;
+    //End NB MASQ
 
     /*  trigger OnOpenPage()//to be removed
      var

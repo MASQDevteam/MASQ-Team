@@ -128,6 +128,13 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
         {
             DataClassification = ToBeClassified;
         }
+
+        //Start NB MASQ
+        // field(70128;"Can Edit";)
+        // {
+        //     DataClassification = CustomerContent;
+        // }
+        //End NB MASQ
     }
 
     keys
