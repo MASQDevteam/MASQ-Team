@@ -20,7 +20,7 @@ tableextension 70118 "Sales inv. header extension" extends "Sales Invoice Header
         }
         field(70103; "SO Type"; Option)
         {
-            OptionMembers = "","Sample","Mockup","Main Project";
+            OptionMembers = " ","Sample","Mockup","Main Project";
         }
     }
 

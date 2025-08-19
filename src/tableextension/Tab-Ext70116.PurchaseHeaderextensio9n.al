@@ -256,7 +256,7 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
         }
         field(70128; "PO Type"; Option)
         {
-            OptionMembers = "","Sample","Mockup","Main Project";
+            OptionMembers = " ","Sample","Mockup","Main Project";
         }
 
     }
