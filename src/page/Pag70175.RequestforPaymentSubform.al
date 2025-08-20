@@ -15,7 +15,9 @@ page 70175 "Request for Payment Subform"
                 field("Payment Value"; Rec."Payment Value")
                 {
                     ToolTip = 'Specifies the value of the Payment Value field.', Comment = '%';
-                    Editable = Rec."Payment Status" = Rec."Payment Status"::Open;
+                    //Start NB MASQ
+                    Editable = (Rec."Payment Status" = Rec."Payment Status"::Open) or (EditLine and (Rec."Payment Status" = Rec."Payment Status"::Released));
+                    //End NB MASQ
                 }
                 field("Payment %"; Rec."Payment %")
                 {
@@ -24,7 +26,9 @@ page 70175 "Request for Payment Subform"
                 field("Payment Date"; Rec."Payment Date")
                 {
                     ToolTip = 'Specifies the value of the Payment Date field.', Comment = '%';
-                    Editable = Rec."Payment Status" = Rec."Payment Status"::Open;
+                    //Start NB MASQ
+                    Editable = (Rec."Payment Status" = Rec."Payment Status"::Open) or (EditLine and (Rec."Payment Status" = Rec."Payment Status"::Released));
+                    //End NB MASQ
                 }
                 field("Payment Status"; Rec."Payment Status")
                 {
@@ -105,9 +109,24 @@ page 70175 "Request for Payment Subform"
 
         }
     }
+
+    //Start NB MASQ
+    trigger OnOpenPage()
+    var
+        UserSetup: Record "User Setup";
+    begin
+        UserSetup.Get(UserId);
+        if UserSetup."Edit Payment Line" then
+            EditLine := true
+        else
+            EditLine := false;
+    end;
+    //End NB MASQ
+
     trigger OnAfterGetCurrRecord()
     var
-    //     SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
+        //     SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
+        UserSetup: Record "User Setup";//NB MASQ
     begin
         //     if SUPPLIERPAYMENTREQUEST.Get(Rec.Number) then begin
         //         Rec.Currency := SUPPLIERPAYMENTREQUEST.Currency;
@@ -124,9 +143,16 @@ page 70175 "Request for Payment Subform"
          CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
          HasApprovalEntries := ApprovalsMgmt.HasApprovalEntries(Rec.RecordId); */
 
+        //Start NB MASQ
+        UserSetup.Get(UserId);
+        if UserSetup."Edit Payment Line" then
+            EditLine := true
+        else
+            EditLine := false;
+        //End NB MASQ
+
         PaymentApprovalStatus := PaymentLineStatus.ChangeColorBasedonCustomStatusPaymentLine(rec);
         CurrPage.Update(false);
-
     end;
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
@@ -232,13 +258,11 @@ page 70175 "Request for Payment Subform"
 
     var
         customWorkMgmt: Codeunit "Custom Workflow PaymentLine";
-
         OpenApprovalEntriesExistCurrUser,
-         OpenApprovalEntriesExist, CanCancelApprovalForRecord, ShowWorkflowStatus
+        OpenApprovalEntriesExist, CanCancelApprovalForRecord, ShowWorkflowStatus
         , StatusEdit, HasApprovalEntries : Boolean;
-
         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
         PaymentApprovalStatus: Text;
         PaymentLineStatus: Codeunit StatusColorChange;
-
+        EditLine: Boolean;
 }

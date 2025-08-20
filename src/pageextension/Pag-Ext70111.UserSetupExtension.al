@@ -136,6 +136,21 @@ pageextension 70111 "User Setup Extension" extends "User Setup"
             {
                 ApplicationArea = All;
             }
+
+            //Start NB MASQ
+            field("Edit Payment Line"; Rec."Edit Payment Line")
+            {
+                ApplicationArea = All;
+            }
+            field("Payment Journal Template"; Rec."Payment Journal Template")
+            {
+                ApplicationArea = All;
+            }
+            field("Payment Journal Batch"; Rec."Payment Journal Batch")
+            {
+                ApplicationArea = All;
+            }
+            //End NB MASQ
         }
     }
 

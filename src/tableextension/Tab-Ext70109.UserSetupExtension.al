@@ -130,10 +130,21 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
         }
 
         //Start NB MASQ
-        // field(70128;"Can Edit";)
-        // {
-        //     DataClassification = CustomerContent;
-        // }
+        field(70128; "Edit Payment Line"; Boolean)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(70129; "Payment Journal Template"; Code[10])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "Gen. Journal Template" where(Type = const(Payments));
+        }
+        field(70130; "Payment Journal Batch"; Code[10])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Payment Journal Template"));
+            ValidateTableRelation = false;
+        }
         //End NB MASQ
     }
 

@@ -23,7 +23,7 @@ table 70139 "Payment Line"
             trigger OnValidate()
             var
                 PaymentLine: Record "Payment Line";
-                GenJournalLine: Record "Gen. Journal Line";
+                GenJournalLine: Record "Gen. Journal Line";//NB MASQ
             begin
                 Modify();
                 PaymentLine.SetRange(Number, Rec.Number);
@@ -36,6 +36,7 @@ table 70139 "Payment Line"
                 if "PO Value" <> 0 then
                     "Payment %" := ("Payment Value" * 100) / "PO Value";
 
+                //Start NB MASQ
                 GenJournalLine.Reset();
                 GenJournalLine.SetRange("Journal Template Name", 'PAYMENTS');
                 GenJournalLine.SetRange("Journal Batch Name", 'GLENDA RFP');
@@ -49,6 +50,7 @@ table 70139 "Payment Line"
                             GenJournalLine.Validate(Amount, -Rec."Payment Value");
                         GenJournalLine.Modify(true);
                     until GenJournalLine.Next() = 0;
+                //End NB MASQ
             end;
         }
         field(5; "Payment %"; Decimal)
@@ -59,6 +61,7 @@ table 70139 "Payment Line"
         field(6; "Payment Date"; Date)
         {
             Caption = 'Payment Date';
+            //Start NB MASQ
             trigger OnValidate()
             var
                 GenJournalLine: Record "Gen. Journal Line";
@@ -74,11 +77,12 @@ table 70139 "Payment Line"
                         GenJournalLine.Modify(true);
                     until GenJournalLine.Next() = 0;
             end;
+            //End NB MASQ
         }
         field(7; "Payment Status"; Enum "Document Status")
         {
             Caption = 'Payment Status';
-            Editable = false;
+            Editable = false;//NB MASQ
         }
         field(8; "Currency"; Code[10])
         {
@@ -169,18 +173,21 @@ table 70139 "Payment Line"
         GenJnlLines: Record "Gen. Journal Line";
         LineNo: Integer;
         GenJnlLinesCheck: Record "Gen. Journal Line";
+        UserSetup: Record "User Setup";
     begin
+        UserSetup.Get(UserId);
+
         Clear(GenJnlLinesCheck);
-        GenJnlLinesCheck.SetRange("Journal Template Name", 'PAYMENTS');
-        GenJnlLinesCheck.SetRange("Journal Batch Name", 'GLENDA RFP');
+        GenJnlLinesCheck.SetRange("Journal Template Name", UserSetup."Payment Journal Template");
+        GenJnlLinesCheck.SetRange("Journal Batch Name", UserSetup."Payment Journal Batch");
         IF GenJnlLinesCheck.FindLast() then
             LineNo += GenJnlLinesCheck."Line No." + 10000 else
             LineNo := 0;
 
         CLEAR(GenJnlLines);
         GenJnlLines.INIT;
-        GenJnlLines.VALIDATE("Journal Template Name", 'PAYMENTS');
-        GenJnlLines.VALIDATE("Journal Batch Name", 'GLENDA RFP');
+        GenJnlLines.VALIDATE("Journal Template Name", UserSetup."Payment Journal Template");
+        GenJnlLines.VALIDATE("Journal Batch Name", UserSetup."Payment Journal Batch");
 
         LineNo += 10000;
         GenJnlLines."Line No." := LineNo;
@@ -205,8 +212,8 @@ table 70139 "Payment Line"
         // Credit Line for Vendor Invoice
         CLEAR(GenJnlLines);
         GenJnlLines.INIT;
-        GenJnlLines.VALIDATE("Journal Template Name", 'PAYMENTS');
-        GenJnlLines.VALIDATE("Journal Batch Name", 'GLENDA RFP');
+        GenJnlLines.VALIDATE("Journal Template Name", UserSetup."Payment Journal Template");
+        GenJnlLines.VALIDATE("Journal Batch Name", UserSetup."Payment Journal Batch");
 
         LineNo += 10000;
         GenJnlLines."Line No." := LineNo;
@@ -227,6 +234,8 @@ table 70139 "Payment Line"
         GenJnlLines.Validate("Payment Method Code", rec."Payment Method");
         GenJnlLines.Validate("Payment Terms Code", Rec."Payment Terms");
         GenJnlLines.INSERT(TRUE);
+
+        Message('Payment Journal Lines Are Inserted');
     end;
     //End NB MASQ
 
