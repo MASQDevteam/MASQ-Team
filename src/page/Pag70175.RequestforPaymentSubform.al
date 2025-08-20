@@ -35,6 +35,13 @@ page 70175 "Request for Payment Subform"
                     ToolTip = 'Specifies the value of the Payment Status field.', Comment = '%';
                     StyleExpr = PaymentApprovalStatus;
                 }
+
+                //Start NB MASQ
+                field(Comment; Rec.Comment)
+                {
+                    ApplicationArea = All;
+                }
+                //End NB MASQ
             }
         }
     }

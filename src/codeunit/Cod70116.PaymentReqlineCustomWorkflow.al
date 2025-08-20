@@ -122,23 +122,28 @@ codeunit 70116 "Custom Workflow PaymentLine"
         end;
     end;
 
+    //Start NB MASQ
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnRejectApprovalRequest', '', false, false)]
     local procedure OnRejectApprovalRequest(var ApprovalEntry: Record "Approval Entry")
     var
         RecRef: RecordRef;
-        CustomWorkflowHdr: Record "Payment Line";
-        v: Codeunit "Record Restriction Mgt.";
+        RfpLine: Record "Payment Line"; // PK = Number, Line No.
     begin
-        case ApprovalEntry."Table ID" of
-            DataBase::"Payment Line":
-                begin
-                    if CustomWorkflowHdr.Get(ApprovalEntry."Document No.") then begin
-                        CustomWorkflowHdr.Validate("Payment Status", CustomWorkflowHdr."Payment Status"::Declined);
-                        CustomWorkflowHdr.Modify(true);
-                    end;
-                end;
+        if not RecRef.Get(ApprovalEntry."Record ID to Approve") then
+            exit;
+
+        if RecRef.Number <> Database::"Payment Line" then
+            exit;
+
+        RecRef.SetTable(RfpLine); // This will hydrate Number + Line No from the RecordRef
+        if RfpLine."Payment Status" <> RfpLine."Payment Status"::Declined then begin
+            RfpLine.Validate("Payment Status", RfpLine."Payment Status"::Declined);
+            RfpLine.Validate(Comment, 'Declined by ' + UserId + ' for payment value ' + Format(RfpLine."Payment Value"));
+            RfpLine.Validate("Payment Value", 0);
+            RfpLine.Modify(true);
         end;
     end;
+    //End NB MASQ
 
     //==========================================
 

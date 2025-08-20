@@ -156,6 +156,11 @@ table 70139 "Payment Line"
             DataClassification = CustomerContent;
             TableRelation = "Payment Terms";
         }
+        field(22; Comment; Text[250])
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
         //End NB MASQ
 
     }
