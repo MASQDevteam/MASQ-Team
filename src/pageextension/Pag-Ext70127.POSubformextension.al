@@ -1022,7 +1022,7 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                                 PurchaseOrderLine."BL/AWB ID" := '';
                                 PurchaseOrderLine."Container ID" := '';
                                 PurchaseOrderLine."Container Line No." := 0;
-                                PurchaseOrderLine."Truck WayBill ID" := '';//added on 27/01/2025
+                                Clear(PurchaseOrderLine."Truck WayBill ID"); //:= '';//added on 27/01/2025 //NB MASQ
                                 PurchaseOrderLine."Truck Details Line No." := 0;//added on 27/01/2025   
                                 PurchaseOrderLine."InLand ID" := ''; //An 08/19/2025
                                 PurchaseOrderLine."Inland Details Line No" := 0;  //An 08/19/2025

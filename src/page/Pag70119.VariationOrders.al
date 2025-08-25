@@ -518,7 +518,7 @@ page 70119 "Variation Orders"
                                         NewPurchaseOrderLine."Subjob ID" := 0;
                                         NewPurchaseOrderLine."Truck Details ID" := '';
                                         NewPurchaseOrderLine."Truck Details Line No." := 0;
-                                        NewPurchaseOrderLine."Truck WayBill ID" := '';
+                                        Clear(NewPurchaseOrderLine."Truck WayBill ID"); //:= ''; //NB MASQ
                                         NewPurchaseOrderLine."Meg Item Type" := Rec."MASQ Item Type";
                                         NewPurchaseOrderLine.Modify();
 
