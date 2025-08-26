@@ -258,6 +258,23 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
         {
             OptionMembers = " ","Sample","Mockup","Main Project";
         }
+        // FQ MASQ ** Start ** added new fields
+        field(70129; "Other Charges"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Data MASQ Lookup".Code where(Type = const("OTHER Charges"));
+        }
+        field(70130; "Other Charges Value"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                myInt: Integer;
+            begin
+                CalculateTotalWithCharge();
+            end;
+        }
+        // FQ MASQ ** END **
 
     }
 
@@ -285,7 +302,7 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
     var
     begin
         CalcFields("Amount Including VAT");
-        TotalWithCharges := ("Amount Including VAT" + Rec."Freight Charges Value" + Rec."Documentation Charges Value");
+        TotalWithCharges := ("Amount Including VAT" + Rec."Freight Charges Value" + Rec."Documentation Charges Value" + Rec."Other Charges Value");//FQ MASQ  
         Modify();
     end;
 

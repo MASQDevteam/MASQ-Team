@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <rd:ReportUnitType>Cm</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
   <am:AuthoringMetadata>
     <am:CreatedBy>
       <am:Name>MSRB</am:Name>
@@ -7,18 +9,18 @@
     </am:CreatedBy>
     <am:UpdatedBy>
       <am:Name>MSRB</am:Name>
-      <am:Version>15.0.20283.0</am:Version>
+      <am:Version>15.1.30001.02</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-08-04T11:07:17.3247228Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-08-26T07:30:30.8168935Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource">
+      <rd:SecurityType>None</rd:SecurityType>
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
         <ConnectString />
       </ConnectionProperties>
-      <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>74f56698-d7e0-4ea0-8eb2-bf1cdec44d9a</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -61,6 +63,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox32">
+                          <rd:DefaultName>Textbox32</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -79,7 +82,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox32</rd:DefaultName>
                           <ZIndex>27</ZIndex>
                           <Style>
                             <Border>
@@ -363,6 +365,7 @@
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="LineNo">
+                          <rd:DefaultName>LineNo</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -380,7 +383,6 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>LineNo</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -450,6 +452,7 @@
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="Textbox2">
+                                        <rd:DefaultName>Textbox2</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -467,7 +470,6 @@
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>Textbox2</rd:DefaultName>
                                         <Visibility>
                                           <Hidden>true</Hidden>
                                         </Visibility>
@@ -565,6 +567,7 @@
                                                 <TablixCell>
                                                   <CellContents>
                                                     <Textbox Name="Meg_Vendor_Item_Code">
+                                                      <rd:DefaultName>Meg_Vendor_Item_Code</rd:DefaultName>
                                                       <CanGrow>true</CanGrow>
                                                       <KeepTogether>true</KeepTogether>
                                                       <Paragraphs>
@@ -580,7 +583,6 @@
                                                           <Style />
                                                         </Paragraph>
                                                       </Paragraphs>
-                                                      <rd:DefaultName>Meg_Vendor_Item_Code</rd:DefaultName>
                                                       <Visibility>
                                                         <Hidden>=IIf((Fields!Meg_Family.Value = "") And (Fields!Meg_Item_Subcategory_Code.Value = "") And (Fields!Meg_Installation.Value = "") And (Fields!Meg_Vendor_Item_Code.Value = ""), True, False)</Hidden>
                                                       </Visibility>
@@ -601,6 +603,7 @@
                                                 <TablixCell>
                                                   <CellContents>
                                                     <Textbox Name="Textbox9">
+                                                      <rd:DefaultName>Textbox9</rd:DefaultName>
                                                       <CanGrow>true</CanGrow>
                                                       <KeepTogether>true</KeepTogether>
                                                       <Paragraphs>
@@ -614,7 +617,6 @@
                                                           <Style />
                                                         </Paragraph>
                                                       </Paragraphs>
-                                                      <rd:DefaultName>Textbox9</rd:DefaultName>
                                                       <Visibility>
                                                         <Hidden>=IIf((Fields!Meg_Family.Value = "") And (Fields!Meg_Item_Subcategory_Code.Value = "") And (Fields!Meg_Installation.Value = "") And (Fields!Meg_Vendor_Item_Code.Value = ""), True, False)</Hidden>
                                                       </Visibility>
@@ -664,6 +666,7 @@
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="Details2">
+                                        <rd:DefaultName>Details1</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -681,7 +684,6 @@
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>Details1</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -703,6 +705,7 @@
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="Details3">
+                                        <rd:DefaultName>Details1</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -720,7 +723,6 @@
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>Details1</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -742,6 +744,7 @@
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="Details5">
+                                        <rd:DefaultName>Details1</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -771,7 +774,6 @@ IIF(
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>Details1</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -793,6 +795,7 @@ IIF(
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="Textbox1">
+                                        <rd:DefaultName>Textbox1</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -810,7 +813,6 @@ IIF(
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>Textbox1</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -832,6 +834,7 @@ IIF(
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="Details6">
+                                        <rd:DefaultName>Details1</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -849,7 +852,6 @@ IIF(
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>Details1</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -919,6 +921,7 @@ IIF(
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Quantity">
+                          <rd:DefaultName>Quantity</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -937,7 +940,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Quantity</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -955,6 +957,7 @@ IIF(
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Direct_Unit_Cost">
+                          <rd:DefaultName>Direct_Unit_Cost</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -973,7 +976,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Direct_Unit_Cost</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -991,6 +993,7 @@ IIF(
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Unit_of_Measure_Code">
+                          <rd:DefaultName>Unit_of_Measure_Code</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -1008,7 +1011,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Unit_of_Measure_Code</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -1026,6 +1028,7 @@ IIF(
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Amount">
+                          <rd:DefaultName>Amount</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -1044,7 +1047,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Amount</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -1152,6 +1154,7 @@ IIF(
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox58">
+                          <rd:DefaultName>Textbox58</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -1169,7 +1172,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox58</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -1235,7 +1237,6 @@ IIF(
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
             <Top>0.17639cm</Top>
-            <Left>0cm</Left>
             <Height>5.0086cm</Height>
             <Width>25.84935cm</Width>
             <Style>
@@ -1434,6 +1435,7 @@ IIF(
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="Description">
+                                        <rd:DefaultName>Description</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <CanShrink>true</CanShrink>
                                         <KeepTogether>true</KeepTogether>
@@ -1450,7 +1452,6 @@ IIF(
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>Description</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Color>LightGrey</Color>
@@ -1527,7 +1528,6 @@ IIF(
             </TablixRowHierarchy>
             <KeepTogether>true</KeepTogether>
             <Top>9.06742cm</Top>
-            <Left>0cm</Left>
             <Height>1.26488cm</Height>
             <Width>25.84939cm</Width>
             <ZIndex>1</ZIndex>
@@ -1570,6 +1570,7 @@ IIF(
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="Bill_To_Caption">
+                                        <rd:DefaultName>Bill_To_Caption</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -1588,7 +1589,6 @@ IIF(
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>Bill_To_Caption</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -1605,6 +1605,7 @@ IIF(
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="CompanyName2">
+                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -1623,7 +1624,6 @@ IIF(
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -1645,6 +1645,7 @@ IIF(
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="CompanyName3">
+                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -1662,7 +1663,6 @@ IIF(
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -1679,6 +1679,7 @@ IIF(
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="CompanyName4">
+                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -1696,7 +1697,6 @@ IIF(
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -1718,6 +1718,7 @@ IIF(
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="CompanyName9">
+                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -1735,7 +1736,6 @@ IIF(
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -1752,6 +1752,7 @@ IIF(
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="CompanyName10">
+                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -1769,7 +1770,6 @@ IIF(
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -1791,6 +1791,7 @@ IIF(
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="CompanyName7">
+                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -1808,7 +1809,6 @@ IIF(
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -1825,6 +1825,7 @@ IIF(
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="CompanyName11">
+                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -1842,7 +1843,6 @@ IIF(
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>CompanyName</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -1890,10 +1890,10 @@ IIF(
                           <TablixBody>
                             <TablixColumns>
                               <TablixColumn>
-                                <Width>2.4565cm</Width>
+                                <Width>2.77744cm</Width>
                               </TablixColumn>
                               <TablixColumn>
-                                <Width>1.55835cm</Width>
+                                <Width>1.23741cm</Width>
                               </TablixColumn>
                               <TablixColumn>
                                 <Width>0.7926cm</Width>
@@ -1904,7 +1904,7 @@ IIF(
                             </TablixColumns>
                             <TablixRows>
                               <TablixRow>
-                                <Height>0.62645cm</Height>
+                                <Height>0.53696cm</Height>
                                 <TablixCells>
                                   <TablixCell>
                                     <CellContents>
@@ -2004,7 +2004,7 @@ IIF(
                                 </TablixCells>
                               </TablixRow>
                               <TablixRow>
-                                <Height>0.62645cm</Height>
+                                <Height>0.53696cm</Height>
                                 <TablixCells>
                                   <TablixCell>
                                     <CellContents>
@@ -2178,7 +2178,7 @@ IIF(
                                 </TablixCells>
                               </TablixRow>
                               <TablixRow>
-                                <Height>0.62645cm</Height>
+                                <Height>0.53696cm</Height>
                                 <TablixCells>
                                   <TablixCell>
                                     <CellContents>
@@ -2270,7 +2270,7 @@ IIF(
                                 </TablixCells>
                               </TablixRow>
                               <TablixRow>
-                                <Height>0.65865cm</Height>
+                                <Height>0.56916cm</Height>
                                 <TablixCells>
                                   <TablixCell>
                                     <CellContents>
@@ -2443,7 +2443,180 @@ IIF(
                                 </TablixCells>
                               </TablixRow>
                               <TablixRow>
-                                <Height>0.69633cm</Height>
+                                <Height>0.53696cm</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox10">
+                                        <rd:DefaultName>Textbox10</rd:DefaultName>
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>=Fields!Other_Charges_caption.Value</Value>
+                                                <Style>
+                                                  <FontFamily>Segoe UI</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <Style>
+                                          <Border>
+                                            <Style>Solid</Style>
+                                          </Border>
+                                          <LeftBorder>
+                                            <Color>Black</Color>
+                                            <Width>2pt</Width>
+                                          </LeftBorder>
+                                          <RightBorder>
+                                            <Style>None</Style>
+                                          </RightBorder>
+                                          <VerticalAlign>Middle</VerticalAlign>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox11">
+                                        <rd:DefaultName>Textbox11</rd:DefaultName>
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontFamily>Segoe UI</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Right</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <Style>
+                                          <Border>
+                                            <Style>Solid</Style>
+                                          </Border>
+                                          <LeftBorder>
+                                            <Style>None</Style>
+                                          </LeftBorder>
+                                          <RightBorder>
+                                            <Color>Black</Color>
+                                            <Style>None</Style>
+                                          </RightBorder>
+                                          <VerticalAlign>Middle</VerticalAlign>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox12">
+                                        <rd:DefaultName>Textbox12</rd:DefaultName>
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontFamily>Segoe UI</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <Style>
+                                          <Border>
+                                            <Style>Solid</Style>
+                                          </Border>
+                                          <LeftBorder>
+                                            <Style>None</Style>
+                                          </LeftBorder>
+                                          <RightBorder>
+                                            <Color>Black</Color>
+                                            <Style>None</Style>
+                                          </RightBorder>
+                                          <VerticalAlign>Middle</VerticalAlign>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox13">
+                                        <rd:DefaultName>Textbox13</rd:DefaultName>
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>=IIF(Fields!Other_Charges_Value.Value &gt; 0, Format(Fields!Other_Charges_Value.Value, "#,##0.00"), "-")</Value>
+                                                <Style>
+                                                  <FontFamily>Segoe UI</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Right</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <TopBorder>
+                                            <Style>Solid</Style>
+                                          </TopBorder>
+                                          <BottomBorder>
+                                            <Style>Solid</Style>
+                                            <Width>1pt</Width>
+                                          </BottomBorder>
+                                          <VerticalAlign>Middle</VerticalAlign>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                              <TablixRow>
+                                <Height>0.60684cm</Height>
                                 <TablixCells>
                                   <TablixCell>
                                     <CellContents>
@@ -2501,7 +2674,7 @@ IIF(
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=Fields!CurrencyCode.Value &amp; " " &amp; Format(Fields!Gross.Value, "#,##0.00")</Value>
+                                                <Value>=Fields!CurrencyCode.Value &amp; " " &amp; Format(Fields!Gross.Value, "#,##0.00")+(Fields!Other_Charges_Value.Value)</Value>
                                                 <Style>
                                                   <FontFamily>Segoe UI</FontFamily>
                                                   <FontWeight>Bold</FontWeight>
@@ -2541,11 +2714,12 @@ IIF(
                                 </TablixCells>
                               </TablixRow>
                               <TablixRow>
-                                <Height>0.64811cm</Height>
+                                <Height>0.55862cm</Height>
                                 <TablixCells>
                                   <TablixCell>
                                     <CellContents>
                                       <Textbox Name="AmountInWords">
+                                        <rd:DefaultName>AmountInWords</rd:DefaultName>
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -2564,7 +2738,6 @@ IIF(
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>AmountInWords</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>Solid</Style>
@@ -2609,6 +2782,7 @@ IIF(
                               <TablixMember />
                               <TablixMember />
                               <TablixMember />
+                              <TablixMember />
                             </TablixMembers>
                           </TablixRowHierarchy>
                           <DataSetName>DataSet_Result</DataSetName>
@@ -2637,7 +2811,6 @@ IIF(
               </TablixMembers>
             </TablixRowHierarchy>
             <Top>5.18499cm</Top>
-            <Left>0cm</Left>
             <Height>3.88243cm</Height>
             <Width>25.84935cm</Width>
             <ZIndex>2</ZIndex>
@@ -2665,8 +2838,6 @@ IIF(
                   <Value>=Fields!CompanyInfoPicture.Value</Value>
                   <MIMEType>image/png</MIMEType>
                   <Sizing>Fit</Sizing>
-                  <Top>0cm</Top>
-                  <Left>0cm</Left>
                   <Height>3.73577cm</Height>
                   <Width>3.06575cm</Width>
                   <Style>
@@ -2698,7 +2869,6 @@ IIF(
                       </Style>
                     </Paragraph>
                   </Paragraphs>
-                  <Top>0cm</Top>
                   <Left>3.4181cm</Left>
                   <Height>1.03627cm</Height>
                   <Width>18.66186cm</Width>
@@ -2717,6 +2887,7 @@ IIF(
                 <Rectangle Name="Rectangle2">
                   <ReportItems>
                     <Textbox Name="Textbox31">
+                      <rd:DefaultName>Textbox31</rd:DefaultName>
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -2736,9 +2907,7 @@ IIF(
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox31</rd:DefaultName>
                       <Top>1.27cm</Top>
-                      <Left>0cm</Left>
                       <Height>0.8028cm</Height>
                       <Width>25.82544cm</Width>
                       <Style>
@@ -2755,7 +2924,6 @@ IIF(
                   </ReportItems>
                   <KeepTogether>true</KeepTogether>
                   <Top>4.37077cm</Top>
-                  <Left>0cm</Left>
                   <Height>2.0728cm</Height>
                   <Width>25.82544cm</Width>
                   <ZIndex>2</ZIndex>
@@ -2789,8 +2957,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
-                          <Left>0cm</Left>
                           <Height>0.6cm</Height>
                           <Width>1.68572cm</Width>
                           <Style>
@@ -2824,7 +2990,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
                           <Left>1.68573cm</Left>
                           <Height>0.6cm</Height>
                           <Width>4.88555cm</Width>
@@ -2842,8 +3007,6 @@ IIF(
                         </Textbox>
                       </ReportItems>
                       <KeepTogether>true</KeepTogether>
-                      <Top>0cm</Top>
-                      <Left>0cm</Left>
                       <Height>0.6cm</Height>
                       <Width>6.57128cm</Width>
                       <Style>
@@ -2874,7 +3037,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
                           <Left>1.68573cm</Left>
                           <Height>0.56022cm</Height>
                           <Width>4.88555cm</Width>
@@ -2909,8 +3071,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
-                          <Left>0cm</Left>
                           <Height>0.56022cm</Height>
                           <Width>1.68572cm</Width>
                           <ZIndex>1</ZIndex>
@@ -2928,7 +3088,6 @@ IIF(
                       </ReportItems>
                       <KeepTogether>true</KeepTogether>
                       <Top>0.6cm</Top>
-                      <Left>0cm</Left>
                       <Height>0.56022cm</Height>
                       <Width>6.57128cm</Width>
                       <ZIndex>1</ZIndex>
@@ -2960,8 +3119,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
-                          <Left>0cm</Left>
                           <Height>0.56716cm</Height>
                           <Width>1.68572cm</Width>
                           <Style>
@@ -2995,7 +3152,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
                           <Left>1.68573cm</Left>
                           <Height>0.56716cm</Height>
                           <Width>4.88555cm</Width>
@@ -3014,7 +3170,6 @@ IIF(
                       </ReportItems>
                       <KeepTogether>true</KeepTogether>
                       <Top>1.16022cm</Top>
-                      <Left>0cm</Left>
                       <Height>0.56716cm</Height>
                       <Width>6.57128cm</Width>
                       <ZIndex>2</ZIndex>
@@ -3046,8 +3201,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
-                          <Left>0cm</Left>
                           <Height>0.48661cm</Height>
                           <Width>1.68572cm</Width>
                           <Style>
@@ -3081,7 +3234,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
                           <Left>1.68573cm</Left>
                           <Height>0.48661cm</Height>
                           <Width>4.88555cm</Width>
@@ -3100,7 +3252,6 @@ IIF(
                       </ReportItems>
                       <KeepTogether>true</KeepTogether>
                       <Top>1.72738cm</Top>
-                      <Left>0cm</Left>
                       <Height>0.48661cm</Height>
                       <Width>6.57128cm</Width>
                       <ZIndex>3</ZIndex>
@@ -3147,8 +3298,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
-                          <Left>0cm</Left>
                           <Height>0.6cm</Height>
                           <Width>2.34719cm</Width>
                           <Style>
@@ -3182,7 +3331,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
                           <Left>2.34719cm</Left>
                           <Height>0.6cm</Height>
                           <Width>4.09923cm</Width>
@@ -3200,8 +3348,6 @@ IIF(
                         </Textbox>
                       </ReportItems>
                       <KeepTogether>true</KeepTogether>
-                      <Top>0cm</Top>
-                      <Left>0cm</Left>
                       <Height>0.6cm</Height>
                       <Width>6.44642cm</Width>
                       <Style>
@@ -3232,7 +3378,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
                           <Left>1.68573cm</Left>
                           <Height>0.56022cm</Height>
                           <Width>4.76069cm</Width>
@@ -3267,8 +3412,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
-                          <Left>0cm</Left>
                           <Height>0.56022cm</Height>
                           <Width>1.68572cm</Width>
                           <ZIndex>1</ZIndex>
@@ -3286,7 +3429,6 @@ IIF(
                       </ReportItems>
                       <KeepTogether>true</KeepTogether>
                       <Top>0.6cm</Top>
-                      <Left>0cm</Left>
                       <Height>0.56022cm</Height>
                       <Width>6.44642cm</Width>
                       <ZIndex>1</ZIndex>
@@ -3318,8 +3460,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
-                          <Left>0cm</Left>
                           <Height>0.56716cm</Height>
                           <Width>1.68572cm</Width>
                           <Style>
@@ -3353,7 +3493,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
                           <Left>1.68573cm</Left>
                           <Height>0.56716cm</Height>
                           <Width>4.76069cm</Width>
@@ -3372,7 +3511,6 @@ IIF(
                       </ReportItems>
                       <KeepTogether>true</KeepTogether>
                       <Top>1.16022cm</Top>
-                      <Left>0cm</Left>
                       <Height>0.56716cm</Height>
                       <Width>6.44642cm</Width>
                       <ZIndex>2</ZIndex>
@@ -3404,8 +3542,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
-                          <Left>0cm</Left>
                           <Height>0.48661cm</Height>
                           <Width>1.68572cm</Width>
                           <Style>
@@ -3439,7 +3575,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
                           <Left>1.68573cm</Left>
                           <Height>0.48661cm</Height>
                           <Width>4.76069cm</Width>
@@ -3458,7 +3593,6 @@ IIF(
                       </ReportItems>
                       <KeepTogether>true</KeepTogether>
                       <Top>1.72738cm</Top>
-                      <Left>0cm</Left>
                       <Height>0.48661cm</Height>
                       <Width>6.44642cm</Width>
                       <ZIndex>3</ZIndex>
@@ -3505,8 +3639,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
-                          <Left>0cm</Left>
                           <Height>0.6cm</Height>
                           <Width>2.34719cm</Width>
                           <Style>
@@ -3541,7 +3673,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
                           <Left>2.34719cm</Left>
                           <Height>0.6cm</Height>
                           <Width>7.01041cm</Width>
@@ -3559,8 +3690,6 @@ IIF(
                         </Textbox>
                       </ReportItems>
                       <KeepTogether>true</KeepTogether>
-                      <Top>0cm</Top>
-                      <Left>0cm</Left>
                       <Height>0.6cm</Height>
                       <Width>9.3576cm</Width>
                       <Style>
@@ -3627,7 +3756,6 @@ IIF(
                             </Paragraph>
                           </Paragraphs>
                           <Top>0.01686cm</Top>
-                          <Left>0cm</Left>
                           <Height>0.56022cm</Height>
                           <Width>2.34719cm</Width>
                           <ZIndex>1</ZIndex>
@@ -3645,7 +3773,6 @@ IIF(
                       </ReportItems>
                       <KeepTogether>true</KeepTogether>
                       <Top>0.58314cm</Top>
-                      <Left>0cm</Left>
                       <Height>0.57708cm</Height>
                       <Width>9.3576cm</Width>
                       <ZIndex>1</ZIndex>
@@ -3677,8 +3804,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
-                          <Left>0cm</Left>
                           <Height>0.56716cm</Height>
                           <Width>2.34719cm</Width>
                           <Style>
@@ -3712,7 +3837,6 @@ IIF(
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <Top>0cm</Top>
                           <Left>2.34719cm</Left>
                           <Height>0.56716cm</Height>
                           <Width>7.01041cm</Width>
@@ -3731,7 +3855,6 @@ IIF(
                       </ReportItems>
                       <KeepTogether>true</KeepTogether>
                       <Top>1.16022cm</Top>
-                      <Left>0cm</Left>
                       <Height>0.56716cm</Height>
                       <Width>9.3576cm</Width>
                       <ZIndex>2</ZIndex>
@@ -3764,7 +3887,6 @@ IIF(
                             </Paragraph>
                           </Paragraphs>
                           <Top>0.01686cm</Top>
-                          <Left>0cm</Left>
                           <Height>0.45594cm</Height>
                           <Width>2.34719cm</Width>
                           <Style>
@@ -3817,7 +3939,6 @@ IIF(
                       </ReportItems>
                       <KeepTogether>true</KeepTogether>
                       <Top>1.71052cm</Top>
-                      <Left>0cm</Left>
                       <Height>0.4728cm</Height>
                       <Width>9.35764cm</Width>
                       <ZIndex>3</ZIndex>
@@ -3926,6 +4047,7 @@ IIF(
               </Style>
             </Rectangle>
             <Textbox Name="Textbox4">
+              <rd:DefaultName>Textbox4</rd:DefaultName>
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -3944,9 +4066,6 @@ IIF(
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>0cm</Top>
-              <Left>0cm</Left>
               <Height>1.48167cm</Height>
               <Width>25.84935cm</Width>
               <ZIndex>1</ZIndex>
@@ -3978,8 +4097,6 @@ IIF(
               <Value>MASQFooterBranches</Value>
               <MIMEType>image/bmp</MIMEType>
               <Sizing>Fit</Sizing>
-              <Top>0cm</Top>
-              <Left>0cm</Left>
               <Height>2.32138cm</Height>
               <Width>15.16565cm</Width>
               <Style>
@@ -3989,6 +4106,7 @@ IIF(
               </Style>
             </Image>
             <Textbox Name="Textbox7">
+              <rd:DefaultName>Textbox7</rd:DefaultName>
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -4006,7 +4124,6 @@ IIF(
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox7</rd:DefaultName>
               <Top>2.45737cm</Top>
               <Left>8.04359cm</Left>
               <Height>0.6cm</Height>
@@ -4027,7 +4144,6 @@ IIF(
               <Value>MASQFooterWebsiter</Value>
               <MIMEType>image/bmp</MIMEType>
               <Sizing>Fit</Sizing>
-              <Top>0cm</Top>
               <Left>22.9412cm</Left>
               <Height>2.32138cm</Height>
               <Width>2.90819cm</Width>
@@ -4857,8 +4973,6 @@ tst7ePyzwxPZIxLwRPaIBDyRPSIBT2SPSMAT2SMS8ET2iAQ8kT0iAU9kj0jAE9kjEvBE9ogEPJE9IgFP
   </EmbeddedImages>
   <Language>=User!Language</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
-  <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
@@ -5221,6 +5335,15 @@ tst7ePyzwxPZIxLwRPaIBDyRPSIBT2SPSMAT2SMS8ET2iAQ8kT0iAU9kj0jAE9kjEvBE9ogEPJE9IgFP
         </Field>
         <Field Name="Order_Date">
           <DataField>Order_Date</DataField>
+        </Field>
+        <Field Name="Other_Charges_Value">
+          <DataField>Other_Charges_Value</DataField>
+        </Field>
+        <Field Name="Other_Charges_ValueFormat">
+          <DataField>Other_Charges_ValueFormat</DataField>
+        </Field>
+        <Field Name="Other_Charges_caption">
+          <DataField>Other_Charges_caption</DataField>
         </Field>
         <Field Name="PurchLineType">
           <DataField>PurchLineType</DataField>

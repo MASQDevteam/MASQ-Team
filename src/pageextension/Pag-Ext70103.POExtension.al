@@ -24,6 +24,17 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                     ApplicationArea = All;
 
                 }
+                //FQ MASQ ** Start
+                field("Other Charges"; Rec."Other Charges")
+                {
+                    ApplicationArea = All;
+                }
+                field("Other Charges Value"; Rec."Other Charges Value")
+                {
+                    ApplicationArea = All;
+                }
+                // FQ MASQ ** END
+
                 field(TotalWithCharges; Rec.TotalWithCharges)
                 {
                     ApplicationArea = All;
@@ -39,7 +50,7 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
         // Add changes to page layout here
         addafter(Status)
         {
-            field("PO Type";Rec."PO Type")
+            field("PO Type"; Rec."PO Type")
             {
                 ApplicationArea = All;
             }

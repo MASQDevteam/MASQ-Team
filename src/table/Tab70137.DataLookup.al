@@ -9,7 +9,7 @@ table 70137 "Data MASQ Lookup"
         field(1; "Type"; Option)
         {
             Caption = 'Type';
-            OptionMembers = " ","Documentation","Freight","Department";
+            OptionMembers = " ","Documentation","Freight","Department","OTHER Charges";//FQ MASQ ** added new option OTher Charges
         }
         field(2; "Code"; Code[20])
         {

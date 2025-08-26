@@ -9,6 +9,8 @@ reportextension 70101 "Purch Order KSA Ext" extends "Meg Purchase Order KSA Draf
             {
 
             }
+            column(Other_Charges_Value; "Other Charges Value") { }//FQ MASQ
+            column(Other_Charges_caption; Other_Caption) { }//FQ MASQ
         }
         add("Purchase Line")
         {
@@ -45,4 +47,5 @@ reportextension 70101 "Purch Order KSA Ext" extends "Meg Purchase Order KSA Draf
     }
     var
         ProjNo: Code[20];
+        Other_Caption: Label 'Other Charges';// FQ MASQ
 }
