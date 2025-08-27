@@ -68,6 +68,20 @@ tableextension 70124 "Project Extension" extends Job
             CalcFormula = sum("Job Planning Line".Quantity where("Job No." = field("No.")));
             Editable = false;
         }
+
+        //Start NB MASQ
+        modify("Person Responsible")
+        {
+            trigger OnAfterValidate()
+            var
+                Resource: Record Resource;
+            begin
+                if Resource.Get("Person Responsible") then
+                    "Person Responsible" := Resource.Name;
+            end;
+        }
+        //End NB MASQ
+
     }
 
 
