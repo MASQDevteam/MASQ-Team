@@ -195,6 +195,15 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
             end;
         }
 
+        //Start NB MASQ
+        addafter("No.")
+        {
+            field("Available Inventory"; Rec."Available Inventory")
+            {
+                ApplicationArea = All;
+            }
+        }
+        //End NB MASQ
 
         modify("Meg No. 2")
         {
@@ -585,6 +594,18 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
         CanEditPO_SO_Lines := UserSetup."Can Edit SO/PO Details";
         visibleQTYSplit := UserSetup."Can Split SO";
     end;
+
+    //Start NB MASQ
+    trigger OnAfterGetRecord()
+    var
+        Item: Record Item;
+    begin
+        if Item.Get(Rec."No.") then begin
+            Item.CalcFields(Inventory);
+            Rec.Validate("Available Inventory", Item.Inventory);
+        end;
+    end;
+    //End NB MASQ
 
     procedure MoveLine(Direction: Integer)
     var

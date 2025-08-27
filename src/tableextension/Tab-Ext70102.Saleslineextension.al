@@ -244,6 +244,14 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
             Caption = 'MIR Approval Date';
             DataClassification = CustomerContent;
         }
+
+        //Start NB MASQ
+        field(70142; "Available Inventory"; Decimal)
+        {
+            Editable = false;
+        }
+        //END NB MASQ
+
         modify("Planned Delivery Date")
         {
             trigger OnAfterValidate()
@@ -255,15 +263,22 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
                     Rec."MIR Due Date" := CalcDate('14D', DeliveryDate);
             end;
         }
-        // modify(Quantity)//Moved to Page subform
-        // {
-        //     trigger OnAfterValidate()
-        //     var
-        //     begin
-        //         if "MASQ Purchase Order Line No." <> 0 then
-        //             Error(Text002, FieldCaption(Quantity), "MASQ Purchase Order No.", "MASQ Purchase Order Line No.");
-        //     end;
-        // }
+
+        //Start NB MASQ
+        modify(Quantity)
+        {
+            trigger OnAfterValidate()
+            var
+                Item: Record Item;
+            begin
+                if Item.Get("No.") then begin
+                    Item.CalcFields(Inventory);
+                    Rec.Validate("Available Inventory", Item.Inventory);
+                end;
+            end;
+        }
+        //End NB MASQ
+
         //AN 04/22/2025
         /*    modify("Unit Price")//moved to page by AI
             {
