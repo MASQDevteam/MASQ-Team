@@ -23,7 +23,9 @@
             "environmentName": "production",
             "breakOnNext": "WebClient",
             "executionContext": "DebugAndProfile",
-            "tenant": "1eda1ee1-2c51-412e-8654-4901e72243c7"
+            "tenant": "1eda1ee1-2c51-412e-8654-4901e72243c7",
+            "userId": "DEVELOPMENT.TEAM",
+            "snapshotVerbosity": "Full"
         }
     ]
 }
