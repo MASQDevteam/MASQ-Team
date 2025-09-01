@@ -127,6 +127,12 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the MASQ Sales Order No. field.', Comment = '%';
             }
+            //FQ MASQ ** Start
+            field("Gen. Bus. Posting Group"; Rec."Gen. Bus. Posting Group")
+            {
+                ApplicationArea = All;
+            }
+            // FQ MASQ ** END
 
         }
         addafter("Attached Documents")
