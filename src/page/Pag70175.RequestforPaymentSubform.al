@@ -15,9 +15,9 @@ page 70175 "Request for Payment Subform"
                 field("Payment Value"; Rec."Payment Value")
                 {
                     ToolTip = 'Specifies the value of the Payment Value field.', Comment = '%';
-                    //Start NB MASQ
+                    //NB MASQ Start
                     Editable = (Rec."Payment Status" = Rec."Payment Status"::Open) or (EditLine and (Rec."Payment Status" = Rec."Payment Status"::Released));
-                    //End NB MASQ
+                    //NB MASQ End
                 }
                 field("Payment %"; Rec."Payment %")
                 {
@@ -26,9 +26,9 @@ page 70175 "Request for Payment Subform"
                 field("Payment Date"; Rec."Payment Date")
                 {
                     ToolTip = 'Specifies the value of the Payment Date field.', Comment = '%';
-                    //Start NB MASQ
+                    //NB MASQ Start
                     Editable = (Rec."Payment Status" = Rec."Payment Status"::Open) or (EditLine and (Rec."Payment Status" = Rec."Payment Status"::Released));
-                    //End NB MASQ
+                    //NB MASQ End
                 }
                 field("Payment Status"; Rec."Payment Status")
                 {
@@ -36,12 +36,12 @@ page 70175 "Request for Payment Subform"
                     StyleExpr = PaymentApprovalStatus;
                 }
 
-                //Start NB MASQ
+                //NB MASQ Start
                 field(Comment; Rec.Comment)
                 {
                     ApplicationArea = All;
                 }
-                //End NB MASQ
+                //NB MASQ End
             }
         }
     }
@@ -79,10 +79,10 @@ page 70175 "Request for Payment Subform"
                 Caption = 'Cancel Approval Re&quest';
                 Image = CancelApprovalRequest;
                 ToolTip = 'Cancel the approval request.';
-                //Start NB MASQ
+                //NB MASQ Start
                 Enabled = (Rec."Payment Status" = Rec."Payment Status"::"Pending Approval") or
                         ((Rec."Payment Status" = Rec."Payment Status"::Released) and (Rec."Sent to journals" = false));
-                //End NB MASQ
+                //NB MASQ End
                 trigger OnAction()
                 var
                     ApprovalsMgmt: Codeunit "Approvals Mgmt.";
@@ -97,7 +97,7 @@ page 70175 "Request for Payment Subform"
                 end;
             }
 
-            //Start NB MASQ
+            //NB MASQ Start
             action("Send to Payment journal")
             {
                 ApplicationArea = All;
@@ -112,12 +112,12 @@ page 70175 "Request for Payment Subform"
                     Rec."Sent to journals" := true;
                 end;
             }
-            //End NB MASQ
+            //NB MASQ End
 
         }
     }
 
-    //Start NB MASQ
+    //NB MASQ Start
     trigger OnOpenPage()
     var
         UserSetup: Record "User Setup";
@@ -128,7 +128,7 @@ page 70175 "Request for Payment Subform"
         else
             EditLine := false;
     end;
-    //End NB MASQ
+    //NB MASQ End
 
     trigger OnAfterGetCurrRecord()
     var
@@ -150,13 +150,13 @@ page 70175 "Request for Payment Subform"
          CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
          HasApprovalEntries := ApprovalsMgmt.HasApprovalEntries(Rec.RecordId); */
 
-        //Start NB MASQ
+        //NB MASQ Start
         UserSetup.Get(UserId);
         if UserSetup."Edit Payment Line" then
             EditLine := true
         else
             EditLine := false;
-        //End NB MASQ
+        //NB MASQ End
 
         PaymentApprovalStatus := PaymentLineStatus.ChangeColorBasedonCustomStatusPaymentLine(rec);
         CurrPage.Update(false);
@@ -175,20 +175,20 @@ page 70175 "Request for Payment Subform"
             Rec."Project Name" := SUPPLIERPAYMENTREQUEST."Project Name";
             Rec."Requested By (Person)" := SUPPLIERPAYMENTREQUEST."Requested By (Person)";
 
-            //Start NB MASQ
+            //NB MASQ Start
             Rec."Bank Number" := SUPPLIERPAYMENTREQUEST."Bank Number";
             Rec.Executed := SUPPLIERPAYMENTREQUEST.Executed;
             Rec.Branch := SUPPLIERPAYMENTREQUEST.Branch;
             Rec."Payment Terms" := SUPPLIERPAYMENTREQUEST."Payment Terms";
             Rec."Payment Method" := SUPPLIERPAYMENTREQUEST."Payment Method";
             Rec."Requested By / Department" := SUPPLIERPAYMENTREQUEST."Requested By / Department";
-            //End NB MASQ
+            //NB MASQ End
 
         end;
 
     end;
 
-    //Start NB MASQ
+    //NB MASQ Start
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     var
         PaymentLine: Record "Payment Line";
@@ -201,7 +201,7 @@ page 70175 "Request for Payment Subform"
                 Error('Sum of Payments must be equal to the PO Value');
         end;
     end;
-    //End NB MASQ
+    //NB MASQ End
 
     /*  trigger OnOpenPage()//to be removed
      var

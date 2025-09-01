@@ -122,7 +122,7 @@ codeunit 70116 "Custom Workflow PaymentLine"
         end;
     end;
 
-    //Start NB MASQ
+    //NB MASQ Start
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnRejectApprovalRequest', '', false, false)]
     local procedure OnRejectApprovalRequest(var ApprovalEntry: Record "Approval Entry")
     var
@@ -143,7 +143,7 @@ codeunit 70116 "Custom Workflow PaymentLine"
             RfpLine.Modify(true);
         end;
     end;
-    //End NB MASQ
+    //NB MASQ End
 
     //==========================================
 

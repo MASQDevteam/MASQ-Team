@@ -245,12 +245,12 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
             DataClassification = CustomerContent;
         }
 
-        //Start NB MASQ
+        //NB MASQ Start
         field(70142; "Available Inventory"; Decimal)
         {
             Editable = false;
         }
-        //END NB MASQ
+        //NB MASQ End
 
         modify("Planned Delivery Date")
         {
@@ -264,7 +264,7 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
             end;
         }
 
-        //Start NB MASQ
+        //NB MASQ Start
         modify(Quantity)
         {
             trigger OnAfterValidate()
@@ -277,7 +277,7 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
                 end;
             end;
         }
-        //End NB MASQ
+        //NB MASQ End
 
         //AN 04/22/2025
         /*    modify("Unit Price")//moved to page by AI

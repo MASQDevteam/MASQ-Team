@@ -85,6 +85,14 @@ pageextension 70132 "SO Extension" extends "Sales Order"
                 ToolTip = 'Specifies the type of the Sales Order.';
                 Caption = 'SO Type';
             }
+
+            //NB MASQ Start
+            field("Logistics Coordinator"; Rec."Logistics Coordinator")
+            {
+                ApplicationArea = All;
+            }
+            //NB MASQ End
+
         }
         // Add changes to page layout here
         addafter("Attached Documents")

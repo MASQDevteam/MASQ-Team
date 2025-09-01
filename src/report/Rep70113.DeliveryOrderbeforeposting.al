@@ -175,13 +175,13 @@ report 70113 "Delivery Order before posting"
             column(Prepared_By_Caption; Prepared_By_Caption)
             {
             }
-            column(ReportsSetup_PreparedBy; 'THANZEEL')
+            column(ReportsSetup_PreparedBy; "Logistics Coordinator") //NB MASQ
             {
             }
             column(Approved_By_Caption; Approved_By_Caption)
             {
             }
-            column(ReportsSetup_ApprovedBy; 'JOE IGHNIADES')
+            column(ReportsSetup_ApprovedBy; 'Nadine Aoun') //NB MASQ
             {
             }
             column(Receiver_Initials_Caption; Receiver_Initials_Caption)

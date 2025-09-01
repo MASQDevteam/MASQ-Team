@@ -1,4 +1,4 @@
-//Start NB MASQ
+//NB MASQ Start
 enum 70106 "WIP Name"
 {
     Extensible = true;
@@ -24,4 +24,4 @@ enum 70106 "WIP Name"
         Caption = 'Invoiced and Delivered';
     }
 }
-//End NB MASQ
+//NB MASQ End

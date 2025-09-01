@@ -20,6 +20,13 @@ tableextension 70139 "Sales Header Extension" extends "Sales Header"
             OptionMembers = "","Sample","Mockup","Main Project";
         }
 
+        //NB MASQ Start
+        field(70104; "Logistics Coordinator"; Enum "Logistics Coordinator")
+        {
+            DataClassification = CustomerContent;
+        }
+        //NB MASQ End
+
     }
 
     keys

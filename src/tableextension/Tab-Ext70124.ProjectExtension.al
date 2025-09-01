@@ -69,7 +69,7 @@ tableextension 70124 "Project Extension" extends Job
             Editable = false;
         }
 
-        //Start NB MASQ
+        //NB MASQ Start
         modify("Person Responsible")
         {
             trigger OnAfterValidate()
@@ -80,7 +80,7 @@ tableextension 70124 "Project Extension" extends Job
                     "Person Responsible" := Resource.Name;
             end;
         }
-        //End NB MASQ
+        //NB MASQ End
 
     }
 

@@ -1,4 +1,4 @@
-//Start NB MASQ
+//NB MASQ Start
 table 70101 "WIP Project Detail"
 {
     Caption = 'WIP Project Detail';
@@ -54,4 +54,4 @@ table 70101 "WIP Project Detail"
         }
     }
 }
-//End NB MASQ
+//NB MASQ End

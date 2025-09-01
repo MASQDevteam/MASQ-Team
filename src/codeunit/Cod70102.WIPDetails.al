@@ -1,4 +1,4 @@
-//Start NB MASQ
+//NB MASQ Start
 codeunit 70102 "WIP Details"
 {
     procedure InsertWIPDetails(Rec: Record Job)
@@ -56,4 +56,4 @@ codeunit 70102 "WIP Details"
         end;
     end;
 }
-//End NB MASQ
+//NB MASQ End

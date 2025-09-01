@@ -36,7 +36,7 @@ table 70139 "Payment Line"
                 if "PO Value" <> 0 then
                     "Payment %" := ("Payment Value" * 100) / "PO Value";
 
-                //Start NB MASQ
+                //NB MASQ Start
                 GenJournalLine.Reset();
                 GenJournalLine.SetRange("Journal Template Name", 'PAYMENTS');
                 GenJournalLine.SetRange("Journal Batch Name", 'GLENDA RFP');
@@ -50,7 +50,7 @@ table 70139 "Payment Line"
                             GenJournalLine.Validate(Amount, -Rec."Payment Value");
                         GenJournalLine.Modify(true);
                     until GenJournalLine.Next() = 0;
-                //End NB MASQ
+                //NB MASQ End
             end;
         }
         field(5; "Payment %"; Decimal)
@@ -61,7 +61,7 @@ table 70139 "Payment Line"
         field(6; "Payment Date"; Date)
         {
             Caption = 'Payment Date';
-            //Start NB MASQ
+            //NB MASQ Start
             trigger OnValidate()
             var
                 GenJournalLine: Record "Gen. Journal Line";
@@ -77,7 +77,7 @@ table 70139 "Payment Line"
                         GenJournalLine.Modify(true);
                     until GenJournalLine.Next() = 0;
             end;
-            //End NB MASQ
+            //NB MASQ End
         }
         field(7; "Payment Status"; Enum "Document Status")
         {
@@ -117,7 +117,7 @@ table 70139 "Payment Line"
             ValidateTableRelation = false;
         }
 
-        //Start NB MASQ
+        //NB MASQ Start
         field(14; "Sent to journals"; Boolean)
         {
             DataClassification = CustomerContent;
@@ -161,7 +161,7 @@ table 70139 "Payment Line"
             DataClassification = CustomerContent;
             Editable = false;
         }
-        //End NB MASQ
+        //NB MASQ End
 
     }
     keys
@@ -172,7 +172,7 @@ table 70139 "Payment Line"
         }
     }
 
-    //Start NB MASQ
+    //NB MASQ Start
     procedure SendtoPaymentJournal()
     var
         GenJnlLines: Record "Gen. Journal Line";
@@ -242,6 +242,6 @@ table 70139 "Payment Line"
 
         Message('Payment Journal Lines Are Inserted');
     end;
-    //End NB MASQ
+    //NB MASQ End
 
 }

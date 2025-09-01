@@ -1,4 +1,4 @@
-//Start NB MASQ
+//NB MASQ Start
 page 70176 "WIP Project Detail"
 {
     ApplicationArea = All;
@@ -51,4 +51,4 @@ page 70176 "WIP Project Detail"
         }
     }
 }
-//End NB MASQ
+//NB MASQ End

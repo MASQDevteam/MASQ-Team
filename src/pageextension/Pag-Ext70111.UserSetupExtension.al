@@ -137,7 +137,7 @@ pageextension 70111 "User Setup Extension" extends "User Setup"
                 ApplicationArea = All;
             }
 
-            //Start NB MASQ
+            //NB MASQ Start
             field("Edit Payment Line"; Rec."Edit Payment Line")
             {
                 ApplicationArea = All;
@@ -150,7 +150,7 @@ pageextension 70111 "User Setup Extension" extends "User Setup"
             {
                 ApplicationArea = All;
             }
-            //End NB MASQ
+            //NB MASQ End
         }
     }
 

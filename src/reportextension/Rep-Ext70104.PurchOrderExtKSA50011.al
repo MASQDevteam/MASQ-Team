@@ -9,6 +9,16 @@ reportextension 70104 PurchOrderExtKSA50011 extends "Meg Purchase Order KSA"
             {
 
             }
+            //NB MASQ Start
+            column(SystemCreatedByVar; SystemCreatedByVar)
+            {
+
+            }
+            column(Assigned_User_ID; "Assigned User ID")
+            {
+
+            }
+            //NB MASQ End
         }
         add("Purchase Line")
         {
@@ -27,13 +37,26 @@ reportextension 70104 PurchOrderExtKSA50011 extends "Meg Purchase Order KSA"
             {
 
             }
-        
         }
         modify("Purchase Line")
         {
 
         }
-    }
 
+        //NB MASQ Start
+        modify("Purchase Header")
+        {
+            trigger OnAfterAfterGetRecord()
+            var
+                User: Record User;
+            begin
+                if User.Get(SystemCreatedBy) then
+                    SystemCreatedByVar := User."User Name";
+            end;
+        }
+        //NB MASQ End
+    }
+    var
+        SystemCreatedByVar: Text;
 }
 

@@ -65,14 +65,14 @@ pageextension 70139 "Project Card extension" extends "Job Card"
             //     }
             // }
 
-            //Start NB MASQ
+            //NB MASQ Start
             part("WIP Project Detail"; "WIP Project Detail")
             {
                 ApplicationArea = All;
                 UpdatePropagation = Both;
                 SubPageLink = "Project No." = field("No.");
             }
-            //End NB MASQ
+            //NB MASQ End
 
         }
         modify(Description)
@@ -186,7 +186,7 @@ pageextension 70139 "Project Card extension" extends "Job Card"
 
     }
 
-    //Start NB MASQ
+    //NB MASQ Start
     trigger OnOpenPage()
     var
         WIPDetails: Codeunit "WIP Details";
@@ -200,7 +200,7 @@ pageextension 70139 "Project Card extension" extends "Job Card"
     begin
         WIPDetails.InsertWIPDetails(Rec);
     end;
-    //End NB MASQ
+    //NB MASQ End
 
     //AN 07/25/2025
     procedure InsertOpex(ProjectCode: Code[20])
