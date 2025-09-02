@@ -157,7 +157,7 @@ page 70175 "Request for Payment Subform"
         else
             EditLine := false;
         //NB MASQ End
-
+        
         PaymentApprovalStatus := PaymentLineStatus.ChangeColorBasedonCustomStatusPaymentLine(rec);
         CurrPage.Update(false);
     end;

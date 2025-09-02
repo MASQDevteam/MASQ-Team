@@ -1,4 +1,5 @@
 codeunit 70118 StatusColorChange
+//FQ MASQ Start
 {
     trigger OnRun()
     begin
@@ -22,6 +23,19 @@ codeunit 70118 StatusColorChange
 
     end;
 
+    procedure ChangeColorbasedonCustomStatusProject(job: Record Job): text[50]
+    var
+    begin
+        case job."Project Status" of
+            job."Project Status"::Open:
+                exit('Favorable');
+            job."Project Status"::Closed:
+                exit('unfavorable');
+        end;
+    end;
+
+    //FQ MASQ End
     var
         myInt: Integer;
+
 }

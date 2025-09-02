@@ -156,6 +156,16 @@ pageextension 70139 "Project Card extension" extends "Job Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Apollo Project Manager field.', Comment = '%';
             }
+            //FQ MASQ Start
+            field("Project Status"; Rec."Project Status")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the status of the project.';
+                StyleExpr = ProjectColor;
+                Editable = false;
+            }
+            //FQ MASQ END
+
         }
         addbefore("WIP and Recognition")
         {
@@ -199,6 +209,11 @@ pageextension 70139 "Project Card extension" extends "Job Card"
         WIPDetails: Codeunit "WIP Details";
     begin
         WIPDetails.InsertWIPDetails(Rec);
+
+        //FQ MASQ Start
+        ProjectColor := ColorCodeunit.ChangeColorbasedonCustomStatusProject(Rec);
+        CurrPage.Update(false);
+        //FQ MASQ END
     end;
     //NB MASQ End
 
@@ -257,4 +272,7 @@ pageextension 70139 "Project Card extension" extends "Job Card"
 
     var
         myInt: Integer;
+
+        ProjectColor: Text[50];
+        ColorCodeunit: Codeunit StatusColorChange;
 }

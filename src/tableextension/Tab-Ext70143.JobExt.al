@@ -17,6 +17,12 @@ tableextension 70143 "Job Ext" extends "Job"
             DataClassification = ToBeClassified;
             OptionMembers = "A","O";
         }
+        //FQ MASQ Start
+        field(70125; "Project Status"; Enum "Project Status")
+        {
+            DataClassification = ToBeClassified;
+        }
+        //FQ MASQ End
         // field(70125; "Project Markup Value"; Decimal)
         // {
         //     DataClassification = ToBeClassified;

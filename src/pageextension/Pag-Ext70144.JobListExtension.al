@@ -49,6 +49,14 @@ pageextension 70144 "Job List Extension" extends "Job List"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Apollo Project Number field.', Comment = '%';
             }
+            // FQ MASQ Start
+            field("Project Status"; Rec."Project Status")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the status of the project.';
+                StyleExpr = ProjectColor;
+            }
+            // FQ MASQ End
             field("Total Exported Quantity"; Rec."Total Exported Quantity")
             {
                 ApplicationArea = All;
@@ -93,7 +101,50 @@ pageextension 70144 "Job List Extension" extends "Job List"
     {
         // Add changes to page actions here
     }
+    // FQ MASQ Start
+    trigger OnAfterGetRecord()
+    var
+        JobPlanningLine: Record "Job Planning Line";
+        SalesLine: Record "Sales Line";
+        AllLinesFullyDeliveredAndInvoiced: Boolean;
+        NewStatus: Enum "Project Status";
+
+    begin
+        // Decide project status from Sales Lines linked to this Job via planning lines
+        AllLinesFullyDeliveredAndInvoiced := true;
+        SalesLine.Reset();
+        SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
+        SalesLine.SetRange("Job No.", Rec."No.");
+        //SalesLine.SetFilter("Job Planning Line No.", '<>%1', 0);
+        if SalesLine.FindSet() then
+            repeat
+                if (SalesLine.Quantity <> SalesLine."Quantity Shipped") or
+                   (SalesLine.Quantity <> SalesLine."Quantity Invoiced") then begin
+                    AllLinesFullyDeliveredAndInvoiced := false;
+                    break;
+                end;
+            until SalesLine.Next() = 0;
+
+        if AllLinesFullyDeliveredAndInvoiced then
+            NewStatus := NewStatus::Closed
+        else
+            NewStatus := NewStatus::Open;
+
+        if Rec."Project Status" <> NewStatus then begin
+            Rec."Project Status" := NewStatus;
+            Rec.Modify(true);
+        end;
+
+        ProjectColor := ColorCodeunit.ChangeColorbasedonCustomStatusProject(rec);
+        CurrPage.Update(false);
+    end;
+   
+    // FQ MASQ End
 
     var
         myInt: Integer;
+
+        ProjectColor: Text[50];
+
+        ColorCodeunit: Codeunit StatusColorChange;
 }
