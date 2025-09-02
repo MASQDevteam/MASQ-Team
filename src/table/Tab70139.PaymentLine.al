@@ -23,7 +23,7 @@ table 70139 "Payment Line"
             trigger OnValidate()
             var
                 PaymentLine: Record "Payment Line";
-                GenJournalLine: Record "Gen. Journal Line";//NB MASQ
+                GenJournalLine: Record "Gen. Journal Line"; //NB MASQ
             begin
                 Modify();
                 PaymentLine.SetRange(Number, Rec.Number);
@@ -82,7 +82,7 @@ table 70139 "Payment Line"
         field(7; "Payment Status"; Enum "Document Status")
         {
             Caption = 'Payment Status';
-            Editable = false;//NB MASQ
+            Editable = false; //NB MASQ
         }
         field(8; "Currency"; Code[10])
         {

@@ -133,7 +133,7 @@ page 70175 "Request for Payment Subform"
     trigger OnAfterGetCurrRecord()
     var
         //     SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
-        UserSetup: Record "User Setup";//NB MASQ
+        UserSetup: Record "User Setup"; //NB MASQ
     begin
         //     if SUPPLIERPAYMENTREQUEST.Get(Rec.Number) then begin
         //         Rec.Currency := SUPPLIERPAYMENTREQUEST.Currency;
@@ -157,7 +157,7 @@ page 70175 "Request for Payment Subform"
         else
             EditLine := false;
         //NB MASQ End
-        
+
         PaymentApprovalStatus := PaymentLineStatus.ChangeColorBasedonCustomStatusPaymentLine(rec);
         CurrPage.Update(false);
     end;

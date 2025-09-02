@@ -9,6 +9,7 @@ reportextension 70104 PurchOrderExtKSA50011 extends "Meg Purchase Order KSA"
             {
 
             }
+
             //NB MASQ Start
             column(SystemCreatedByVar; SystemCreatedByVar)
             {
@@ -19,6 +20,7 @@ reportextension 70104 PurchOrderExtKSA50011 extends "Meg Purchase Order KSA"
 
             }
             //NB MASQ End
+            
         }
         add("Purchase Line")
         {
@@ -57,6 +59,6 @@ reportextension 70104 PurchOrderExtKSA50011 extends "Meg Purchase Order KSA"
         //NB MASQ End
     }
     var
-        SystemCreatedByVar: Text;
+        SystemCreatedByVar: Text; //NB MASQ
 }
 

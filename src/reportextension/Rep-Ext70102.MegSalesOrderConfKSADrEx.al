@@ -12,7 +12,7 @@ reportextension 70102 "Meg Sales Order Conf. KSADr Ex" extends "Meg Sales Order 
         }
         add("Sales Header")
         {
-            column(HideAccessory;HideAccessory)
+            column(HideAccessory; HideAccessory)
             {
 
             }

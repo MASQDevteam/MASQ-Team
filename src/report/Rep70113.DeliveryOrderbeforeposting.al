@@ -279,8 +279,8 @@ report 70113 "Delivery Order before posting"
         Date_Caption: Label 'Date:';
         Decalaration_Caption: Label 'By signing this DO, we declare having received the above items in GOOD condition: free of breakage and in original packing.';
         Signature_Caption: Label 'Signature:';
-        Prepared_By_Caption: Label 'Prepared By:';
-        Approved_By_Caption: Label 'Approved By:';
+        Prepared_By_Caption: Label 'Prepared By Logistics Coordinator:'; //NB MASQ
+        Approved_By_Caption: Label 'Approved By Supply Chain Manager:'; //NB MASQ
         Receiver_Initials_Caption: Label 'Receiver Initials ______________';
         MASQ_Caption: Label 'MASQ ____________';
         Note_Caption: Label 'If DO more than one page, initials required on each page';
