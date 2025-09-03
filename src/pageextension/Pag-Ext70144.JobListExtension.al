@@ -111,34 +111,33 @@ pageextension 70144 "Job List Extension" extends "Job List"
 
     begin
         // Decide project status from Sales Lines linked to this Job via planning lines
-        AllLinesFullyDeliveredAndInvoiced := true;
-        SalesLine.Reset();
-        SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
-        SalesLine.SetRange("Job No.", Rec."No.");
-        //SalesLine.SetFilter("Job Planning Line No.", '<>%1', 0);
-        if SalesLine.FindSet() then
-            repeat
-                if (SalesLine.Quantity <> SalesLine."Quantity Shipped") or
-                   (SalesLine.Quantity <> SalesLine."Quantity Invoiced") then begin
-                    AllLinesFullyDeliveredAndInvoiced := false;
-                    break;
-                end;
-            until SalesLine.Next() = 0;
+        /*    AllLinesFullyDeliveredAndInvoiced := true;
+           SalesLine.Reset();
+           SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
+           SalesLine.SetRange("Job No.", Rec."No.");
+           //SalesLine.SetFilter("Job Planning Line No.", '<>%1', 0);
+           if SalesLine.FindSet() then
+               repeat
+                   if (SalesLine.Quantity <> SalesLine."Quantity Shipped") or
+                      (SalesLine.Quantity <> SalesLine."Quantity Invoiced") then begin
+                       AllLinesFullyDeliveredAndInvoiced := false;
+                       break;
+                   end;
+               until SalesLine.Next() = 0;
 
-        if AllLinesFullyDeliveredAndInvoiced then
-            NewStatus := NewStatus::Closed
-        else
-            NewStatus := NewStatus::Open;
+           if AllLinesFullyDeliveredAndInvoiced then
+               NewStatus := NewStatus::Closed
+           else
+               NewStatus := NewStatus::Open;
 
-        if Rec."Project Status" <> NewStatus then begin
-            Rec."Project Status" := NewStatus;
-            Rec.Modify(true);
-        end;
-
+           if Rec."Project Status" <> NewStatus then begin
+               Rec."Project Status" := NewStatus;
+               Rec.Modify(true);
+           end; */
         ProjectColor := ColorCodeunit.ChangeColorbasedonCustomStatusProject(rec);
         CurrPage.Update(false);
     end;
-   
+
     // FQ MASQ End
 
     var

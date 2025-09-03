@@ -162,7 +162,7 @@ pageextension 70139 "Project Card extension" extends "Job Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the status of the project.';
                 StyleExpr = ProjectColor;
-                Editable = false;
+                //Editable = false;
             }
             //FQ MASQ END
 

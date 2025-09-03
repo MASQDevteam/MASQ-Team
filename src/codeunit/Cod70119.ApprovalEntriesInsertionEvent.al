@@ -1,4 +1,5 @@
 codeunit 70119 "Approval Entries Event"
+//FQ MASQ Start
 {
     trigger OnRun()
     begin
@@ -22,8 +23,9 @@ codeunit 70119 "Approval Entries Event"
         end;
     end;
 
-
+    //FQ MASQ End
 
     var
         myInt: Integer;
+
 }

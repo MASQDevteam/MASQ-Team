@@ -1,4 +1,5 @@
 codeunit 70116 "Custom Workflow PaymentLine"
+//FQ MASQ Start
 {
     procedure CheckApprovalsWorkflowEnabled(var RecRef: RecordRef): Boolean
     begin
@@ -154,7 +155,7 @@ codeunit 70116 "Custom Workflow PaymentLine"
 
       end; */
 
-
+    //FQ MASQ End
     var
 
         WorkflowMgt: Codeunit "Workflow Management";
