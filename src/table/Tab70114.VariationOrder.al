@@ -234,6 +234,12 @@ table 70114 "Variation Order"
         {
             DataClassification = ToBeClassified;
         }
+        //FQ MASQ Start
+        field(41; "VO Notification Sent"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        //FQ MASQ End
     }
 
     keys
@@ -273,7 +279,7 @@ table 70114 "Variation Order"
 
         UpdateVORemark;
         //modified by aya on 6/10/2025
-        MASQEmail.SendEmailVariationOrder(Rec);
+        //  MASQEmail.SendEmailVariationOrder(Rec); //FQ MASQ **Email is sent when all requried fields are filled
     end;
 
     trigger OnModify()
@@ -288,6 +294,13 @@ table 70114 "Variation Order"
             Rec."Apollo project Number" := Job."Apollo Project Number";
 
         end;
+        //FQ MASQ Start
+        // Send notification before release, once, when Open and key fields are ready
+        if (Status = Status::Open)and (not "VO Notification Sent")and ("Project Code" <> '')and ("Item Number" <> '')then begin
+            MASQEmail.SendEmailVariationOrder(Rec);
+            "VO Notification Sent" := true;
+        end;
+        //FQ MASQ End
     end;
 
     trigger OnDelete()
