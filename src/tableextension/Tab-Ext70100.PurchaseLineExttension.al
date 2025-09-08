@@ -876,11 +876,21 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
         Clear(UserSetup);
         UserSetup.Get(UserId);
 
-        IF (NOT UserSetup."Can Edit SO/PO Details") then
+        //NB MASQ Start
+        IF (NOT UserSetup."Can Edit SO/PO Details") then begin
             IF Rec."Document Type" = REc."Document Type"::Order then
                 IF Rec."MASQ Sales Order Line No." <> 0 then
                     if SalesLine.Get(SalesLine."Document Type"::Order, "MASQ Sales Order No.", "MASQ Sales Order Line No.") then
                         Error(Text000, "MASQ Sales Order No.", "MASQ Sales Order Line No.");
+        end else begin
+            if SalesLine.Get(SalesLine."Document Type"::Order, "MASQ Sales Order No.", "MASQ Sales Order Line No.") then begin
+                SalesLine.Validate("MASQ Purchase Order No.", '');
+                SalesLine.Validate("MASQ Purchase Order Line No.", 0);
+                SalesLine.Validate("Sent to PO", false);
+                SalesLine.Modify(true);
+            end;
+        end;
+        //NB MASQ End
 
     end;
 
