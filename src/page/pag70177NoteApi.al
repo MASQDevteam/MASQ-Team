@@ -39,6 +39,10 @@ page 70177 "RecordLinkList"
                 {
                     Caption = 'Type';
                 }
+                field("User ID"; Rec."User ID")
+                {
+                    Caption = 'User ID';
+                }
                 field(Description; Rec."Description")
                 {
                     Caption = 'Description';
