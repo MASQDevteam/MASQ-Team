@@ -146,6 +146,12 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
             ValidateTableRelation = false;
         }
         //NB MASQ End
+        // FQ MASQ Start
+        field(70131; "BypassCustOnProject"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        // FQ MASQ End
     }
 
     keys

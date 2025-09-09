@@ -151,6 +151,14 @@ pageextension 70111 "User Setup Extension" extends "User Setup"
                 ApplicationArea = All;
             }
             //NB MASQ End
+            // FQ MASQ Start
+            field(BypassCustOnProject; Rec.BypassCustOnProject)
+            {
+                ApplicationArea = All;
+                Caption = 'Bypass customer check on Project Card';
+            }
+            // FQ MASQ End
+
         }
     }
 
