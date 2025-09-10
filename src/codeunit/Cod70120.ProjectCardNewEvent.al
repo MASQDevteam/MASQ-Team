@@ -75,6 +75,7 @@ codeunit 70120 ProjectEvent
     var
         SalesLine: Record "Sales Line";
         SalesHeader: Record "Sales Header";
+        SalesLineToUpdate: Record "Sales Line";
         LastDocumentNo: Code[20];
         ReleaseSalesDoc: Codeunit "Release Sales Document";
         WasReleased: Boolean;
@@ -99,6 +100,22 @@ codeunit 70120 ProjectEvent
                             SalesHeader.Validate("Sell-to Customer No.", Job."Bill-to Customer No.");
 
                         SalesHeader.Modify(true);
+
+                        // Ensure all lines on the order reflect the updated customer as well
+                        // This aligns line-level customer fields with the header after the Job change
+                        SalesLineToUpdate.Reset();
+                        SalesLineToUpdate.SetRange("Document Type", SalesHeader."Document Type");
+                        SalesLineToUpdate.SetRange("Document No.", SalesHeader."No.");
+                        if SalesLineToUpdate.FindSet() then
+                            repeat
+                                if SalesLineToUpdate."Bill-to Customer No." <> Job."Bill-to Customer No." then
+                                    SalesLineToUpdate.Validate("Bill-to Customer No.", Job."Bill-to Customer No.");
+
+                                if SalesLineToUpdate."Sell-to Customer No." <> Job."Bill-to Customer No." then
+                                    SalesLineToUpdate.Validate("Sell-to Customer No.", Job."Bill-to Customer No.");
+
+                                SalesLineToUpdate.Modify(true);
+                            until SalesLineToUpdate.Next() = 0;
 
                         if WasReleased then
                             ReleaseSalesDoc.Run(SalesHeader);
