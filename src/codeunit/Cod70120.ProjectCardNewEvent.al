@@ -54,8 +54,10 @@ codeunit 70120 ProjectEvent
     local procedure HasShippedOrInvoicedSalesOrders(var Job: Record Job): Boolean
     var
         SalesLine: Record "Sales Line";
+        SalesShipmentLine: Record "Sales Shipment Line";
+        SalesInvoiceLine: Record "Sales Invoice Line";
     begin
-        // Check for sales lines that are shipped or invoiced for this job
+        // Open Sales Orders with shipped or invoiced quantities
         SalesLine.SetRange("Job No.", Job."No.");
         SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
         SalesLine.SetFilter("Quantity Shipped", '>0');
@@ -65,6 +67,18 @@ codeunit 70120 ProjectEvent
         SalesLine.SetRange("Quantity Shipped");
         SalesLine.SetFilter("Quantity Invoiced", '>0');
         if not SalesLine.IsEmpty then
+            exit(true);
+
+        // Posted documents: Sales Shipments
+        SalesShipmentLine.Reset();
+        SalesShipmentLine.SetRange("Job No.", Job."No.");
+        if SalesShipmentLine.FindFirst() then
+            exit(true);
+
+        // Posted documents: Sales Invoices
+        SalesInvoiceLine.Reset();
+        SalesInvoiceLine.SetRange("Job No.", Job."No.");
+        if SalesInvoiceLine.FindFirst() then
             exit(true);
 
         exit(false);
