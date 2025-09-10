@@ -647,14 +647,11 @@ page 70119 "Variation Orders"
                     var
                         SalesOrderLine: Record "Sales Line";
                         SalesOrderLinepage: Page "Sales Lines";
-                        // PurchaseOrderLine: Record "Purchase Line";
                         SupplyChainLog: Record "Supply Chain LOG";
                         NewSalesOrderLine: Record "Sales Line";
-                        //  SalesOrderLinepage: Page "Sales Lines";
-                        //  NewPurchaseOrderLine: Record "Purchase Line";
                         PO: Record "Purchase Header";
                         ProjectPlanningLine: Record "Job Planning Line";
-                        "JobPlanningLineInvoice": Record "Job Planning Line Invoice";
+                        JobPlanningLineInvoice: Record "Job Planning Line Invoice";
                         PurchaseRequestLine: Record "Purchase Request Line";
                         NewProjectPlanningLines: Record "Job Planning Line";
                         CurrencyExchangeRate: Record "Currency Exchange Rate";
@@ -670,37 +667,34 @@ page 70119 "Variation Orders"
                         ProjectDim6: Code[20];
                     begin
                         Rec.TestField(Status, Rec.Status::Released);
+
                         OldItem := '';
                         OldPrice := 0;
                         OldQuantity := 0;
                         OldUOM := '';
-                        OldCost
-                         := 0;
+                        OldCost := 0;
+
                         ProjectLineunitCost := 0;
                         PurchLineunitCost := 0;
                         ProjectLocationCode := '';//added on 28/03/2025
+
                         ProjectDim1 := '';
-                        ;
                         ProjectDim2 := '';
-                        ;
                         ProjectDim3 := '';
-                        ;
                         ProjectDim4 := '';
-                        ;
                         ProjectDim5 := '';
-                        ;
                         ProjectDim6 := '';
-                        ;
+
                         Rec.TestField(Executed, false);
+
                         rec.FilterGroup(4);
+
                         Clear(SupplyChainLog);
 
                         IF Rec."Variation Action(Add Item)" then begin
                             Rec.TestField("Item Number");
                             Rec.TestField("New Item Number");
-                            //Rec.TestField("New Price");
                             rec.TestField("New Qty");
-                            // Rec.TestField("New Cost");
                             REc.TestField("MASQ Item Type");
                             Rec.TestField("Cost Status", Rec."Cost Status"::" ");
                         end;
@@ -715,19 +709,16 @@ page 70119 "Variation Orders"
                             Rec.TestField("New UOM");
                         end;
 
-
                         IF Rec."Variation Action(Change Qty)" then begin
                             Rec.TestField("Item Number");
                             rec.TestField("New Qty");
                         end;
-
 
                         IF Rec."Variation Action(Change Cost)" then begin
                             Rec.TestField("Item Number");
                             Rec.TestField("New Cost");
                             Rec.TestField("Cost Status");
                         end;
-
 
                         IF Rec."Variation Action(Change Price)" then begin
                             Rec.TestField("Item Number");
@@ -743,16 +734,14 @@ page 70119 "Variation Orders"
                             SalesOrderLine.SetRange("No.", Rec."Item Number");
                             SalesOrderLine.SetFilter("Quantity Shipped", '%1', 0);
                         end;
-                        // SalesOrderLine.SetRange("BL/AWB ID", '');
+
                         Clear(SalesOrderLinepage);
                         SalesOrderLinepage.SetTableView(SalesOrderLine);
                         SalesOrderLinepage.LookupMode(true);
                         IF SalesOrderLinepage.RunModal() = Action::LookupOK then begin
                             //sales line splitting
-
-
                             SalesOrderLinepage.SetSelectionFilter(SalesOrderLine);
-                            if SalesOrderLine.FindSet() then begin
+                            if SalesOrderLine.FindFirst() then begin
                                 SalesOrderLine."Skip Line Checking " := true;//added before
                                 IF (NOT Rec."Variation Action(Add Item)") then
                                     Rec.TestField("Item Number", SalesOrderLine."No.");
@@ -804,7 +793,6 @@ page 70119 "Variation Orders"
                                     IF (ProjectDim6 <> '') and (ProjectPlanningLine."Shortcut Dimension 6 Code" = '') then
                                         ProjectPlanningLine.Validate("Shortcut Dimension 6 Code", ProjectDim6);
 
-
                                     IF ProjectLineunitCost <> 0 then//added on 27/03/2025
                                         ProjectPlanningLine.Validate("Unit Cost", ProjectLineunitCost);//added on 27/03/2025
 
@@ -823,10 +811,9 @@ page 70119 "Variation Orders"
                                     end;
                                 end;
 
-                                IF Rec."Variation Action(Change UOM)" then begin
-
+                                IF Rec."Variation Action(Change UOM)" then
                                     SalesOrderLine.Validate("Unit of Measure Code", Rec."New UOM");
-                                end;
+
                                 SalesOrderLine."Skip Line Checking " := true;//added on 25/02/2025 to prevent the job sale hcecking 
                                                                              //   the value is = false after first vo is executed on the same variation order line
                                                                              //  validating fields is reseting the valie of the skip line checking
@@ -894,10 +881,11 @@ page 70119 "Variation Orders"
 
                                     end;
                                 end;
-                                //case new item always creat SO and PO lines
-                                SalesOrderLine."Skip Line Checking " := true;//added on 25/02/2025 
-                                IF Rec."Variation Action(Add Item)" then begin
 
+                                //case new item always creat SO and PO lines
+                                SalesOrderLine."Skip Line Checking " := true;//added on 25/02/2025
+
+                                IF Rec."Variation Action(Add Item)" then begin
                                     //this section added on 25/03/2025
                                     Clear(NewProjectPlanningLines);
                                     NewProjectPlanningLines.Init();
@@ -916,8 +904,6 @@ page 70119 "Variation Orders"
                                     NewProjectPlanningLines.Validate("Meg Item Type", Rec."MASQ Item Type");
                                     NewProjectPlanningLines.Modify();
 
-
-
                                     NewSalesOrderLine.Init();
                                     NewSalesOrderLine.Copy(SalesOrderLine);
                                     NewSalesOrderLine.Validate("Line No.", GetLAstSalesLineNumber(SalesOrderLine."Document No.") + 1000);
@@ -932,6 +918,7 @@ page 70119 "Variation Orders"
                                     NewSalesOrderLine.Validate("Job Planning Line No.", NewProjectPlanningLines."Line No.");//added on 25/03/2025 
                                     NewSalesOrderLine."Meg Item Type" := Rec."MASQ Item Type";
                                     NewSalesOrderLine.Insert();
+
                                     //added on 28/04/2025
                                     NewSalesOrderLine."MASQ Purchase Order No." := '';
                                     NewSalesOrderLine."MASQ Purchase Order Line No." := 0;
@@ -941,7 +928,6 @@ page 70119 "Variation Orders"
                                     NewSalesOrderLine."Original PO Line No." := 0;
                                     NewSalesOrderLine."Sent to PO" := false;//case create purchase order from sales order already po line created
                                     NewSalesOrderLine.Modify();
-
 
                                     Clear(NewJobPlanningLineInvoice);
                                     NewJobPlanningLineInvoice.Init();
@@ -953,143 +939,7 @@ page 70119 "Variation Orders"
                                     NewJobPlanningLineInvoice.Validate("Line No.", NewSalesOrderLine."Line No.");
                                     NewJobPlanningLineInvoice.Validate("Quantity Transferred", NewSalesOrderLine.Quantity);
                                     NewJobPlanningLineInvoice.Insert();
-
-                                    /*    IF PurchaseOrderLine.Get(PurchaseOrderLine."Document Type"::Order, SalesOrderLine."MASQ Purchase Order No.", SalesOrderLine."MASQ Purchase Order Line No.") then begin//confition IF added on 25/03/2025
-
-                                            NewPurchaseOrderLine.Init();
-                                            NewPurchaseOrderLine.Copy(PurchaseOrderLine);
-                                            NewPurchaseOrderLine.Validate("Line No.", GetLastPurchaseLineNumber(PurchaseOrderLine."Document No.") + 1000);
-                                            NewPurchaseOrderLine."Job Planning Line No." := 0;
-                                            NewPurchaseOrderLine.Validate("No.", Rec."New Item Number");
-                                            NewPurchaseOrderLine.Validate(Quantity, Rec."New Qty");
-                                            //  NewPurchaseOrderLine.Validate("Unit Price", Rec."New Price");
-                                            NewPurchaseOrderLine.Validate("Direct Unit Cost", Rec."New Cost");//added on 25/03/2025
-
-                                            NewPurchaseOrderLine.Validate("Job No.", NewProjectPlanningLines."Job No.");//added on 25/03/2025 
-                                            NewPurchaseOrderLine.Validate("Job Task No.", NewProjectPlanningLines."Job Task No.");//added on 25/03/2025 
-                                            NewPurchaseOrderLine.Validate("Job Line Type", NewPurchaseOrderLine."Job Line Type"::"Both Budget and Billable");//added on 25/03/2025 
-                                            NewPurchaseOrderLine.Validate("Job Planning Line No.", NewProjectPlanningLines."Line No.");//added on 25/03/2025 
-                                            NewPurchaseOrderLine.Insert(true);
-
-                                            NewSalesOrderLine."MASQ Purchase Order No." := NewPurchaseOrderLine."Document No.";
-                                            NewSalesOrderLine."MASQ Purchase Order Line No." := NewPurchaseOrderLine."Line No.";
-                                            NewSalesOrderLine."Line is Splitted" := false;
-                                            NewSalesOrderLine."Splitted Line No." := '';
-                                            NewSalesOrderLine."Original Line No." := 0;
-                                            NewSalesOrderLine."Original PO Line No." := 0;
-                                            NewSalesOrderLine."Sent to PO" := true;//case create purchase order from sales order already po line created
-                                            NewSalesOrderLine.Modify();
-
-
-                                            Clear(PO);
-                                            PO.Get(PO."Document Type"::Order, PurchaseOrderLine."Document No.");
-                                            NewPurchaseOrderLine."MASQ Sales Order No." := NewSalesOrderLine."Document No.";
-                                            NewPurchaseOrderLine."MASQ Sales Order Line No." := NewSalesOrderLine."Line No.";
-                                            NewPurchaseOrderLine."Initial ETA" := PO."Initial ETA";
-                                            NewPurchaseOrderLine."Initial ETD" := PO."Initial ETD";
-                                            NewPurchaseOrderLine."Initial ETR" := PO."Initial ETR";
-                                            NewPurchaseOrderLine."Initial ETAW" := PO."Initial ETAW";
-                                            NewPurchaseOrderLine."BL/AWB ID" := '';
-                                            NewPurchaseOrderLine."Container ID" := '';
-                                            NewPurchaseOrderLine."Quantity Shipped" := 0;
-                                            NewPurchaseOrderLine."Remaining Quantity Shipped" := 0;
-                                            NewPurchaseOrderLine."Line is Splitted" := false;
-                                            NewPurchaseOrderLine."Splitted Line No." := '';
-                                            NewPurchaseOrderLine."Original Line No." := 0;
-                                            NewPurchaseOrderLine."Original Quantity" := 0;
-                                            NewPurchaseOrderLine."Disable fields after Shipping" := false;
-                                            NewPurchaseOrderLine."Final ETA" := 0D;
-                                            NewPurchaseOrderLine."Final ETR" := 0D;
-                                            NewPurchaseOrderLine."Final ETD" := 0D;
-                                            NewPurchaseOrderLine."Final ETAW" := 0D;
-                                            NewPurchaseOrderLine."ATA" := 0D;
-                                            NewPurchaseOrderLine."Container Line No." := 0;
-                                            NewPurchaseOrderLine."VO Number" := '';
-                                            NewPurchaseOrderLine."Batch Number" := '';
-                                            NewPurchaseOrderLine."Job#" := '';//added on 25/02/2025
-                                            NewPurchaseOrderLine."Subjob ID" := 0;
-                                            NewPurchaseOrderLine."Truck Details ID" := '';
-                                            NewPurchaseOrderLine."Truck Details Line No." := 0;
-                                            NewPurchaseOrderLine."Truck WayBill ID" := '';
-                                            NewPurchaseOrderLine."Meg Item Type" := Rec."MASQ Item Type";
-                                            NewPurchaseOrderLine.Modify();
-
-                                            IF Rec."Variation Action(Add Item)" then begin
-                                                NewPurchaseOrderLine."VO Number" := Rec.Number;
-                                                NewPurchaseOrderLine.Modify(true);
-                                            end
-                                        end;*/
                                 end;
-
-                                //section PO  case po exsit and linked to the SO  do the VO in the PO lines too
-                                /*  Clear(PurchaseOrderLine);
-                                  PurchaseOrderLine.SetRange("MASQ Sales Order No.", SalesOrderLine."Document No.");
-                                  PurchaseOrderLine.SetRange("MASQ Sales Order Line No.", SalesOrderLine."Line No.");
-
-                                  IF PurchaseOrderLine.FindSet() then
-                                      repeat
-                                          PurchaseOrderLine.TestField("Quantity Received", 0);//ADDED ON 14012025
-
-                                          OldCost := PurchaseOrderLine."Direct Unit Cost";//16/01/2025
-                                          IF Rec."Variation Action(Replace Item)" then begin
-                                              PurchLineunitCost := PurchaseOrderLine."Direct Unit Cost";//added on 27/03/2025
-                                              PurchaseOrderLine.Validate("No.", Rec."New Item Number");
-
-                                              IF (ProjectLocationCode <> '') and (PurchaseOrderLine."Location Code" = '') then//added on 28/03/2025
-                                                  PurchaseOrderLine.Validate("Location Code", ProjectLocationCode);
-
-                                              IF (ProjectDim1 <> '') and (PurchaseOrderLine."Shortcut Dimension 1 Code" = '') then
-                                                  PurchaseOrderLine.Validate("Shortcut Dimension 1 Code", ProjectDim1);
-
-                                              IF (ProjectDim2 <> '') and (PurchaseOrderLine."Shortcut Dimension 2 Code" = '') then
-                                                  PurchaseOrderLine.Validate("Shortcut Dimension 2 Code", ProjectDim2);
-
-                                              PurchaseOrderLine.CalcFields("Shortcut Dimension 3 Code", "Shortcut Dimension 4 Code", "Shortcut Dimension 5 Code", "Shortcut Dimension 6 Code");
-
-                                              IF (ProjectDim3 <> '') and (PurchaseOrderLine."Shortcut Dimension 3 Code" = '') then
-                                                  PurchaseOrderLine.ValidateShortcutDimCode(3, ProjectDim3);
-
-                                              IF (ProjectDim4 <> '') and (PurchaseOrderLine."Shortcut Dimension 4 Code" = '') then
-                                                  PurchaseOrderLine.ValidateShortcutDimCode(4, ProjectDim4);
-
-                                              IF (ProjectDim5 <> '') and (PurchaseOrderLine."Shortcut Dimension 5 Code" = '') then
-                                                  PurchaseOrderLine.ValidateShortcutDimCode(5, ProjectDim5);
-
-                                              IF (ProjectDim6 <> '') and (PurchaseOrderLine."Shortcut Dimension 6 Code" = '') then
-                                                  PurchaseOrderLine.ValidateShortcutDimCode(6, ProjectDim6);
-
-
-                                              IF PurchLineunitCost <> 0 then//added on 27/03/2025
-                                                  PurchaseOrderLine.Validate("Direct Unit Cost", PurchLineunitCost);
-
-                                          end;
-                                          IF Rec."Variation Action(Change UOM)" then begin
-                                              PurchaseOrderLine.Validate("Unit of Measure Code", Rec."New UOM");
-
-                                          end;
-                                          IF Rec."Variation Action(Change Qty)" then begin
-                                              IF (PurchaseOrderLine.Quantity = SupplyChainLog."Old Qty") then//only change the quantity if the so line and po line have same quantity
-                                                  PurchaseOrderLine.Validate(Quantity, Rec."New Qty");
-
-                                          end;
-
-                                          IF Rec."Variation Action(Change Cost)" then begin//16/01/2025 
-                                              SupplyChainLog."Old Cost" := OldCost;
-                                              SupplyChainLog."New Cost" := Rec."New Cost";
-
-                                              PurchaseOrderLine.Validate("Direct Unit Cost", Rec."New Cost");
-
-                                          end;
-
-
-                                          PurchaseOrderLine."VO Number" := Rec.Number;
-                                          PurchaseOrderLine.Modify(true);
-
-
-
-                                      until PurchaseOrderLine.Next() = 0;*/
-
-
 
                                 IF Rec."Variation Action(Add Item)" then begin
                                     NewSalesOrderLine."VO Number" := Rec.Number;
@@ -1105,7 +955,6 @@ page 70119 "Variation Orders"
                                     Rec."Sales Order Line No." := SalesOrderLine."Line No.";
                                 end;
 
-
                                 IF Rec."Variation Action(Add Item)" then begin
                                     SupplyChainLog."SO Number" := NewSalesOrderLine."Document No.";
                                     SupplyChainLog."SO Line Number" := NewSalesOrderLine."Line No.";
@@ -1119,7 +968,6 @@ page 70119 "Variation Orders"
                                     SupplyChainLog."Project planning Line No." := ProjectPlanningLine."Line No.";//added on 27/03/2025
                                     SupplyChainLog.Insert();
                                 end;
-
 
                                 Rec.Executed := true;
                                 Rec.Status := Rec.Status::Executed;

@@ -59,21 +59,23 @@ codeunit 70116 "Custom Workflow PaymentLine"
 
     // handle the document;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Response Handling", 'OnOpenDocument', '', false, false)]
-    local procedure OnOpenDocument(RecRef: RecordRef; var Handled: Boolean)
-    var
-        CustomWorkflowHdr: Record "Payment Line";
-    begin
-        case RecRef.Number of
-            Database::"Payment Line":
-                begin
-                    RecRef.SetTable(CustomWorkflowHdr);
-                    CustomWorkflowHdr.Validate("Payment Status", CustomWorkflowHdr."Payment Status"::Open);
-                    CustomWorkflowHdr.Modify(true);
-                    Handled := true;
-                end;
-        end;
-    end;
+    //NB NASQ Start
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Response Handling", 'OnOpenDocument', '', false, false)]
+    // local procedure OnOpenDocument(RecRef: RecordRef; var Handled: Boolean)
+    // var
+    //     CustomWorkflowHdr: Record "Payment Line";
+    // begin
+    //     case RecRef.Number of
+    //         Database::"Payment Line":
+    //             begin
+    //                 RecRef.SetTable(CustomWorkflowHdr);
+    //                 CustomWorkflowHdr.Validate("Payment Status", CustomWorkflowHdr."Payment Status"::Open);
+    //                 CustomWorkflowHdr.Modify(true);
+    //                 Handled := true;
+    //             end;
+    //     end;
+    // end;
+    //NB MASQ End
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnSetStatusToPendingApproval', '', false, false)]
     local procedure OnSetStatusToPendingApproval(RecRef: RecordRef; var Variant: Variant; var IsHandled: Boolean)
@@ -141,6 +143,25 @@ codeunit 70116 "Custom Workflow PaymentLine"
             RfpLine.Validate("Payment Status", RfpLine."Payment Status"::Declined);
             RfpLine.Validate(Comment, 'Declined by ' + UserId + ' for payment value ' + Format(RfpLine."Payment Value"));
             RfpLine.Validate("Payment Value", 0);
+            RfpLine.Modify(true);
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", OnCancelApprovalRequestsForRecordOnAfterCreateApprovalEntryNotification, '', false, false)]
+    local procedure OnCancelApprovalRequestsForRecordOnAfterCreateApprovalEntryNotification(var ApprovalEntry: Record "Approval Entry"; WorkflowStepInstance: Record "Workflow Step Instance"; OldStatus: Enum "Approval Status")
+    var
+        RecRef: RecordRef;
+        RfpLine: Record "Payment Line"; // PK = Number, Line No.
+    begin
+        if not RecRef.Get(ApprovalEntry."Record ID to Approve") then
+            exit;
+
+        if RecRef.Number <> Database::"Payment Line" then
+            exit;
+
+        RecRef.SetTable(RfpLine); // This will hydrate Number + Line No from the RecordRef
+        if RfpLine."Payment Status" <> RfpLine."Payment Status"::Open then begin
+            RfpLine.Validate("Payment Status", RfpLine."Payment Status"::Open);
             RfpLine.Modify(true);
         end;
     end;
