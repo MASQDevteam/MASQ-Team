@@ -59,24 +59,6 @@ codeunit 70116 "Custom Workflow PaymentLine"
 
     // handle the document;
 
-    //NB NASQ Start
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Workflow Response Handling", 'OnOpenDocument', '', false, false)]
-    // local procedure OnOpenDocument(RecRef: RecordRef; var Handled: Boolean)
-    // var
-    //     CustomWorkflowHdr: Record "Payment Line";
-    // begin
-    //     case RecRef.Number of
-    //         Database::"Payment Line":
-    //             begin
-    //                 RecRef.SetTable(CustomWorkflowHdr);
-    //                 CustomWorkflowHdr.Validate("Payment Status", CustomWorkflowHdr."Payment Status"::Open);
-    //                 CustomWorkflowHdr.Modify(true);
-    //                 Handled := true;
-    //             end;
-    //     end;
-    // end;
-    //NB MASQ End
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Approvals Mgmt.", 'OnSetStatusToPendingApproval', '', false, false)]
     local procedure OnSetStatusToPendingApproval(RecRef: RecordRef; var Variant: Variant; var IsHandled: Boolean)
     var
