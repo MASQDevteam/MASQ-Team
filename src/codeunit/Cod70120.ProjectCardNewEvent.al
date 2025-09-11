@@ -2,6 +2,7 @@ codeunit 70120 ProjectEvent
 
 //FQ MASQ **Start**
 {
+    SingleInstance = true;
     trigger OnRun()
     begin
 
@@ -13,6 +14,7 @@ codeunit 70120 ProjectEvent
         UserSetup: Record "User Setup";
         SalesLine: Record "Sales Line";
         CanBypass: Boolean;
+
     begin
         if IsHandled then
             exit;
@@ -37,6 +39,8 @@ codeunit 70120 ProjectEvent
                     ThrowAssociatedEntriesExistError(Job, xJob, Job.FieldNo("Bill-to Customer No."), Job.FieldCaption("Bill-to Customer No."))
                 else begin
                     UpdateAssociatedSalesOrdersBillTo(Job);
+                    // Flag that we are processing a customer change so we can bypass currency update on planning lines
+                    SkipCurrencyUpdateOnCustomerChange := true;
                     IsHandled := true;
                 end;
             end;
@@ -84,6 +88,29 @@ codeunit 70120 ProjectEvent
         exit(false);
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::Job, 'OnBeforeValidateCurrencyCode', '', false, false)]
+    local procedure OnBeforeCurrencyUpdatePlanningLines(var Job: Record Job; var IsHandled: Boolean; xJob: Record Job)
+    var
+        UserSetup: Record "User Setup";
+        CanBypass: Boolean;
+    begin
+        // bypass just for this customer change
+        if SkipCurrencyUpdateOnCustomerChange then begin
+            IsHandled := true;
+            SkipCurrencyUpdateOnCustomerChange := false;
+            exit;
+        end;
+        /*  CanBypass := false;
+         if UserSetup.Get(UserId) then
+             CanBypass := UserSetup.BypassCustOnProject;
+         if CanBypass then begin
+             IsHandled := true; 
+             CanBypass := false;
+             exit;
+         end; */
+
+    end;
+
 
     local procedure UpdateAssociatedSalesOrdersBillTo(var Job: Record Job)
     var
@@ -93,6 +120,8 @@ codeunit 70120 ProjectEvent
         LastDocumentNo: Code[20];
         ReleaseSalesDoc: Codeunit "Release Sales Document";
         WasReleased: Boolean;
+        Customer: Record Customer;
+        CurrencyCodeToUse: Code[10];
     begin
         LastDocumentNo := '';
         SalesLine.Reset();
@@ -107,6 +136,11 @@ codeunit 70120 ProjectEvent
                         if WasReleased then
                             ReleaseSalesDoc.Reopen(SalesHeader);
 
+                        // If there is already a currency on the order, make sure factor is calculated now
+                        if SalesHeader."Currency Code" = '' then
+                            SalesHeader.Validate("Currency Code", Job."Currency Code");
+
+                        // Now update customer fields
                         if SalesHeader."Bill-to Customer No." <> Job."Bill-to Customer No." then
                             SalesHeader.Validate("Bill-to Customer No.", Job."Bill-to Customer No.");
 
@@ -114,7 +148,6 @@ codeunit 70120 ProjectEvent
                             SalesHeader.Validate("Sell-to Customer No.", Job."Bill-to Customer No.");
 
                         SalesHeader.Modify(true);
-
                         // Ensure all lines on the order reflect the updated customer as well
                         // This aligns line-level customer fields with the header after the Job change
                         SalesLineToUpdate.Reset();
@@ -141,5 +174,8 @@ codeunit 70120 ProjectEvent
     //FQ MASQ **End**
 
     var
+
+        SkipCurrencyUpdateOnCustomerChange: Boolean;
+
 
 }
