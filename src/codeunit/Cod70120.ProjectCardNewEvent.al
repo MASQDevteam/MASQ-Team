@@ -42,16 +42,18 @@ codeunit 70120 ProjectEvent
                     // Flag that we are processing a customer change so we can bypass currency update on planning lines
                     SkipCurrencyUpdateOnCustomerChange := true;
                     IsHandled := true;
+
                 end;
             end;
     end;
+
 
 
     local procedure ThrowAssociatedEntriesExistError(var Job: Record Job; var xJob: Record Job; FieldNo: Integer; FieldCaption: Text)
     var
         ErrorText: Text;
     begin
-        ErrorText := 'You cannot change %1 because one or more entries are associated with this Project.';
+        ErrorText := 'You cant change %1 because its linked to a project with delivered or invoiced sales orders.';
         Error(ErrorText, FieldCaption);
     end;
 
@@ -93,9 +95,19 @@ codeunit 70120 ProjectEvent
     var
         UserSetup: Record "User Setup";
         CanBypass: Boolean;
+        Customer: Record Customer;
     begin
         // bypass just for this customer change
         if SkipCurrencyUpdateOnCustomerChange then begin
+            // Do not trigger field validation; assign directly and save
+            if (Job."Currency Code" = '') then begin
+                if (Job."Bill-to Customer No." <> '') and Customer.Get(Job."Bill-to Customer No.") then begin
+                    if Customer."Currency Code" <> '' then begin
+                        Job."Currency Code" := Customer."Currency Code";
+                        Job.Modify();
+                    end;
+                end;
+            end;
             IsHandled := true;
             SkipCurrencyUpdateOnCustomerChange := false;
             exit;
@@ -136,9 +148,19 @@ codeunit 70120 ProjectEvent
                         if WasReleased then
                             ReleaseSalesDoc.Reopen(SalesHeader);
 
-                        // If there is already a currency on the order, make sure factor is calculated now
-                        if SalesHeader."Currency Code" = '' then
-                            SalesHeader.Validate("Currency Code", Job."Currency Code");
+                        // Ensure currency and factor are consistent
+                        if SalesHeader."Currency Code" <> '' then
+                            // Re-validate existing currency to force recalculation of factor based on dates
+                            SalesHeader.Validate("Currency Code", SalesHeader."Currency Code")
+                        else
+                            if Job."Currency Code" <> '' then
+                                // Set currency from Job when missing on the order
+                                SalesHeader.Validate("Currency Code", Job."Currency Code")
+                            else begin
+                                // LCY scenario: make sure factor is not left as 0
+                                if SalesHeader."Currency Factor" = 0 then
+                                    SalesHeader."Currency Factor" := 1;
+                            end;
 
                         // Now update customer fields
                         if SalesHeader."Bill-to Customer No." <> Job."Bill-to Customer No." then
