@@ -11,7 +11,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.1.30001.02</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-09-02T08:48:38.6222315Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-09-13T09:56:32.9626184Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -2382,7 +2382,7 @@ IIF(
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=Fields!CurrencyCode.Value &amp; " " &amp; Format(Fields!Gross.Value, "#,##0.00")+(Fields!Other_Charges_Value.Value)</Value>
+                                                <Value>=Fields!CurrencyCode.Value &amp; " " &amp; Format(Fields!Gross.Value + Fields!Other_Charges_Value.Value, "#,##0.00")</Value>
                                                 <Style>
                                                   <FontFamily>Segoe UI</FontFamily>
                                                   <FontWeight>Bold</FontWeight>
@@ -3022,7 +3022,7 @@ IIF(
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!Assigned_User_ID.Value</Value>
+                                      <Value>=Fields!AssignUserID.Value</Value>
                                       <Style>
                                         <FontFamily>Segoe UI</FontFamily>
                                         <FontSize>12pt</FontSize>
@@ -5783,8 +5783,8 @@ tst7ePyzwxPZIxLwRPaIBDyRPSIBT2SPSMAT2SMS8ET2iAQ8kT0iAU9kj0jAE9kjEvBE9ogEPJE9IgFP
         <Field Name="SystemCreatedByVar">
           <DataField>SystemCreatedByVar</DataField>
         </Field>
-        <Field Name="Assigned_User_ID">
-          <DataField>Assigned_User_ID</DataField>
+        <Field Name="AssignUserID">
+          <DataField>AssignUserID</DataField>
         </Field>
         <Field Name="PurchLineType">
           <DataField>PurchLineType</DataField>

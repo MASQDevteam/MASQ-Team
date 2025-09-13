@@ -17,7 +17,7 @@ reportextension 70101 "Purch Order KSA Ext" extends "Meg Purchase Order KSA Draf
             {
 
             }
-            column(Assigned_User_ID; "Assigned User ID")
+            column(AssignUserID; AssignUserID)
             {
 
             }
@@ -50,8 +50,19 @@ reportextension 70101 "Purch Order KSA Ext" extends "Meg Purchase Order KSA Draf
             var
                 User: Record User;
             begin
-                if User.Get(SystemCreatedBy) then
-                    SystemCreatedByVar := User."User Name";
+                if User.Get(SystemCreatedBy) then begin
+                    if User."Full Name" <> '' then
+                        SystemCreatedByVar := User."Full Name"
+                    else
+                        SystemCreatedByVar := User."User Name";
+                end;
+
+                if User.Get("Assigned User ID") then begin
+                    if User."Full Name" <> '' then
+                        AssignUserID := User."Full Name"
+                    else
+                        AssignUserID := "Assigned User ID";
+                end;
             end;
         }
         //NB MASQ End
@@ -75,4 +86,5 @@ reportextension 70101 "Purch Order KSA Ext" extends "Meg Purchase Order KSA Draf
         ProjNo: Code[20];
         Other_Caption: Label 'Other Charges';// FQ MASQ
         SystemCreatedByVar: Text; //NB MASQ
+        AssignUserID: Text; //NB MASQ
 }
