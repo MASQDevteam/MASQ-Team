@@ -274,6 +274,10 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
                 CalculateTotalWithCharge();
             end;
         }
+        field(70131; "Acknowledgement Date"; Date)
+        {
+            DataClassification = ToBeClassified;
+        }
         // FQ MASQ ** END **
 
     }
