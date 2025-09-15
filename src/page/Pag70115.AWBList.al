@@ -146,6 +146,12 @@ page 70115 "AWB List"
                 {
                     ApplicationArea = All;
                 }
+                // FQ MASQ ** Start
+                field("Shipping Quotation Reference"; Rec."Shipping Quotation Reference")
+                {
+                    ApplicationArea = All;
+                }
+                // FQ MASQ ** END
 
             }
         }
