@@ -56,6 +56,14 @@ pageextension 70144 "Job List Extension" extends "Job List"
                 ToolTip = 'Specifies the status of the project.';
                 StyleExpr = ProjectColor;
             }
+            field("Project Type"; Rec."Project Type")
+            {
+                ApplicationArea = All;
+            }
+            field("Project Submittal Type"; Rec."Project Submittal Type")
+            {
+                ApplicationArea = All;
+            }
             // FQ MASQ End
             field("Total Exported Quantity"; Rec."Total Exported Quantity")
             {

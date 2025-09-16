@@ -48,6 +48,19 @@ table 70119 "SubmittalComment"
         {
             DataClassification = ToBeClassified;
         }
+        //FQ MASQ **Start
+        /*  field(29; "Meg Item Type"; code[50])
+         {
+             DataClassification = ToBeClassified;
+         }
+         // CalcFormula = lookup("Approval Entry"."Document No." where("Document No." = field(Number)));
+         field(30; Quantiy; code[100])
+         {
+             FieldClass = FlowField;
+             CalcFormula = lookup("Job Planning Line"."No." where("No." = field("Dynamics Item Number"), "Meg Item Type" = field("Meg Item Type")));
+
+         } */
+        //FQ MASQ **END
 
     }
 

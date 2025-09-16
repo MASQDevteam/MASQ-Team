@@ -39,6 +39,19 @@ page 70128 "SubmittalComment Subform"
                     ToolTip = 'Specifies the value of the Dynamics Item Number field.', Comment = '%';
                     //  Editable = false;
                 }
+                //FQ MASQ ** START
+                /*   field("Meg Item Type"; Rec."Meg Item Type")
+                  {
+                      ApplicationArea = All;
+                      ToolTip = 'Specifies the value of the Dynamics Item Type field.', Comment = '%';
+                      Caption = 'Item Type';
+                      //  Editable = false;
+                  }
+                  field(Quantiy; Rec.Quantiy)
+                  {
+                      ApplicationArea = All;
+                  } */
+                //FQ MASQ ** END
                 field("Brand Name"; Rec."Brand Name")
                 {
                     ToolTip = 'Specifies the value of the Brand Name field.', Comment = '%';
