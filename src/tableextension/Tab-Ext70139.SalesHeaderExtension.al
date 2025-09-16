@@ -26,7 +26,22 @@ tableextension 70139 "Sales Header Extension" extends "Sales Header"
             DataClassification = CustomerContent;
         }
         //NB MASQ End
-
+        // FQ MASQ ** Start
+        modify("Assigned User ID")
+        {
+            trigger OnAfterValidate()
+            var
+                user: Record User;
+            begin
+                // The "Assigned User ID" stores the User Name (not the GUID SystemId).
+                // Look up by User Name and normalize to the exact User Name value.
+                user.Reset();
+                user.SetRange("User Name", "Assigned User ID");
+                if user.FindFirst() then
+                    "Assigned User ID" := user."Full Name";
+            end;
+        }
+        // FQ MASQ ** END
     }
 
     keys

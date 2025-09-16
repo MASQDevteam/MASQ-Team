@@ -50,7 +50,7 @@ reportextension 70101 "Purch Order KSA Ext" extends "Meg Purchase Order KSA Draf
             var
                 User: Record User;
             begin
-                if User.Get(SystemCreatedBy) then begin
+                if User.GetBySystemId(SystemCreatedBy) then begin// FQ MASQ
                     if User."Full Name" <> '' then
                         SystemCreatedByVar := User."Full Name"
                     else
