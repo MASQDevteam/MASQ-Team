@@ -76,17 +76,16 @@ codeunit 70120 ProjectEvent
             exit(true);
 
         // Posted documents: Sales Shipments
-        SalesShipmentLine.Reset();
-        SalesShipmentLine.SetRange("Job No.", Job."No.");
-        if SalesShipmentLine.FindFirst() then
-            exit(true);
+        /*   SalesShipmentLine.Reset();
+          SalesShipmentLine.SetRange("Job No.", Job."No.");
+          if SalesShipmentLine.FindFirst() then
+              exit(true);
 
-        // Posted documents: Sales Invoices
-        SalesInvoiceLine.Reset();
-        SalesInvoiceLine.SetRange("Job No.", Job."No.");
-        if SalesInvoiceLine.FindFirst() then
-            exit(true);
-
+          // Posted documents: Sales Invoices
+          SalesInvoiceLine.Reset();
+          SalesInvoiceLine.SetRange("Job No.", Job."No.");
+          if SalesInvoiceLine.FindFirst() then
+              exit(true); */
         exit(false);
     end;
 

@@ -40,7 +40,7 @@ page 70128 "SubmittalComment Subform"
                     //  Editable = false;
                 }
                 //FQ MASQ ** START
-                /*   field("Meg Item Type"; Rec."Meg Item Type")
+                   field("Meg Item Type"; Rec."Meg Item Type")
                   {
                       ApplicationArea = All;
                       ToolTip = 'Specifies the value of the Dynamics Item Type field.', Comment = '%';
@@ -50,7 +50,7 @@ page 70128 "SubmittalComment Subform"
                   field(Quantiy; Rec.Quantiy)
                   {
                       ApplicationArea = All;
-                  } */
+                  } 
                 //FQ MASQ ** END
                 field("Brand Name"; Rec."Brand Name")
                 {
