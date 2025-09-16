@@ -12,6 +12,13 @@ page 70175 "Request for Payment Subform"
         {
             repeater(General)
             {
+                field("Payment Date"; Rec."Payment Date")
+                {
+                    ToolTip = 'Specifies the value of the Payment Date field.', Comment = '%';
+                    //NB MASQ Start
+                    Editable = (Rec."Payment Status" = Rec."Payment Status"::Open) or (EditLine and (Rec."Payment Status" = Rec."Payment Status"::Released));
+                    //NB MASQ End
+                }
                 field("Payment Value"; Rec."Payment Value")
                 {
                     ToolTip = 'Specifies the value of the Payment Value field.', Comment = '%';
@@ -22,13 +29,6 @@ page 70175 "Request for Payment Subform"
                 field("Payment %"; Rec."Payment %")
                 {
                     ToolTip = 'Specifies the value of the Payment % field.', Comment = '%';
-                }
-                field("Payment Date"; Rec."Payment Date")
-                {
-                    ToolTip = 'Specifies the value of the Payment Date field.', Comment = '%';
-                    //NB MASQ Start
-                    Editable = (Rec."Payment Status" = Rec."Payment Status"::Open) or (EditLine and (Rec."Payment Status" = Rec."Payment Status"::Released));
-                    //NB MASQ End
                 }
                 field("Payment Status"; Rec."Payment Status")
                 {
@@ -193,13 +193,13 @@ page 70175 "Request for Payment Subform"
     var
         PaymentLine: Record "Payment Line";
     begin
-        PaymentLine.Reset();
-        PaymentLine.SetRange(Number, Rec.Number);
-        if PaymentLine.FindSet() then begin
-            PaymentLine.CalcSums("Payment Value");
-            if PaymentLine."Payment Value" <> Rec."PO Value" then
-                Error('Sum of Payments must be equal to the PO Value');
-        end;
+        // PaymentLine.Reset();
+        // PaymentLine.SetRange(Number, Rec.Number);
+        // if PaymentLine.FindSet() then begin
+        //     PaymentLine.CalcSums("Payment Value");
+        //     if PaymentLine."Payment Value" <> Rec."PO Value" then
+        //         Error('Sum of Payments must be equal to the PO Value');
+        // end;
     end;
     //NB MASQ End
 
