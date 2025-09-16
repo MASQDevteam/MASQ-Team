@@ -27,7 +27,7 @@ tableextension 70139 "Sales Header Extension" extends "Sales Header"
         }
         //NB MASQ End
         // FQ MASQ ** Start
-        modify("Assigned User ID")
+        /* modify("Assigned User ID")
         {
             trigger OnAfterValidate()
             var
@@ -40,7 +40,7 @@ tableextension 70139 "Sales Header Extension" extends "Sales Header"
                 if user.FindFirst() then
                     "Assigned User ID" := user."Full Name";
             end;
-        }
+        } */
         // FQ MASQ ** END
     }
 

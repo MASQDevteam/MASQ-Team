@@ -57,12 +57,15 @@ reportextension 70101 "Purch Order KSA Ext" extends "Meg Purchase Order KSA Draf
                         SystemCreatedByVar := User."User Name";
                 end;
 
-                if User.Get("Assigned User ID") then begin
+                user.Reset();
+                user.SetRange("User Name", "Assigned User ID");// FQ MASQ
+                if user.FindFirst() then begin
+                    // if User.Get("Assigned User ID") then begin
                     if User."Full Name" <> '' then
                         AssignUserID := User."Full Name"
                     else
                         AssignUserID := "Assigned User ID";
-                end;
+            end;
             end;
         }
         //NB MASQ End
