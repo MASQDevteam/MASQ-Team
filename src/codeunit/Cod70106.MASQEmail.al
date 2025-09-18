@@ -545,6 +545,7 @@ codeunit 70106 "MASQ Email"
             repeat
                 MultiRecipients += UserSetup."E-Mail" + ';';
             until UserSetup.Next() = 0;
+            MultiRecipients += 'scis@moonlight.com.lb;';//FQ MASQ
             MultiRecipients := DELCHR(MultiRecipients, '>', ';');
             EmailMessage.Create(MultiRecipients, Subject, Body, true);
             Email.Send(EmailMessage);
@@ -629,6 +630,7 @@ codeunit 70106 "MASQ Email"
             repeat
                 MultiRecipients += UserSetup."E-Mail" + ';';
             until UserSetup.Next() = 0;
+            MultiRecipients += 'scis@moonlight.com.lb;';//FQ MASQ
             MultiRecipients := DELCHR(MultiRecipients, '>', ';');
             EmailMessage.Create(MultiRecipients, Subject, Body, true);
             Email.Send(EmailMessage);
@@ -697,6 +699,7 @@ codeunit 70106 "MASQ Email"
             repeat
                 MultiRecipients += UserSetup."E-Mail" + ';';
             until UserSetup.Next() = 0;
+            MultiRecipients += 'scis@moonlight.com.lb;';//FQ MASQ
             MultiRecipients := DELCHR(MultiRecipients, '>', ';');
             EmailMessage.Create(MultiRecipients, Subject, Body, true);
             Email.Send(EmailMessage);
@@ -745,6 +748,7 @@ codeunit 70106 "MASQ Email"
             repeat
                 MultiRecipients += UserSetup."E-Mail" + ';';
             until UserSetup.Next() = 0;
+            MultiRecipients += 'scis@moonlight.com.lb;';//FQ MASQ
             MultiRecipients := DELCHR(MultiRecipients, '>', ';');
             EmailMessage.Create(MultiRecipients, Subject, Body, true);
             Email.Send(EmailMessage);
@@ -793,6 +797,7 @@ codeunit 70106 "MASQ Email"
             repeat
                 MultiRecipients += UserSetup."E-Mail" + ';';
             until UserSetup.Next() = 0;
+            MultiRecipients += 'scis@moonlight.com.lb;';//FQ MASQ
             MultiRecipients := DELCHR(MultiRecipients, '>', ';');
             EmailMessage.Create(MultiRecipients, Subject, Body, true);
             Email.Send(EmailMessage);
@@ -840,6 +845,7 @@ codeunit 70106 "MASQ Email"
             repeat
                 MultiRecipients += UserSetup."E-Mail" + ';';
             until UserSetup.Next() = 0;
+            MultiRecipients += 'scis@moonlight.com.lb;';//FQ MASQ
             MultiRecipients := DELCHR(MultiRecipients, '>', ';');
             EmailMessage.Create(MultiRecipients, Subject, Body, true);
             Email.Send(EmailMessage);
@@ -929,6 +935,7 @@ codeunit 70106 "MASQ Email"
             repeat
                 MultiRecipients += UserSetup."E-Mail" + ';';
             until UserSetup.Next() = 0;
+            MultiRecipients += 'scis@moonlight.com.lb;';//FQ MASQ
             MultiRecipients := DELCHR(MultiRecipients, '>', ';');
             EmailMessage.Create(MultiRecipients, Subject, Body, true);
             Email.Send(EmailMessage);
@@ -1009,6 +1016,7 @@ codeunit 70106 "MASQ Email"
             repeat
                 MultiRecipients += UserSetup."E-Mail" + ';';
             until UserSetup.Next() = 0;
+            MultiRecipients += 'scis@moonlight.com.lb;';//FQ MASQ
             MultiRecipients := DELCHR(MultiRecipients, '>', ';');
             EmailMessage.Create(MultiRecipients, Subject, Body, true);
             Email.Send(EmailMessage);
@@ -1050,6 +1058,7 @@ codeunit 70106 "MASQ Email"
             repeat
                 MultiRecipients += UserSetup."E-Mail" + ';';
             until UserSetup.Next() = 0;
+            MultiRecipients += 'scis@moonlight.com.lb;';//FQ MASQ
             MultiRecipients := DELCHR(MultiRecipients, '>', ';');
             EmailMessage.Create(MultiRecipients, Subject, Body, true);
             Email.Send(EmailMessage);
@@ -1083,6 +1092,7 @@ codeunit 70106 "MASQ Email"
             repeat
                 MultiRecipients += UserSetup."E-Mail" + ';';
             until UserSetup.Next() = 0;
+            MultiRecipients += 'scis@moonlight.com.lb;';//FQ MASQ
             MultiRecipients := DELCHR(MultiRecipients, '>', ';');
             EmailMessage.Create(MultiRecipients, Subject, Body, true);
             Email.Send(EmailMessage);
