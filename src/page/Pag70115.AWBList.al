@@ -15,7 +15,7 @@ page 70115 "AWB List"
                 field("AWB ID"; Rec."AWB ID")
                 {
                     ToolTip = 'Specifies the value of the AWB Number field.', Comment = '%';
-                    Enabled = false;
+                    //Enabled = false; // FQ MASQ 
                 }
                 field("AWB Number"; Rec."AWB Number")
                 {

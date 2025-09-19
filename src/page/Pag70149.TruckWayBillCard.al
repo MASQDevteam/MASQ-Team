@@ -17,6 +17,13 @@ page 70149 "Truck WayBill Card"
                 field("Truck WayBill"; Rec."Truck WayBill")
                 {
                 }
+                //FQ MASQ **Start
+                field("Truck Waybill Type"; Rec."Truck Waybill Type")
+                {
+                    ToolTip = 'Specifies the value of the Truck Truck way bill type field.', Comment = '%';
+                }
+                // FQ MASQ **END
+
                 field("Line"; Rec."Line")
                 {
                 }

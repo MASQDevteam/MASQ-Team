@@ -11,6 +11,13 @@ tableextension 70143 "Job Ext" extends "Job"
         {
             DataClassification = ToBeClassified;
             OptionMembers = "BM","PM";
+            //FQ MASQ Start
+            trigger OnValidate()
+            begin
+                if "Project Type" = "Project Type"::BM then
+                    Validate("Project Submittal Type", "Project Submittal Type"::A);
+            end;
+            //FQ MASQ END
         }
         field(70124; "Project Submittal Type"; Option)
         {
@@ -64,4 +71,15 @@ tableextension 70143 "Job Ext" extends "Job"
         //     DataClassification = ToBeClassified;
         // }
     }
+    //FQ MASQ Start
+    trigger OnAfterInsert()
+    begin
+        if Rec."Project Type" = Rec."Project Type"::BM then
+            if Rec."Project Submittal Type" <> Rec."Project Submittal Type"::A then begin
+                Rec."Project Submittal Type" := Rec."Project Submittal Type"::A;
+                Rec.Modify();
+            end;
+    end;
+    //FQ MASQ Start
+
 }

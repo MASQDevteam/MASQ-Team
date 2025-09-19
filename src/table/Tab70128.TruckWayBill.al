@@ -363,6 +363,12 @@ table 70128 "Truck WayBill"
         field(57; "GROSS Weight in KG"; Decimal) { }
         field(58; "VOLUMETRIC Weight in KG"; Decimal) { }
         field(59; "NET Weight in KG"; Decimal) { }
+        // FQ MASQ **Start
+        field(60; "Truck Waybill Type"; Option)
+        {
+            OptionMembers = "",Local,International;
+        }
+        //FQ MASQ **END
     }
 
     keys

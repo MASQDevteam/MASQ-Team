@@ -2,7 +2,6 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
 {
     layout
     {
-
         // Add changes to page layout here
         addafter("Expected Receipt Date")
         {
@@ -406,10 +405,7 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
             }
         }
 
-        // modify("Document No.")
-        // {
-        //     Visible = true;
-        // }
+
         addbefore(Type)
         {
 
@@ -732,6 +728,13 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                 Editable = false;
             }
         }
+        //FQ MASQ ** Start
+        moveafter("Document Type"; "Document No.")
+        modify("Document No.")
+        {
+            Visible = true;
+        }
+        //FQ MASQ ** END
     }
 
 
