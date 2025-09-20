@@ -116,7 +116,26 @@ pageextension 70132 "SO Extension" extends "Sales Order"
     }
 
     actions
-    {
+    {   // FQ MASQ ** Start
+        addfirst(Processing)
+        {
+            action(RefreshData)
+            {
+                ApplicationArea = All;
+                Caption = 'Refresh Data';
+                Image = Refresh;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Refresh the current page data to reflect any changes made in other tabs.';
+
+                trigger OnAction()
+                begin
+                    CurrPage.Update(false);
+                end;
+            }
+            // FQ MASQ ** End
+        }
         addafter("Print Confirmation")
         {
             action(PrintDeliveryOrder)

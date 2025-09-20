@@ -888,6 +888,7 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
                 SalesLine.Validate("MASQ Purchase Order Line No.", 0);
                 SalesLine.Validate("Sent to PO", false);
                 SalesLine.Modify(true);
+                Message('Purchase order line has been deleted and unlinked from Sales Order %1, Line %2.', "MASQ Sales Order No.", "MASQ Sales Order Line No.");
             end;
         end;
         //NB MASQ End

@@ -184,6 +184,26 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
     actions
     {
         // Add changes to page actions here
+        // FQ MASQ ** Start
+        addfirst(Processing)
+        {
+            action(RefreshData)
+            {
+                ApplicationArea = All;
+                Caption = 'Refresh Data';
+                Image = Refresh;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Refresh the current page data to reflect any changes made in other tabs.';
+
+                trigger OnAction()
+                begin
+                    CurrPage.Update(false);
+                end;
+            }
+            // FQ MASQ ** End
+        }
         addafter(Receipts)
         {
             action("Open SO")
