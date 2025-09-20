@@ -71,7 +71,7 @@ pageextension 70104 "Item card Extension" extends "Item Card"
                 ToolTip = 'Specifies the value of the Vendor Custom Code field.', Comment = '%';
             }
         }
-
+        moveafter("Meg Item Subcategory Code"; "Item Category Code")// FQ MASQ 
         // modify("Meg Vendor Item Code")
         // {
 
