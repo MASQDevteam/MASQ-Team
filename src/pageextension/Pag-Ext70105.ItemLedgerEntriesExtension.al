@@ -47,10 +47,22 @@ pageextension 70105 "Item Ledger Entries Extension" extends "Item Ledger Entries
                 ToolTip = 'Specifies the value of the Batch Number field.', Comment = '%';
                 Editable = false;
             }
+
+            //NB MASQ Start
             field("Item Category Code"; Rec."Item Category Code")
             {
                 ApplicationArea = All;
             }
+            field(Family; Rec.Family)
+            {
+                ApplicationArea = All;
+            }
+            field("Item Subcategory Code"; Rec."Item Subcategory Code")
+            {
+                ApplicationArea = All;
+            }
+            //NB MASQ End
+
         }
         addafter("Location Code")
         {

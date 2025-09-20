@@ -467,6 +467,32 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
         {
             DataClassification = ToBeClassified;
         }
+
+        //NB MASQ Start
+        field(70152; "AWB Number"; Code[20])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "AWB Details"."AWB Number";
+            ValidateTableRelation = false;
+        }
+        field(70153; "AWB PO No."; Text[1000])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup("AWB Details"."PO No." where("AWB Number" = field("AWB Number")));
+            Editable = false;
+        }
+        field(70154; "Vendor Name"; Text[100])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup("Purchase Header"."Buy-from Vendor Name" where("No." = field("AWB PO No.")));
+            Editable = false;
+        }
+        field(70155; "Project Code"; Code[20])
+        {
+            Editable = false;
+        }
+        //NB MASQ End
+
         // modify("Amount Including VAT")
         // {
         //AN 07/04/2025
@@ -888,7 +914,6 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
                 SalesLine.Validate("MASQ Purchase Order Line No.", 0);
                 SalesLine.Validate("Sent to PO", false);
                 SalesLine.Modify(true);
-                Message('Purchase order line has been deleted and unlinked from Sales Order %1, Line %2.', "MASQ Sales Order No.", "MASQ Sales Order Line No.");
             end;
         end;
         //NB MASQ End

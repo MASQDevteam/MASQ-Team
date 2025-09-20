@@ -87,6 +87,20 @@ tableextension 70107 "Item Ledger Extension" extends "Item Ledger Entry"
             Caption = 'Job ID';
         }
 
+        //NB MASQ Start
+        field(70113; Family; Code[2048])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup(Item."Meg Family" where("No." = field("Item No.")));
+            Editable = false;
+        }
+        field(70114; "Item Subcategory Code"; Code[20])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup(Item."Meg Item Subcategory Code" where("No." = field("Item No.")));
+            Editable = false;
+        }
+        //NB MASQ End
 
     }
 
