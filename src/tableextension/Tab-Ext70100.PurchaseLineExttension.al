@@ -469,27 +469,57 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
         }
 
         //NB MASQ Start
-        field(70152; "AWB Number"; Code[20])
+        field(70152; "AWB Number"; Code[50])
         {
             DataClassification = CustomerContent;
             TableRelation = "AWB Details"."AWB Number";
             ValidateTableRelation = false;
+            trigger OnValidate()
+            var
+                AWBDetails: Record "AWB Details";
+            begin
+                Clear("AWB PO No.");
+                Clear("Vendor Name");
+                Clear("Project Code");
+
+                AWBDetails.Reset();
+                AWBDetails.SetRange("AWB Number", Rec."AWB Number");
+                if AWBDetails.FindFirst() then
+                    Rec.Validate("AWB PO No.", AWBDetails."PO No.");
+            end;
         }
         field(70153; "AWB PO No."; Text[1000])
         {
-            FieldClass = FlowField;
-            CalcFormula = lookup("AWB Details"."PO No." where("AWB Number" = field("AWB Number")));
+            DataClassification = CustomerContent;
             Editable = false;
+            trigger OnValidate()
+            var
+                PurchaseHeader: Record "Purchase Header";
+                DimensionSetEntry: Record "Dimension Set Entry";
+            begin
+                PurchaseHeader.Reset();
+                PurchaseHeader.SetRange("Document Type", PurchaseHeader."Document Type"::Order);
+                PurchaseHeader.SetRange("No.", "AWB PO No.");
+                if PurchaseHeader.FindFirst() then begin
+                    Rec.Validate("Vendor Name", PurchaseHeader."Buy-from Vendor Name");
+
+                    DimensionSetEntry.Reset();
+                    DimensionSetEntry.SetRange("Dimension Set ID", PurchaseHeader."Dimension Set ID");
+                    DimensionSetEntry.SetRange("Dimension Code", 'PROJECT');
+                    if DimensionSetEntry.FindFirst() then
+                        Rec.Validate("Project Code", DimensionSetEntry."Dimension Value Code");
+                end;
+            end;
         }
         field(70154; "Vendor Name"; Text[100])
         {
-            FieldClass = FlowField;
-            CalcFormula = lookup("Purchase Header"."Buy-from Vendor Name" where("No." = field("AWB PO No.")));
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(70155; "Project Code"; Code[20])
         {
             Editable = false;
+            DataClassification = CustomerContent;
         }
         //NB MASQ End
 
@@ -914,7 +944,6 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
                 SalesLine.Validate("MASQ Purchase Order Line No.", 0);
                 SalesLine.Validate("Sent to PO", false);
                 SalesLine.Modify(true);
-                Message('Purchase order line has been deleted and unlinked from Sales Order %1, Line %2.', "MASQ Sales Order No.", "MASQ Sales Order Line No.");//FQ MASQ
             end;
         end;
         //NB MASQ End

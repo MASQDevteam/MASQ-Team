@@ -525,6 +525,15 @@ table 70110 "AWB Details"
         { }
     }
 
+    //NB MASQ Start
+    fieldgroups
+    {
+        fieldgroup(DropDown; "AWB ID", "AWB Number", "PO No.")
+        {
+
+        }
+    }
+    //NB MASQ End
 
     trigger OnInsert()
     var
