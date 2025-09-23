@@ -391,7 +391,6 @@ table 70110 "AWB Details"
                 PurchaseLine: Record "Purchase Line";
                 PurchaseOrderList: Page "Purchase Order List";
             begin
-                Rec."PO No." := '';
                 Clear(PurchaseOrderList);
                 Clear(PurchaseLine);
                 Clear(PurchaseHeader);
@@ -406,14 +405,15 @@ table 70110 "AWB Details"
                 PurchaseOrderList.SetTableView(PurchaseHeader);
                 PurchaseOrderList.LookupMode(true);
                 IF PurchaseOrderList.RunModal() = Action::LookupOK then begin
+                    Clear(Rec."PO No."); //NB MASQ
                     PurchaseOrderList.SetSelectionFilter(PurchaseHeader);
                     if PurchaseHeader.FindSet() then
                         repeat
                             Rec."PO No." += PurchaseHeader."No." + ' , ';
                         until PurchaseHeader.Next() = 0;
+                    If Rec."PO No." <> '' then //NB MASQ
+                        Rec."PO No." := CopyStr(Rec."PO No.", 1, StrLen(Rec."PO No.") - 3); 
                 end;
-                If Rec."PO No." <> '' then
-                    Rec."PO No." := CopyStr(Rec."PO No.", 1, StrLen(Rec."PO No.") - 3);
             end;
         }
         field(41; "Location Code"; Text[1000])

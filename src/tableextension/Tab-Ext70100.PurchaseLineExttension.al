@@ -479,27 +479,37 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
                 AWBDetails: Record "AWB Details";
             begin
                 Clear("AWB PO No.");
+                Clear("PO No.");
                 Clear("Vendor Name");
                 Clear("Project Code");
 
                 AWBDetails.Reset();
                 AWBDetails.SetRange("AWB Number", Rec."AWB Number");
-                if AWBDetails.FindFirst() then
+                AWBDetails.SetFilter("PO No.", '<>%1', '');
+                if AWBDetails.FindFirst() then begin
                     Rec.Validate("AWB PO No.", AWBDetails."PO No.");
+                    if StrLen(AWBDetails."PO No.") = 9 then
+                        Rec.Validate("PO No.", AWBDetails."PO No.");
+                end;
             end;
         }
         field(70153; "AWB PO No."; Text[1000])
         {
             DataClassification = CustomerContent;
             Editable = false;
+        }
+        field(70154; "PO No."; Code[20])
+        {
+            DataClassification = CustomerContent;
             trigger OnValidate()
             var
                 PurchaseHeader: Record "Purchase Header";
                 DimensionSetEntry: Record "Dimension Set Entry";
+                PurchInvHeader: Record "Purch. Inv. Header";
             begin
                 PurchaseHeader.Reset();
                 PurchaseHeader.SetRange("Document Type", PurchaseHeader."Document Type"::Order);
-                PurchaseHeader.SetRange("No.", "AWB PO No.");
+                PurchaseHeader.SetRange("No.", Rec."PO No.");
                 if PurchaseHeader.FindFirst() then begin
                     Rec.Validate("Vendor Name", PurchaseHeader."Buy-from Vendor Name");
 
@@ -508,15 +518,27 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
                     DimensionSetEntry.SetRange("Dimension Code", 'PROJECT');
                     if DimensionSetEntry.FindFirst() then
                         Rec.Validate("Project Code", DimensionSetEntry."Dimension Value Code");
+                end else begin
+                    PurchInvHeader.Reset();
+                    PurchInvHeader.SetRange("Order No.", Rec."PO No.");
+                    if PurchInvHeader.FindFirst() then begin
+                        Rec.Validate("Vendor Name", PurchInvHeader."Buy-from Vendor Name");
+
+                        DimensionSetEntry.Reset();
+                        DimensionSetEntry.SetRange("Dimension Set ID", PurchInvHeader."Dimension Set ID");
+                        DimensionSetEntry.SetRange("Dimension Code", 'PROJECT');
+                        if DimensionSetEntry.FindFirst() then
+                            Rec.Validate("Project Code", DimensionSetEntry."Dimension Value Code");
+                    end;
                 end;
             end;
         }
-        field(70154; "Vendor Name"; Text[100])
+        field(70155; "Vendor Name"; Text[100])
         {
             DataClassification = CustomerContent;
             Editable = false;
         }
-        field(70155; "Project Code"; Code[20])
+        field(70156; "Project Code"; Code[20])
         {
             Editable = false;
             DataClassification = CustomerContent;

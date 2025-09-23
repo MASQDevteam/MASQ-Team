@@ -13,6 +13,10 @@ pageextension 70168 "Purch. Invoice Subform Ext" extends "Purch. Invoice Subform
             {
                 ApplicationArea = All;
             }
+            field("PO No."; Rec."PO No.")
+            {
+                ApplicationArea = All;
+            }
             field("Vendor Name"; Rec."Vendor Name")
             {
                 ApplicationArea = All;
