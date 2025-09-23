@@ -157,6 +157,10 @@ pageextension 70111 "User Setup Extension" extends "User Setup"
                 ApplicationArea = All;
                 Caption = 'Bypass customer check on Project Card';
             }
+            field("Can View SO Customer Fields"; Rec."Can View SO Customer Fields")
+            {
+                ApplicationArea = All;
+            }
             // FQ MASQ End
 
         }

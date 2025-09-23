@@ -151,6 +151,11 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
         {
             DataClassification = ToBeClassified;
         }
+        field(70132; "Can View SO Customer Fields"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Can View SO Customer Fields';
+        }
         // FQ MASQ End
     }
 

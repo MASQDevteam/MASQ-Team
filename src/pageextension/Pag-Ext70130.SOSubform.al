@@ -2,6 +2,24 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
 {
     layout
     {
+        //FQ MASQ **START**
+        addafter("No.")
+        {
+            field("Sell-to Customer No."; Rec."Sell-to Customer No.")
+            {
+                ApplicationArea = All;
+                Visible = canViewCustomerFields;
+                Editable = true;
+            }
+            field("Bill-to Customer No."; Rec."Bill-to Customer No.")
+            {
+                ApplicationArea = All;
+                Visible = canViewCustomerFields;
+                Editable = true;
+            }
+
+        }
+        //FQ MASQ **END**
         addafter(Quantity)
         {
             field("Qty to Split"; Rec."Qty to Split")
@@ -593,6 +611,7 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
         UserSetup.Get(UserId);
         CanEditPO_SO_Lines := UserSetup."Can Edit SO/PO Details";
         visibleQTYSplit := UserSetup."Can Split SO";
+        canViewCustomerFields := UserSetup."Can View SO Customer Fields";
     end;
 
     //NB MASQ Start
@@ -684,4 +703,5 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
         UserSetup: Record "User Setup";
         CanEditPO_SO_Lines: Boolean;
         visibleQTYSplit: Boolean;
+        canViewCustomerFields: Boolean;
 }
