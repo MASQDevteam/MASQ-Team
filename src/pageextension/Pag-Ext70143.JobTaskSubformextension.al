@@ -10,6 +10,7 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Actual (Total Cost) Freight field.', Comment = '%';
             }
+            //FQ MASQ  **Start**
             field("Usage (Total Cost) Freight1"; UsageTotalCostFreight1)
             {
                 ApplicationArea = All;
@@ -54,7 +55,7 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
             {
                 ApplicationArea = All;
             }
-
+            //FQ MASQ  **END**
             field("Usage (Total Cost) Customs"; Rec."Usage (Total Cost) Customs")
             {
                 ApplicationArea = All;
@@ -161,11 +162,10 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
             Visible = false;
         }
     }
-
+    //FQ MASQ  **Start**
     trigger OnAfterGetRecord()
     var
     begin
-        //Added by FQ on 13082025 **Start**
         RecalculateUsageTotalCostFreight1();
         RecalculateUsageTotalCostCustoms1();
         RecalculateUsageTotalCostClearance1();
@@ -186,13 +186,13 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
 
     end;
 
-    //Added by FQ on 13082025 **Start**
+
     local procedure RecalculateUsageTotalCostFreight1()
     var
         glByJob: Record "G/L Entry";
         glByDim: Record "G/L Entry";
         job: Record Job;
-        dim1Code: Code[20];
+        dim1Code: Text[250];
         sumJob: Decimal;
         sumDim: Decimal;
     begin
@@ -210,11 +210,11 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
         end;
         // Sum entries posted without Job No. but tagged with the Job's Apollo Project Number via Global Dimension 1 Code (Project Code)
         if (glByJob."Job No." = '') and job.Get(Rec."Job No.") then begin
-            dim1Code := job."Apollo Project Number";
+            dim1Code := NormalizeApolloToDim1Filter(job."Apollo Project Number");
             if dim1Code <> '' then begin
                 glByDim.Reset();
                 glByDim.SetRange("Gen. Prod. Posting Group", 'FREIGHT');
-                glByDim.SetRange("Global Dimension 1 Code", dim1Code);
+                glByDim.SetFilter("Global Dimension 1 Code", dim1Code);
                 glByDim.CalcSums(Amount);
                 sumDim := glByDim.Amount;
             end;
@@ -228,7 +228,7 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
         glByJob: Record "G/L Entry";
         glByDim: Record "G/L Entry";
         job: Record Job;
-        dim1Code: Code[20];
+        dim1Code: Text[250];
         sumJob: Decimal;
         sumDim: Decimal;
     begin
@@ -246,11 +246,11 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
         end;
         // Sum entries posted without Job No. but tagged with the Job's Apollo Project Number via Global Dimension 1 Code (Project Code)
         if (glByJob."Job No." = '') and job.Get(Rec."Job No.") then begin
-            dim1Code := job."Apollo Project Number";
+            dim1Code := NormalizeApolloToDim1Filter(job."Apollo Project Number");
             if dim1Code <> '' then begin
                 glByDim.Reset();
                 glByDim.SetRange("Gen. Prod. Posting Group", 'CUSTOMS');
-                glByDim.SetRange("Global Dimension 1 Code", dim1Code);
+                glByDim.SetFilter("Global Dimension 1 Code", dim1Code);
                 glByDim.CalcSums(Amount);
                 sumDim := glByDim.Amount;
             end;
@@ -264,7 +264,7 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
         glByJob: Record "G/L Entry";
         glByDim: Record "G/L Entry";
         job: Record Job;
-        dim1Code: Code[20];
+        dim1Code: Text[250];
         sumJob: Decimal;
         sumDim: Decimal;
     begin
@@ -282,11 +282,11 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
         end;
         // Sum entries posted without Job No. but tagged with the Job's Apollo Project Number via Global Dimension 1 Code (Project Code)
         if (glByJob."Job No." = '') and job.Get(Rec."Job No.") then begin
-            dim1Code := job."Apollo Project Number";
+            dim1Code := NormalizeApolloToDim1Filter(job."Apollo Project Number");
             if dim1Code <> '' then begin
                 glByDim.Reset();
                 glByDim.SetRange("Gen. Prod. Posting Group", 'CLEARING');
-                glByDim.SetRange("Global Dimension 1 Code", dim1Code);
+                glByDim.SetFilter("Global Dimension 1 Code", dim1Code);
                 glByDim.CalcSums(Amount);
                 sumDim := glByDim.Amount;
             end;
@@ -300,7 +300,7 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
         glByJob: Record "G/L Entry";
         glByDim: Record "G/L Entry";
         job: Record Job;
-        dim1Code: Code[20];
+        dim1Code: Text[250];
         sumJob: Decimal;
         sumDim: Decimal;
     begin
@@ -318,11 +318,11 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
         end;
         // Sum entries posted without Job No. but tagged with the Job's Apollo Project Number via Global Dimension 1 Code (Project Code)
         if (glByJob."Job No." = '') and job.Get(Rec."Job No.") then begin
-            dim1Code := job."Apollo Project Number";
+            dim1Code := NormalizeApolloToDim1Filter(job."Apollo Project Number");
             if dim1Code <> '' then begin
                 glByDim.Reset();
                 glByDim.SetRange("Gen. Prod. Posting Group", 'INSURANCE');
-                glByDim.SetRange("Global Dimension 1 Code", dim1Code);
+                glByDim.SetFilter("Global Dimension 1 Code", dim1Code);
                 glByDim.CalcSums(Amount);
                 sumDim := glByDim.Amount;
             end;
@@ -336,7 +336,7 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
         glByJob: Record "G/L Entry";
         glByDim: Record "G/L Entry";
         job: Record Job;
-        dim1Code: Code[20];
+        dim1Code: Text[250];
         sumJob: Decimal;
         sumDim: Decimal;
     begin
@@ -354,11 +354,11 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
         end;
         // Sum entries posted without Job No. but tagged with the Job's Apollo Project Number via Global Dimension 1 Code (Project Code)
         if (glByJob."Job No." = '') and job.Get(Rec."Job No.") then begin
-            dim1Code := job."Apollo Project Number";
+            dim1Code := NormalizeApolloToDim1Filter(job."Apollo Project Number");
             if dim1Code <> '' then begin
                 glByDim.Reset();
                 glByDim.SetRange("Gen. Prod. Posting Group", 'OTHEREXP TAXABLE');
-                glByDim.SetRange("Global Dimension 1 Code", dim1Code);
+                glByDim.SetFilter("Global Dimension 1 Code", dim1Code);
                 glByDim.CalcSums(Amount);
                 sumDim := glByDim.Amount;
             end;
@@ -372,7 +372,7 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
         glByJob: Record "G/L Entry";
         glByDim: Record "G/L Entry";
         job: Record Job;
-        dim1Code: Code[20];
+        dim1Code: Text[250];
         sumJob: Decimal;
         sumDim: Decimal;
     begin
@@ -389,10 +389,10 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
         end;
         // Sum entries posted without Job No. but tagged with the Job's Apollo Project Number via Global Dimension 1 Code (Project Code)
         if (glByJob."Job No." = '') and job.Get(Rec."Job No.") then begin
-            dim1Code := job."Apollo Project Number";
+            dim1Code := NormalizeApolloToDim1Filter(job."Apollo Project Number");
             if dim1Code <> '' then begin
                 glByDim.Reset();
-                glByDim.SetRange("Global Dimension 1 Code", dim1Code);
+                glByDim.SetFilter("Global Dimension 1 Code", dim1Code);
                 glByDim.CalcSums(Amount);
                 sumDim := glByDim.Amount;
             end;
@@ -400,7 +400,59 @@ pageextension 70143 "Job Task Subform extension" extends "Job Task Lines Subform
         UsageActualTotalCost1 := sumJob + sumDim;
         Rec."Usage (Total Cost)1." := UsageActualTotalCost1;
     end;
-    //Added by FQ on 13082025 **End**
+
+    local procedure NormalizeApolloToDim1Filter(ApolloValue: Text[250]): Text[250]
+    var
+        filterText: Text[250];
+        work: Text[250];
+    begin
+        work := ApolloValue;
+        if work = '' then
+            exit('');
+
+        // Convert common multi-value separators to '|'
+        work := ReplaceAll(work, ',', '|');
+        work := ReplaceAll(work, ';', '|');
+        work := ReplaceAll(work, '/', '|');
+        work := ReplaceAll(work, '\\', '|');
+        // Replace textual AND variants with '|'
+        work := ReplaceAll(work, ' AND ', '|');
+        work := ReplaceAll(work, ' and ', '|');
+        work := ReplaceAll(work, 'And', '|');
+        work := ReplaceAll(work, 'AND', '|');
+        // Remove spaces
+        work := ReplaceAll(work, ' ', '');
+
+        // Remove duplicate pipes
+        while StrPos(work, '||') > 0 do
+            work := ReplaceAll(work, '||', '|');
+
+        // Trim pipes from ends
+        if CopyStr(work, 1, 1) = '|' then
+            work := CopyStr(work, 2);
+        if (StrLen(work) > 0) and (CopyStr(work, StrLen(work), 1) = '|') then
+            work := CopyStr(work, 1, StrLen(work) - 1);
+
+        filterText := work;
+        exit(filterText);
+    end;
+
+    local procedure ReplaceAll(Input: Text[250]; FindWhat: Text[50]; ReplaceWith: Text[50]): Text[250]
+    var
+        result: Text[250];
+        pos: Integer;
+    begin
+        result := Input;
+        if (FindWhat = '') then
+            exit(result);
+        pos := StrPos(result, FindWhat);
+        while pos > 0 do begin
+            result := CopyStr(result, 1, pos - 1) + ReplaceWith + CopyStr(result, pos + StrLen(FindWhat));
+            pos := StrPos(result, FindWhat);
+        end;
+        exit(result);
+    end;
+    //FQ MASQ **End**
     var
         myInt: Integer;
         UsageTotalCostFreight1: Decimal;

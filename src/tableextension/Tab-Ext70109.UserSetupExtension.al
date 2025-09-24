@@ -146,7 +146,8 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
             ValidateTableRelation = false;
         }
         //NB MASQ End
-        // FQ MASQ Start
+
+        //FQ MASQ Start
         field(70131; "BypassCustOnProject"; Boolean)
         {
             DataClassification = ToBeClassified;
@@ -154,9 +155,9 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
         field(70132; "Can View SO Customer Fields"; Boolean)
         {
             DataClassification = ToBeClassified;
-            Caption = 'Can Edit SO Customer Fields';
+            Caption = 'Can edit Cust/vend Fields of SO and PO lines';
         }
-        // FQ MASQ End
+        //FQ MASQ End
     }
 
     keys

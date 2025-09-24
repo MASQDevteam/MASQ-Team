@@ -2,6 +2,18 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
 {
     layout
     {
+
+        addafter("No.")
+        {
+            field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
+            {
+                ApplicationArea = All;
+                Visible = true;
+                Editable = CanEditVendorFields;
+            }
+
+
+        }
         // Add changes to page layout here
         addafter("Expected Receipt Date")
         {
@@ -1200,6 +1212,7 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
         UserSetup.Get(UserId);
         CanRemovePOLinesfromContainer := UserSetup."Remove PO lines from Container";
         CanEditPO_SO_Lines := UserSetup."Can Edit SO/PO Details";
+        CanEditVendorFields := UserSetup."Can View SO Customer Fields";//FQ MASQ
     end;
 
     var
@@ -1208,4 +1221,5 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
         CanRemovePOLinesfromContainer: Boolean;
         Text002: Label 'You can''t change %1 because the order line is associated with Sales order %2 line %3.', Comment = '%1=field name, %2=Document No., %3=Line No.';
         CanEditPO_SO_Lines: Boolean;
+        CanEditVendorFields: Boolean;
 }
