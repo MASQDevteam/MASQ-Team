@@ -506,29 +506,59 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
                 PurchaseHeader: Record "Purchase Header";
                 DimensionSetEntry: Record "Dimension Set Entry";
                 PurchInvHeader: Record "Purch. Inv. Header";
+                AWBPoList: List of [Text];
+                AWBPo: Text;
+                Found: Boolean;
             begin
-                PurchaseHeader.Reset();
-                PurchaseHeader.SetRange("Document Type", PurchaseHeader."Document Type"::Order);
-                PurchaseHeader.SetRange("No.", Rec."PO No.");
-                if PurchaseHeader.FindFirst() then begin
-                    Rec.Validate("Vendor Name", PurchaseHeader."Buy-from Vendor Name");
+                if Rec."PO No." <> '' then begin
+                    if StrLen(Rec."AWB PO No.") > 9 then begin
+                        // Split the AWB PO No. field values (comma separated)
+                        AWBPoList := "AWB PO No.".Split(',');
 
-                    DimensionSetEntry.Reset();
-                    DimensionSetEntry.SetRange("Dimension Set ID", PurchaseHeader."Dimension Set ID");
-                    DimensionSetEntry.SetRange("Dimension Code", 'PROJECT');
-                    if DimensionSetEntry.FindFirst() then
-                        Rec.Validate("Project Code", DimensionSetEntry."Dimension Value Code");
-                end else begin
-                    PurchInvHeader.Reset();
-                    PurchInvHeader.SetRange("Order No.", Rec."PO No.");
-                    if PurchInvHeader.FindFirst() then begin
-                        Rec.Validate("Vendor Name", PurchInvHeader."Buy-from Vendor Name");
+                        Found := false;
+                        foreach AWBPo in AWBPoList do begin
+                            // Use DelChr to trim spaces around text
+                            AWBPo := DelChr(AWBPo, '<>', ' ');
+
+                            if AWBPo = Rec."PO No." then
+                                Found := true;
+                        end;
+
+                        if not Found then
+                            Error('PO No. %1 is not available in AWB PO No. %2', "PO No.", "AWB PO No.");
+                    end else begin
+                        if Rec."AWB PO No." <> Rec."PO No." then
+                            Error('PO No. %1 is not available in AWB PO No. %2', "PO No.", "AWB PO No.");
+                    end;
+                end;
+
+                Clear("Vendor Name");
+                Clear("Project Code");
+
+                if Rec."PO No." <> '' then begin
+                    PurchaseHeader.Reset();
+                    PurchaseHeader.SetRange("Document Type", PurchaseHeader."Document Type"::Order);
+                    PurchaseHeader.SetRange("No.", Rec."PO No.");
+                    if PurchaseHeader.FindFirst() then begin
+                        Rec.Validate("Vendor Name", PurchaseHeader."Buy-from Vendor Name");
 
                         DimensionSetEntry.Reset();
-                        DimensionSetEntry.SetRange("Dimension Set ID", PurchInvHeader."Dimension Set ID");
+                        DimensionSetEntry.SetRange("Dimension Set ID", PurchaseHeader."Dimension Set ID");
                         DimensionSetEntry.SetRange("Dimension Code", 'PROJECT');
                         if DimensionSetEntry.FindFirst() then
                             Rec.Validate("Project Code", DimensionSetEntry."Dimension Value Code");
+                    end else begin
+                        PurchInvHeader.Reset();
+                        PurchInvHeader.SetRange("Order No.", Rec."PO No.");
+                        if PurchInvHeader.FindFirst() then begin
+                            Rec.Validate("Vendor Name", PurchInvHeader."Buy-from Vendor Name");
+
+                            DimensionSetEntry.Reset();
+                            DimensionSetEntry.SetRange("Dimension Set ID", PurchInvHeader."Dimension Set ID");
+                            DimensionSetEntry.SetRange("Dimension Code", 'PROJECT');
+                            if DimensionSetEntry.FindFirst() then
+                                Rec.Validate("Project Code", DimensionSetEntry."Dimension Value Code");
+                        end;
                     end;
                 end;
             end;
