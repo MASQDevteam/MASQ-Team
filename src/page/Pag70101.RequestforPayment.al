@@ -1,11 +1,9 @@
+//NB MASQ Start
 page 70101 "Request for Payment"
 {
     PageType = Card;
     ApplicationArea = All;
-    //  UsageCategory = Administration;
     SourceTable = "SUPPLIER PAYMENT REQUEST";
-    //  DeleteAllowed = false;
-
     layout
     {
         area(Content)
@@ -13,47 +11,28 @@ page 70101 "Request for Payment"
             group("Request Payment")
             {
                 Enabled = (Rec.Status = Rec.Status::Open) OR (Rec.Status = Rec.Status::"Pending Approval");
-
                 field(Number; Rec."Number")
                 {
                     ToolTip = 'Specifies the value of the Number field.', Comment = '%';
                     Editable = false;
-
                 }
                 field(Status; Rec.Status)
                 {
                     ToolTip = 'Specifies the value of the Status field.', Comment = '%';
                     Editable = false;
                 }
-                field("Payment Request Type"; Rec."Payment Request Type")
-                {
-                    ApplicationArea = All;
-                }
                 field(Supplier; Rec.Supplier)
                 {
                     ToolTip = 'Specifies the value of the Supplier field.', Comment = '%';
                     ShowMandatory = (Rec."Number" <> '');
-
                 }
                 field("Supplier Name"; Rec."Supplier Name")
                 {
                     ToolTip = 'Specifies the value of the Supplier Name field.', Comment = '%';
                 }
-                field("Bank Number"; Rec."Bank Number")
-                {
-                    ToolTip = 'Specifies the value of the Bank Number field.', Comment = '%';
-                }
                 field("Payment Terms"; Rec."Payment Terms")
                 {
                     ToolTip = 'Specifies the value of the Payment Terms field.', Comment = '%';
-                }
-                field("Reason For Transfer"; Rec."Reason For Transfer")
-                {
-                    ToolTip = 'Specifies the value of the Reason For Transfer field.', Comment = '%';
-                }
-                field("Payment Method"; Rec."Payment Method")
-                {
-                    ToolTip = 'Specifies the value of the Payment Method field.', Comment = '%';
                 }
                 field("Requested By / Department"; Rec."Requested By / Department")
                 {
@@ -68,20 +47,12 @@ page 70101 "Request for Payment"
                 {
                     ToolTip = 'Specifies the value of the PO# field.', Comment = '%';
                     ShowMandatory = (Rec."Number" <> '');
-                    //  Enabled = Rec."PPI#" = '';
                     trigger OnValidate()
                     var
                     begin
-
                         IF Rec."PO#" <> '' then
                             Rec."PPI#" := '';
                     end;
-                }
-                field("PPI#"; Rec."PPI#")
-                {
-                    ToolTip = 'Specifies the value of the PPI# field.', Comment = '%';
-                    ShowMandatory = (Rec."Number" <> '');
-                    Enabled = (Rec."PO#" = '');
                 }
                 field("Project Name"; Rec."Project Name")
                 {
@@ -96,10 +67,6 @@ page 70101 "Request for Payment"
                 field("Date"; Rec."Date")
                 {
                     ToolTip = 'Specifies the value of the Date field.', Comment = '%';
-                }
-                field(Branch; Rec.Branch)
-                {
-                    ToolTip = 'Specifies the value of the Branch field.', Comment = '%';
                 }
                 field(Details; Rec.Details)
                 {
@@ -117,20 +84,9 @@ page 70101 "Request for Payment"
                 {
                     ToolTip = 'Specifies the value of the Operation Expected field.', Comment = '%';
                 }
-                field("Level of Urgency"; Rec."Level of Urgency")
-                {
-                    ToolTip = 'Specifies the value of the Level of Urgency field.', Comment = '%';
-                    StyleExpr = StyleExprText;
-                    trigger OnValidate()
-                    var
-                    begin
-                        ChangeUrgencyColor();
-                    end;
-                }
                 field("Approval Entries"; Rec."Approval Entries")
                 {
                     ToolTip = 'Specifies the value of the Approval Entries field.', Comment = '%';
-
                     trigger OnLookup(var Text: Text): Boolean
                     var
                         ApprovalEntries: Record "Approval Entry";
@@ -142,52 +98,17 @@ page 70101 "Request for Payment"
 
                     trigger OnDrillDown()
                     var
-
                         ApprovalEntries: Record "Approval Entry";
                     begin
                         Clear(ApprovalEntries);
                         ApprovalEntries.SetRange("Document No.", Rec.Number);
                         page.Run(page::"Approval Entries", ApprovalEntries);
-
                     end;
                 }
-                field("RFP Type"; Rec."RFP Type")
-                {
-                    ToolTip = 'Specifies the value of the RFP Type field.', Comment = '%';
-                }
-                field("Responsibility Center"; Rec."Responsibility Center")
-                {
-                    ToolTip = 'Specifies the value of the Responsibility Center field.', Comment = '%';
-                }
             }
-            // Group("Requested Amounts")
-            // {
-            //     Enabled = (Rec.Status = Rec.Status::Open) OR (Rec.Status = Rec.Status::"Pending Approval");
-
-            //     field("Requested Amount"; Rec."Requested Amount")
-            //     {
-            //         ToolTip = 'Specifies the value of the Requested Amount field.', Comment = '%';
-            //         ShowMandatory = (Rec."Number" <> '');
-            //     }
-            //     //removed by aya 07/15/2025
-            //     // field("Additional Charges"; Rec."Additional Charges")
-            //     // {
-            //     //     ToolTip = 'Specifies the value of the Additional Charges field.', Comment = '%';
-            //     // }
-            //     field("Total Requested Amount"; Rec."Total Requested Amount")
-            //     {
-            //         ToolTip = 'Specifies the value of the Total Requested Amount field.', Comment = '%';
-            //     }
-            //     field("Request Amount/PO Value %"; Rec."Request Amount/PO Value %")
-            //     {
-            //         ToolTip = 'Specifies the value of the Request Amount/PO Value % field.', Comment = '%';
-            //     }
-
-            // }
             group(Others)
             {
                 Enabled = (Rec.Status = Rec.Status::Open) OR (Rec.Status = Rec.Status::"Pending Approval");
-
                 field("PO Value"; Rec."PO Value")
                 {
                     Enabled = false;
@@ -197,49 +118,6 @@ page 70101 "Request for Payment"
                 {
                     ToolTip = 'Specifies the value of the Currency field.', Comment = '%';
                 }
-                // field("1st Payment"; Rec."1st Payment")
-                // {
-                //     ToolTip = 'Specifies the value of the 1st Payment field.', Comment = '%';
-                //     ShowMandatory = true;
-                // }
-                // field("1st Payment Date"; Rec."1st Payment Date")
-                // {
-                //     ToolTip = 'Specifies the value of the 1st Payment Date field.', Comment = '%';
-                //     ShowMandatory = true;
-                // }
-                // field("Payment Status 1"; Rec."Payment Status 1")
-                // {
-                //     ApplicationArea = All;
-                // }
-                // field("2nd Payment"; Rec."2nd Payment")
-                // {
-                //     ToolTip = 'Specifies the value of the 2nd Payment field.', Comment = '%';
-                //     ShowMandatory = true;
-                // }
-                // field("2nd Payment Date"; Rec."2nd Payment Date")
-                // {
-                //     ToolTip = 'Specifies the value of the 2nd Payment Date field.', Comment = '%';
-                //     ShowMandatory = true;
-                // }
-                // field("Payment Status 2"; Rec."Payment Status 2")
-                // {
-                //     ApplicationArea = All;
-                // }
-                // field("3rd Payment"; Rec."3rd Payment")
-                // {
-                //     ToolTip = 'Specifies the value of the 3rd Payment field.', Comment = '%';
-                //     ShowMandatory = true;
-                // }
-                // field("3rd Payment Date"; Rec."3rd Payment Date")
-                // {
-                //     ToolTip = 'Specifies the value of the 3rd Payment Date field.', Comment = '%';
-                //     ShowMandatory = true;
-                // }
-
-                // field("Payment Status 3"; Rec."Payment Status 3")
-                // {
-                //     ApplicationArea = All;
-                // }
                 field("Balance on Order"; Rec."Balance on Order")
                 {
                     Visible = false;
@@ -250,7 +128,6 @@ page 70101 "Request for Payment"
                     Visible = false;
                     ToolTip = 'Specifies the value of the Expected Next Payment field.', Comment = '%';
                 }
-
                 field("Requested By (Person)"; Rec."Requested By (Person)")
                 {
                     Enabled = false;
@@ -287,18 +164,13 @@ page 70101 "Request for Payment"
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = const(Database::"SUPPLIER PAYMENT REQUEST"),
                               "No." = field("Number");
-                // "Document Type" = field("Document Type");
             }
             systempart(Control1905767507; Notes)
             {
                 ApplicationArea = Notes;
             }
         }
-
-
     }
-
-
     actions
     {
         area(Processing)
@@ -307,8 +179,6 @@ page 70101 "Request for Payment"
             {
                 ApplicationArea = All;
                 Image = Report;
-                //  RunObject = report "Request for Payment";
-                //RunPageLink = Number = field(Number);
                 trigger OnAction()
                 var
                     RequestforPayment: Record "SUPPLIER PAYMENT REQUEST";
@@ -316,33 +186,23 @@ page 70101 "Request for Payment"
                     RequestforPayment.SetRange(Number, Rec.Number);
                     Report.Run(report::"Request for Payment", false, false, RequestforPayment);
                 end;
-
-
             }
             action("Send Approval Request")
             {
                 Image = SendApprovalRequest;
                 Enabled = (Rec.Status = Rec.Status::Open);
-
                 trigger OnAction()
                 var
                     PurchReqWorkFlowFunctions: Codeunit "Travel Req. WorkFlow Functions";
                 begin
-                    //  PurchReqWorkFlowFunctions.ChangePurchReqStatus(Rec);//EDM.YEHYA+-
                     Rec.TESTFIELD(Status, Rec.Status::Open);
                     Rec.CheckPayments();
-                    //EDM
-                    // RequestLine.SETRANGE("Document No.", Rec."No.");
-                    //  IF NOT RequestLine.FINDFIRST THEN
-                    //     ERROR('You have to enter your request description in the purchase request line to send approval request');
-                    //EDM
                 end;
             }
             action(CancelApprovalRequest)
             {
                 ApplicationArea = Suite;
                 Caption = 'Cancel Approval Re&quest';
-                // Enabled = CanCancelApprovalForRecord;
                 Image = CancelApprovalRequest;
                 Promoted = true;
                 PromotedCategory = Category9;
@@ -350,15 +210,12 @@ page 70101 "Request for Payment"
                 PromotedOnly = true;
                 ToolTip = 'Cancel the approval request.';
                 Enabled = (Rec.Status = Rec.Status::"Pending Approval");
-
                 trigger OnAction()
                 var
                     ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     Sub: Codeunit "Travel Req. WorkFlow Functions";
                 begin
                     Rec.TESTFIELD(Status, Rec.Status::"Pending Approval");
-
-                    // Sub.OnCancelPurchaseReqApprovalRequest(Rec);
                     Rec.Status := Rec.Status::Open;//to be removed
                 end;
             }
@@ -377,10 +234,6 @@ page 70101 "Request for Payment"
                 end;
             }
         }
-
-
-
-
     }
     trigger OnOpenPage()//to be removed
     var
@@ -389,7 +242,6 @@ page 70101 "Request for Payment"
         CancelledEntries: Record "Approval Entry";
         RejectedEntries: Record "Approval Entry";
         AllApprovalEntries: Record "Approval Entry";
-
         PurchaseOrder: Record "Purchase Header";
         POEnum: Enum "Purchase Document Type";
     begin
@@ -427,8 +279,6 @@ page 70101 "Request for Payment"
             Rec.Modify();
         end;
 
-
-
         Clear(UserSetup);
         UserSetup.Get(UserId);
         Caneditfieldsafterpost := UserSetup."Can edit RFP fields after post" AND (Rec.Status =
@@ -450,7 +300,6 @@ page 70101 "Request for Payment"
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     var
-
     begin
         Rec.Date := Today;
         REc."Requested By (Person)" := UserId;
@@ -480,8 +329,6 @@ page 70101 "Request for Payment"
         end;
     end;
 
-
-
     trigger OnAfterGetRecord()
     var
     begin
@@ -490,8 +337,7 @@ page 70101 "Request for Payment"
 
     var
         myInt: Integer;
-        Caneditfieldsafterpost:
-                Boolean;
-        StyleExprText:
-                Text;
+        Caneditfieldsafterpost: Boolean;
+        StyleExprText: Text;
 }
+//NB MASQ End

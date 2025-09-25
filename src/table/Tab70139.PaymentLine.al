@@ -2,7 +2,6 @@ table 70139 "Payment Line"
 {
     Caption = 'Payment Line';
     DataClassification = ToBeClassified;
-
     fields
     {
         field(1; Number; Code[20])
@@ -104,7 +103,6 @@ table 70139 "Payment Line"
             DataClassification = ToBeClassified;
             OptionMembers = "0. ","1. Critical","2. Major","3. Medium","4. Minor";
         }
-
         field(12; "Project Name"; Text[100])
         {
             DataClassification = CustomerContent;
@@ -116,7 +114,6 @@ table 70139 "Payment Line"
             TableRelation = User."User Name";
             ValidateTableRelation = false;
         }
-
         //NB MASQ Start
         field(14; "Sent to journals"; Boolean)
         {
@@ -161,8 +158,12 @@ table 70139 "Payment Line"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(23; "Reason For Transfer"; Option)
+        {
+            DataClassification = CustomerContent;
+            OptionMembers = "Advance Payment","Progress Payment","Goods are Ready","Deliver Goods";
+        }
         //NB MASQ End
-
     }
     keys
     {
@@ -243,5 +244,4 @@ table 70139 "Payment Line"
         Message('Payment Journal Lines Are Inserted');
     end;
     //NB MASQ End
-
 }

@@ -1,6 +1,6 @@
 codeunit 70101 "MASQ Subs & Functions"
 {
-    Permissions = tabledata "Value Entry" = m, tabledata "Job Ledger Entry" = m;
+    Permissions = tabledata "Value Entry" = m, tabledata "Job Ledger Entry" = m, tabledata "Supply Chain LOG" = RIMD; //NB MASQ
     trigger OnRun()
     begin
 

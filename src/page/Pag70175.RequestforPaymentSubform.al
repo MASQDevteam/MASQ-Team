@@ -35,11 +35,32 @@ page 70175 "Request for Payment Subform"
                     ToolTip = 'Specifies the value of the Payment Status field.', Comment = '%';
                     StyleExpr = PaymentApprovalStatus;
                 }
-
                 //NB MASQ Start
                 field(Comment; Rec.Comment)
                 {
                     ApplicationArea = All;
+                }
+                field("Bank Number"; Rec."Bank Number")
+                {
+                    ToolTip = 'Specifies the value of the Bank Number field.', Comment = '%';
+                }
+                field("Payment Method"; Rec."Payment Method")
+                {
+                    ToolTip = 'Specifies the value of the Payment Method field.', Comment = '%';
+                }
+                field("Level of Urgency"; Rec."Level of Urgency")
+                {
+                    ToolTip = 'Specifies the value of the Level of Urgency field.', Comment = '%';
+                    StyleExpr = StyleExprText;
+                    trigger OnValidate()
+                    var
+                    begin
+                        ChangeUrgencyColor();
+                    end;
+                }
+                field("Reason For Transfer"; Rec."Reason For Transfer")
+                {
+                    ToolTip = 'Specifies the value of the Reason For Transfer field.', Comment = '%';
                 }
                 //NB MASQ End
             }
@@ -59,15 +80,6 @@ page 70175 "Request for Payment Subform"
                     RecRef: RecordRef;
                     productionBom: page "Production BOM";
                 begin
-                    //  PurchReqWorkFlowFunctions.ChangePurchReqStatus(Rec);//EDM.YEHYA+-
-                    //  Rec.TESTFIELD("Payment Status", Rec."Payment Status"::Open);
-                    // Rec.CheckPayments();
-                    //EDM
-                    // RequestLine.SETRANGE("Document No.", Rec."No.");
-                    //  IF NOT RequestLine.FINDFIRST THEN
-                    //     ERROR('You have to enter your request description in the purchase request line to send approval request');
-                    //EDM
-
                     RecRef.GetTable(Rec);
                     if customWorkMgmt.CheckApprovalsWorkflowEnabled(RecRef) then
                         customWorkMgmt.OnSendWorkFlowForApproval(RecRef);
@@ -89,14 +101,10 @@ page 70175 "Request for Payment Subform"
                     Sub: Codeunit "Travel Req. WorkFlow Functions";
                     RecRef: RecordRef;
                 begin
-                    //Rec.TESTFIELD("Payment Status", Rec."Payment Status"::"Pending Approval");
-                    // Sub.OnCancelPurchaseReqApprovalRequest(Rec);
-                    //Rec."Payment Status" := Rec."Payment Status"::Open;//to be removed
                     RecRef.GetTable(Rec);
                     customWorkMgmt.OnCancelWorkFlowForApproval(RecRef);
                 end;
             }
-
             //NB MASQ Start
             action("Send to Payment journal")
             {
@@ -113,7 +121,6 @@ page 70175 "Request for Payment Subform"
                 end;
             }
             //NB MASQ End
-
         }
     }
 
@@ -132,24 +139,8 @@ page 70175 "Request for Payment Subform"
 
     trigger OnAfterGetCurrRecord()
     var
-        //     SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
         UserSetup: Record "User Setup"; //NB MASQ
     begin
-        //     if SUPPLIERPAYMENTREQUEST.Get(Rec.Number) then begin
-        //         Rec.Currency := SUPPLIERPAYMENTREQUEST.Currency;
-        //         Rec.Supplier := SUPPLIERPAYMENTREQUEST.Supplier;
-        //         Rec."PO#" := SUPPLIERPAYMENTREQUEST."PO#";
-        //         Rec."PO Value" := SUPPLIERPAYMENTREQUEST."PO Value";
-        //         Rec."Level of Urgency" := SUPPLIERPAYMENTREQUEST."Level of Urgency";
-        //         Rec."Project Name" := SUPPLIERPAYMENTREQUEST."Project Name";
-        //         Rec."Requested By (Person)" := SUPPLIERPAYMENTREQUEST."Requested By (Person)";
-        //     end;
-
-        /*  OpenApprovalEntriesExistCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
-         OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
-         CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
-         HasApprovalEntries := ApprovalsMgmt.HasApprovalEntries(Rec.RecordId); */
-
         //NB MASQ Start
         UserSetup.Get(UserId);
         if UserSetup."Edit Payment Line" then
@@ -183,85 +174,33 @@ page 70175 "Request for Payment Subform"
             Rec."Payment Method" := SUPPLIERPAYMENTREQUEST."Payment Method";
             Rec."Requested By / Department" := SUPPLIERPAYMENTREQUEST."Requested By / Department";
             //NB MASQ End
-
         end;
-
     end;
-
     //NB MASQ Start
-    trigger OnQueryClosePage(CloseAction: Action): Boolean
+    procedure ChangeUrgencyColor()
     var
-        PaymentLine: Record "Payment Line";
     begin
-        // PaymentLine.Reset();
-        // PaymentLine.SetRange(Number, Rec.Number);
-        // if PaymentLine.FindSet() then begin
-        //     PaymentLine.CalcSums("Payment Value");
-        //     if PaymentLine."Payment Value" <> Rec."PO Value" then
-        //         Error('Sum of Payments must be equal to the PO Value');
-        // end;
+        //TRANSFER FIELDS
+        case Rec."Level of Urgency" of
+            rec."Level of Urgency"::"1. Critical":
+                begin
+                    StyleExprText := 'Unfavorable';
+                end;
+            rec."Level of Urgency"::"2. Major":
+                begin
+                    StyleExprText := 'Ambiguous';
+                end;
+            rec."Level of Urgency"::"3. Medium":
+                begin
+                    StyleExprText := 'Favorable';
+                end;
+            rec."Level of Urgency"::"4. Minor":
+                begin
+                    StyleExprText := 'StandardAccent';
+                end;
+        end;
     end;
     //NB MASQ End
-
-    /*  trigger OnOpenPage()//to be removed
-     var
-         UserSetup: Record "User Setup";
-         ApprovedEntries: Record "Approval Entry";
-         CancelledEntries: Record "Approval Entry";
-         RejectedEntries: Record "Approval Entry";
-         AllApprovalEntries: Record "Approval Entry";
-
-         PurchaseOrder: Record "Purchase Header";
-         POEnum: Enum "Purchase Document Type";
-     begin
-         Clear(ApprovedEntries);
-         ApprovedEntries.SetRange("Document No.", Rec.Number);
-         ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
-         ApprovedEntries.SetRange(Status, ApprovedEntries.Status::Approved);
-         ApprovedEntries.SetRange("Pending Approvals", 0);
-         IF ApprovedEntries.FindFirst() then begin
-             Rec."Payment Status" := Rec."Payment Status"::Released;
-             Rec.Modify();
-         end;
-
-         Clear(CancelledEntries);
-         CancelledEntries.SetRange("Document No.", Rec.Number);
-         ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
-         CancelledEntries.SetRange(Status, CancelledEntries.Status::Canceled);
-         IF CancelledEntries.FindFirst() then begin
-
-             Clear(AllApprovalEntries);
-             AllApprovalEntries.SetRange("Document No.", Rec.Number);
-
-             Clear(CancelledEntries);
-             CancelledEntries.SetRange("Document No.", Rec.Number);
-             ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
-             CancelledEntries.SetRange(Status, CancelledEntries.Status::Canceled);
-             IF AllApprovalEntries.Count = CancelledEntries.Count then begin
-                 Rec."Payment Status" := Rec."Payment Status"::Open;
-                 Rec.Modify();
-             end;
-         end;
-
-         Clear(RejectedEntries);
-         RejectedEntries.SetRange("Document No.", Rec.Number);
-         ApprovedEntries.SetRange("RFP Line No.", Rec."Line No");
-         RejectedEntries.SetRange(Status, RejectedEntries.Status::Rejected);
-         IF RejectedEntries.FindFirst() then begin
-             Rec."Payment Status" := Rec."Payment Status"::Declined;
-             Rec.Modify();
-         end;
-     end; */
-
-
-
-
-    /* local procedure GetCurrentlySelectedLines(var PaymentLines: Record "Payment Line"): Boolean
-    begin
-        CurrPage.SetSelectionFilter(PaymentLines);
-        PaymentLines.SetFilter("Payment Status", '%1', PaymentLines."Payment Status"::Open);
-        exit(PaymentLines.FindSet());
-    end; */
 
     var
         customWorkMgmt: Codeunit "Custom Workflow PaymentLine";
@@ -272,4 +211,5 @@ page 70175 "Request for Payment Subform"
         PaymentApprovalStatus: Text;
         PaymentLineStatus: Codeunit StatusColorChange;
         EditLine: Boolean;
+        StyleExprText: Text; //NB MASQ
 }
