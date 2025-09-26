@@ -24,9 +24,9 @@ table 70139 "Payment Line"
                 PaymentLine: Record "Payment Line";
                 GenJournalLine: Record "Gen. Journal Line"; //NB MASQ
             begin
-                Modify();
+                PaymentLine.Reset();
                 PaymentLine.SetRange(Number, Rec.Number);
-                if PaymentLine.FindFirst() then
+                if PaymentLine.FindSet() then
                     repeat
                         PaymentLine.CalcSums("Payment Value");
                         if PaymentLine."Payment Value" > "PO Value" then
