@@ -94,6 +94,17 @@ pageextension 70132 "SO Extension" extends "Sales Order"
             //NB MASQ End
 
         }
+        // FQ MASQ **Start
+        addafter("Due Date")
+        {
+            field("Order Coming into force"; Rec."Order Coming into force")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the date when the order becomes legally effective or enforceable.';
+            }
+
+        }
+        // FQ MASQ **END
         // Add changes to page layout here
         addafter("Attached Documents")
         {

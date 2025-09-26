@@ -41,6 +41,11 @@ tableextension 70139 "Sales Header Extension" extends "Sales Header"
                     "Assigned User ID" := user."Full Name";
             end;
         } */
+
+        field(70105; "Order Coming into force"; Date)
+        {
+            DataClassification = ToBeClassified;
+        }
         // FQ MASQ ** END
     }
 
