@@ -43,6 +43,10 @@ page 70101 "Request for Payment"
                 {
                     ToolTip = 'Specifies the value of the Head Of Department field.', Comment = '%';
                 }
+                field("PPI#"; Rec."PPI#")
+                {
+                    ApplicationArea = All;
+                }
                 field("PO#"; Rec."PO#")
                 {
                     ToolTip = 'Specifies the value of the PO# field.', Comment = '%';
