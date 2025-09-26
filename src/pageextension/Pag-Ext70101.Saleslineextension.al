@@ -3,6 +3,20 @@ pageextension 70101 "Sales line extension" extends "Sales Lines"
     layout
     {
         // Add changes to page layout here
+        //FQ MASQ **Start
+        addafter("Job No.")
+        {
+            field("Job Task No."; Rec."Job Task No.")
+            {
+                ApplicationArea = All;
+            }
+            field("Job Contract Entry No."; Rec."Job Contract Entry No.")
+            {
+                ApplicationArea = All;
+            }
+
+        }
+        //FQ MASQ **END
         addafter(Quantity)
         {
             field("Qty to Split"; Rec."Qty to Split")
