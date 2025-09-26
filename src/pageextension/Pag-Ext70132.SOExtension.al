@@ -100,7 +100,7 @@ pageextension 70132 "SO Extension" extends "Sales Order"
             field("Order Coming into force"; Rec."Order Coming into force")
             {
                 ApplicationArea = All;
-                ToolTip = 'Specifies the date when the order becomes legally effective or enforceable.';
+                ToolTip = 'Specifies the date when SO confirmed by customer.';
             }
 
         }

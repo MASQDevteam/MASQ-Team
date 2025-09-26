@@ -500,8 +500,8 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
             Rec."VO Number" := xRec."VO Number";
         end;
 
-        IF (Rec."Unit Price" = 0) AND (xRec."Unit Price" <> 0) and (Rec."Job No." <> '') then //may be removed case VO replace item 
-            Rec.Validate("Unit Price", xRec."Unit Price");
+        /*  IF (Rec."Unit Price" = 0) AND (xRec."Unit Price" <> 0) and (Rec."Job No." <> '') then //may be removed case VO replace item 
+             Rec.Validate("Unit Price", xRec."Unit Price"); *///FQ MASQ
 
         IF rec."Location Code" = '' then
             Rec.Validate("Location Code", xRec."Location Code");
