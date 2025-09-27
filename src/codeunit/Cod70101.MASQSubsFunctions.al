@@ -1457,13 +1457,10 @@ codeunit 70101 "MASQ Subs & Functions"
         IF SalesHeader.Invoice then begin
             IF SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
                 Clear(SalesInvHeader);
-                SalesInvHeader.Get(SalesHeader."Posting No.");
-                SalesLine."Document No." := SalesInvHeader."No.";
+                if SalesInvHeader.Get(SalesHeader."Posting No.") then //NB MASQ
+                    SalesLine."Document No." := SalesInvHeader."No.";
             end;
         end;
-
-        //   Message(SalesHeader."Last Posting No.");
-
     end;
 
     //transfer quantity to project ledger entry since condition to validate quantity is on level of invoice and credit memo only

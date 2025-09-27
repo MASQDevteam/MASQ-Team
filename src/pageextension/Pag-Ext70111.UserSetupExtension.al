@@ -150,6 +150,10 @@ pageextension 70111 "User Setup Extension" extends "User Setup"
             {
                 ApplicationArea = All;
             }
+            field("Create Direct RFP"; Rec."Create Direct RFP")
+            {
+                ApplicationArea = All;
+            }
             //NB MASQ End
             // FQ MASQ Start
             field(BypassCustOnProject; Rec.BypassCustOnProject)

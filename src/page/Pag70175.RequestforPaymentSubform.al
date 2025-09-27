@@ -140,6 +140,9 @@ page 70175 "Request for Payment Subform"
     trigger OnAfterGetCurrRecord()
     var
         UserSetup: Record "User Setup"; //NB MASQ
+        PaymentLine: Record "Payment Line";
+        SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
+        TotalPayValue: Decimal;
     begin
         //NB MASQ Start
         UserSetup.Get(UserId);
@@ -147,6 +150,21 @@ page 70175 "Request for Payment Subform"
             EditLine := true
         else
             EditLine := false;
+
+        if SUPPLIERPAYMENTREQUEST.Get(Rec.Number) then begin
+            PaymentLine.Reset();
+            PaymentLine.SetRange(Number, Rec.Number);
+            PaymentLine.SetRange("Payment Status", PaymentLine."Payment Status"::Released);
+            if PaymentLine.FindSet() then
+                repeat
+                    TotalPayValue += PaymentLine."Payment Value";
+                until PaymentLine.Next() = 0;
+
+            if TotalPayValue = SUPPLIERPAYMENTREQUEST."PO Value" then begin
+                SUPPLIERPAYMENTREQUEST.Validate(Status, SUPPLIERPAYMENTREQUEST.Status::Paid);
+                SUPPLIERPAYMENTREQUEST.Modify(true);
+            end;
+        end;
         //NB MASQ End
 
         PaymentApprovalStatus := PaymentLineStatus.ChangeColorBasedonCustomStatusPaymentLine(rec);

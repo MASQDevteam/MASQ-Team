@@ -158,6 +158,11 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
             Caption = 'Can edit Cust/vend Fields of SO and PO lines';
         }
         //FQ MASQ End
+
+        field(70133; "Create Direct RFP"; Boolean)
+        {
+            DataClassification = CustomerContent; //NB MASQ
+        }
     }
 
     keys

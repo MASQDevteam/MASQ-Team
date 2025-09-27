@@ -113,6 +113,7 @@ codeunit 70116 "Custom Workflow PaymentLine"
     var
         RecRef: RecordRef;
         RfpLine: Record "Payment Line"; // PK = Number, Line No.
+        PaymentLine: Record "Payment Line"; //NB MASQ
     begin
         if not RecRef.Get(ApprovalEntry."Record ID to Approve") then
             exit;
@@ -122,6 +123,14 @@ codeunit 70116 "Custom Workflow PaymentLine"
 
         RecRef.SetTable(RfpLine); // This will hydrate Number + Line No from the RecordRef
         if RfpLine."Payment Status" <> RfpLine."Payment Status"::Declined then begin
+
+            PaymentLine.Reset();
+            PaymentLine.SetRange(Number, RfpLine.Number);
+            PaymentLine.SetRange("Payment Status", PaymentLine."Payment Status"::Released);
+            PaymentLine.SetFilter("Line No", '<>%1', RfpLine."Line No");
+            if PaymentLine.FindFirst() then
+                Error('You can not declined this RFP as payment %1 is alreday done', PaymentLine."Payment Value");
+
             RfpLine.Validate("Payment Status", RfpLine."Payment Status"::Declined);
             RfpLine.Validate(Comment, 'Declined by ' + UserId + ' for payment value ' + Format(RfpLine."Payment Value"));
             RfpLine.Validate("Payment Value", 0);

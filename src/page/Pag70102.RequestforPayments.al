@@ -5,7 +5,7 @@ page 70102 "Request for Payments"
     UsageCategory = Lists;
     SourceTable = "SUPPLIER PAYMENT REQUEST";
     CardPageId = "Request for Payment";
-    //  DeleteAllowed = false;
+
     layout
     {
         area(Content)
@@ -237,12 +237,6 @@ page 70102 "Request for Payments"
                     StyleExprText := 'StandardAccent';
                 end;
         end;
-    end;
-
-    trigger OnAfterGetRecord()
-    var
-    begin
-        ChangeUrgencyColor();
     end;
 
     var

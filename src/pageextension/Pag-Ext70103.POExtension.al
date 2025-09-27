@@ -253,6 +253,7 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                         SUPPLIERPAYMENTREQUEST.Validate(Supplier, Rec."Buy-from Vendor No.");
                         SUPPLIERPAYMENTREQUEST.Validate("PO#", Rec."No.");
                         SUPPLIERPAYMENTREQUEST.Validate("Payment Terms", Rec."Payment Terms Code");
+                        SUPPLIERPAYMENTREQUEST.Validate("Good Readiness Date",Rec."Initial ETR");
                         SUPPLIERPAYMENTREQUEST.Insert(true);
 
                         Message('RFP %1 is successfully created for PO %2', SUPPLIERPAYMENTREQUEST.Number, Rec."No.");

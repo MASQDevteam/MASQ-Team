@@ -143,6 +143,7 @@ page 70101 "Request for Payment"
             {
                 ApplicationArea = All;
                 SubPageLink = Number = field(Number);
+                UpdatePropagation = Both; //NB MASQ
             }
             group(Execution)
             {
@@ -183,6 +184,10 @@ page 70101 "Request for Payment"
             {
                 ApplicationArea = All;
                 Image = Report;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
                 trigger OnAction()
                 var
                     RequestforPayment: Record "SUPPLIER PAYMENT REQUEST";
@@ -191,52 +196,52 @@ page 70101 "Request for Payment"
                     Report.Run(report::"Request for Payment", false, false, RequestforPayment);
                 end;
             }
-            action("Send Approval Request")
-            {
-                Image = SendApprovalRequest;
-                Enabled = (Rec.Status = Rec.Status::Open);
-                trigger OnAction()
-                var
-                    PurchReqWorkFlowFunctions: Codeunit "Travel Req. WorkFlow Functions";
-                begin
-                    Rec.TESTFIELD(Status, Rec.Status::Open);
-                    Rec.CheckPayments();
-                end;
-            }
-            action(CancelApprovalRequest)
-            {
-                ApplicationArea = Suite;
-                Caption = 'Cancel Approval Re&quest';
-                Image = CancelApprovalRequest;
-                Promoted = true;
-                PromotedCategory = Category9;
-                PromotedIsBig = true;
-                PromotedOnly = true;
-                ToolTip = 'Cancel the approval request.';
-                Enabled = (Rec.Status = Rec.Status::"Pending Approval");
-                trigger OnAction()
-                var
-                    ApprovalsMgmt: Codeunit "Approvals Mgmt.";
-                    Sub: Codeunit "Travel Req. WorkFlow Functions";
-                begin
-                    Rec.TESTFIELD(Status, Rec.Status::"Pending Approval");
-                    Rec.Status := Rec.Status::Open;//to be removed
-                end;
-            }
-            action("Send to Payment journal")
-            {
-                ApplicationArea = All;
-                Image = Journals;
-                Enabled = ((Rec."RFP Type" = Rec."RFP Type"::"Supplier payment") and (REc.Executed = true));
-                trigger OnAction()
-                begin
-                    Rec.TestField("Sent to journals", false);
-                    Rec.TestField(Supplier);
-                    Rec.TestField("Bank Number");
-                    Rec.SendtoPaymentJournal();
-                    Rec."Sent to journals" := true;
-                end;
-            }
+            // action("Send Approval Request")
+            // {
+            //     Image = SendApprovalRequest;
+            //     Enabled = (Rec.Status = Rec.Status::Open);
+            //     trigger OnAction()
+            //     var
+            //         PurchReqWorkFlowFunctions: Codeunit "Travel Req. WorkFlow Functions";
+            //     begin
+            //         Rec.TESTFIELD(Status, Rec.Status::Open);
+            //         Rec.CheckPayments();
+            //     end;
+            // }
+            // action(CancelApprovalRequest)
+            // {
+            //     ApplicationArea = Suite;
+            //     Caption = 'Cancel Approval Re&quest';
+            //     Image = CancelApprovalRequest;
+            //     Promoted = true;
+            //     PromotedCategory = Category9;
+            //     PromotedIsBig = true;
+            //     PromotedOnly = true;
+            //     ToolTip = 'Cancel the approval request.';
+            //     Enabled = (Rec.Status = Rec.Status::"Pending Approval");
+            //     trigger OnAction()
+            //     var
+            //         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
+            //         Sub: Codeunit "Travel Req. WorkFlow Functions";
+            //     begin
+            //         Rec.TESTFIELD(Status, Rec.Status::"Pending Approval");
+            //         Rec.Status := Rec.Status::Open;//to be removed
+            //     end;
+            // }
+            // action("Send to Payment journal")
+            // {
+            //     ApplicationArea = All;
+            //     Image = Journals;
+            //     Enabled = ((Rec."RFP Type" = Rec."RFP Type"::"Supplier payment") and (REc.Executed = true));
+            //     trigger OnAction()
+            //     begin
+            //         Rec.TestField("Sent to journals", false);
+            //         Rec.TestField(Supplier);
+            //         Rec.TestField("Bank Number");
+            //         Rec.SendtoPaymentJournal();
+            //         Rec."Sent to journals" := true;
+            //     end;
+            // }
         }
     }
     trigger OnOpenPage()//to be removed
@@ -308,7 +313,16 @@ page 70101 "Request for Payment"
         Rec.Date := Today;
         REc."Requested By (Person)" := UserId;
     end;
-
+    //NB MASQ Start
+    trigger OnNewRecord(BelowxRec: Boolean)
+    var
+        UserSetup: Record "User Setup";
+    begin
+        UserSetup.Get(UserId);
+        if not UserSetup."Create Direct RFP" then
+            Error('You do not have permission to create direct RFP, You can create RFP from PO');
+    end;
+    //NB MASQ End
     procedure ChangeUrgencyColor()
     var
     begin
@@ -331,12 +345,6 @@ page 70101 "Request for Payment"
                     StyleExprText := 'StandardAccent';
                 end;
         end;
-    end;
-
-    trigger OnAfterGetRecord()
-    var
-    begin
-        ChangeUrgencyColor();
     end;
 
     var
