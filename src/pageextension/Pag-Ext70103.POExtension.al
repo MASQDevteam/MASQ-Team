@@ -253,7 +253,13 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                         SUPPLIERPAYMENTREQUEST.Validate(Supplier, Rec."Buy-from Vendor No.");
                         SUPPLIERPAYMENTREQUEST.Validate("PO#", Rec."No.");
                         SUPPLIERPAYMENTREQUEST.Validate("Payment Terms", Rec."Payment Terms Code");
-                        SUPPLIERPAYMENTREQUEST.Validate("Good Readiness Date",Rec."Initial ETR");
+                        //NB MASQ Start 30-Sep-25
+                        SUPPLIERPAYMENTREQUEST.Validate("Good Readiness Date", Rec."Initial ETR");
+                        Rec.CalcFields(Rec."MASQ Sales Order No.");
+                        SUPPLIERPAYMENTREQUEST.Validate("SO#", Rec."MASQ Sales Order No.");
+                        SUPPLIERPAYMENTREQUEST.Validate("Requested By (Person)", UserId());
+                        SUPPLIERPAYMENTREQUEST.Validate(Date, Today());
+                        //NB MASQ End 30-Sep-25
                         SUPPLIERPAYMENTREQUEST.Insert(true);
 
                         Message('RFP %1 is successfully created for PO %2', SUPPLIERPAYMENTREQUEST.Number, Rec."No.");

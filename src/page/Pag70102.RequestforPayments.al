@@ -203,7 +203,7 @@ page 70102 "Request for Payments"
             {
                 ApplicationArea = All;
                 Image = Journals;
-                Enabled = ((Rec."RFP Type" = Rec."RFP Type"::"Supplier payment") AND (REc.Executed = true));
+                Enabled = ((Rec."RFP Type" = Rec."RFP Type"::"Facility Supplier Via Insurance") AND (REc.Executed = true)); //NB MASQ 30-Sep-25
                 trigger OnAction()
                 begin
                     Rec.TestField("Sent to journals", false);

@@ -78,10 +78,10 @@ table 70139 "Payment Line"
             end;
             //NB MASQ End
         }
-        field(7; "Payment Status"; Enum "Document Status")
+        field(7; "Payment Status"; Enum "Document Status") //NB MASQ 30-Sep-25
         {
-            Caption = 'Payment Status';
-            Editable = false; //NB MASQ
+            DataClassification = CustomerContent;
+            Editable = false;
         }
         field(8; "Currency"; Code[10])
         {
@@ -98,10 +98,9 @@ table 70139 "Payment Line"
             DataClassification = CustomerContent;
             TableRelation = "Purchase Header"."No." WHERE("Document Type" = const(Order), "Buy-from Vendor No." = field(Supplier));
         }
-        field(11; "Level of Urgency"; Option)
+        field(11; "Level of Urgency"; Enum "Level Of Urgency") //NB MASQ 30-Sep-25
         {
             DataClassification = ToBeClassified;
-            OptionMembers = "0. ","1. Critical","2. Major","3. Medium","4. Minor";
         }
         field(12; "Project Name"; Text[100])
         {
@@ -153,16 +152,38 @@ table 70139 "Payment Line"
             DataClassification = CustomerContent;
             TableRelation = "Payment Terms";
         }
+        //NB MASQ Start 30-Sep-25
         field(22; Comment; Text[250])
         {
             DataClassification = CustomerContent;
-            Editable = false;
+            //Editable = false;
         }
         field(23; "Reason For Transfer"; Option)
         {
             DataClassification = CustomerContent;
-            OptionMembers = "Advance Payment","Progress Payment","Goods are Ready","Deliver Goods";
+            OptionMembers = " ","Advance Payment","Progress Payment","Goods are Ready","Delivered Goods";
         }
+        field(24; Production; Option)
+        {
+            DataClassification = CustomerContent;
+            OptionMembers = " ",Conditional,Unconditional;
+        }
+        field(25; "Procurment Status"; Option)
+        {
+            DataClassification = CustomerContent;
+            OptionMembers = Open,"Pending Approval",Approved;
+        }
+        field(26; "Finance Status"; Option)
+        {
+            DataClassification = CustomerContent;
+            OptionMembers = Open,"Pending Approval",Approved;
+        }
+        field(27; "Accounting Status"; Option)
+        {
+            DataClassification = CustomerContent;
+            OptionMembers = Open,"In Process",Executed;
+        }
+        //NB MASQ End 30-Sep-25
         //NB MASQ End
     }
     keys

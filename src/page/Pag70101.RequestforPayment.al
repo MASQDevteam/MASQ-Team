@@ -30,6 +30,10 @@ page 70101 "Request for Payment"
                 {
                     ToolTip = 'Specifies the value of the Supplier Name field.', Comment = '%';
                 }
+                field("RFP Type"; Rec."RFP Type") //NB MASQ 30-Sep-25
+                {
+                    ApplicationArea = All;
+                }
                 field("Payment Terms"; Rec."Payment Terms")
                 {
                     ToolTip = 'Specifies the value of the Payment Terms field.', Comment = '%';
@@ -38,10 +42,6 @@ page 70101 "Request for Payment"
                 {
                     ToolTip = 'Specifies the value of the Requested By / Department field.', Comment = '%';
                     ShowMandatory = (Rec."Number" <> '');
-                }
-                field("Head Of Department"; Rec."Head Of Department")
-                {
-                    ToolTip = 'Specifies the value of the Head Of Department field.', Comment = '%';
                 }
                 field("PPI#"; Rec."PPI#")
                 {
@@ -79,14 +79,6 @@ page 70101 "Request for Payment"
                 field("Good Readiness Date"; Rec."Good Readiness Date")
                 {
                     ToolTip = 'Specifies the value of the Good Readiness Date field.', Comment = '%';
-                }
-                field("Operation Confirmed"; Rec."Operation Confirmed")
-                {
-                    ToolTip = 'Specifies the value of the Operation Confirmed field.', Comment = '%';
-                }
-                field("Operation Expected"; Rec."Operation Expected")
-                {
-                    ToolTip = 'Specifies the value of the Operation Expected field.', Comment = '%';
                 }
                 field("Approval Entries"; Rec."Approval Entries")
                 {
