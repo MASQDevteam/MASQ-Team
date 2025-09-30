@@ -11,7 +11,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.1.30001.02</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-09-30T11:28:39.4363583Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-09-30T11:41:43.4396290Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -24,34 +24,6 @@
       <rd:DataSourceID>e05c4783-8c16-491c-8695-6fd23cb84f55</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="Item_No_">
-          <DataField>Item_No_</DataField>
-        </Field>
-        <Field Name="Vendor_No_">
-          <DataField>Vendor_No_</DataField>
-        </Field>
-        <Field Name="Description">
-          <DataField>Description</DataField>
-        </Field>
-        <Field Name="Picture">
-          <DataField>Picture</DataField>
-        </Field>
-        <Field Name="Inventory">
-          <DataField>Inventory</DataField>
-        </Field>
-        <Field Name="InventoryFormat">
-          <DataField>InventoryFormat</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -108,15 +80,16 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox3">
-                          <rd:DefaultName>Textbox3</rd:DefaultName>
+                        <rd:Selected>true</rd:Selected>
+                        <Textbox Name="Textbox4">
+                          <rd:DefaultName>Textbox4</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Vendor No </Value>
+                                  <Value>Meg Vendor Item Code</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -138,7 +111,6 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <rd:Selected>true</rd:Selected>
                         <Textbox Name="Textbox2">
                           <rd:DefaultName>Textbox2</rd:DefaultName>
                           <CanGrow>true</CanGrow>
@@ -177,7 +149,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Picture</Value>
+                                  <Value>Item Picture</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -234,15 +206,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Vendor_No_">
-                          <rd:DefaultName>Vendor_No_</rd:DefaultName>
+                        <Textbox Name="Meg_Vendor_Item_Code">
+                          <rd:DefaultName>Meg_Vendor_Item_Code</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Vendor_No_.Value</Value>
+                                  <Value>=Fields!Meg_Vendor_Item_Code.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -294,15 +266,15 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Picture">
-                          <rd:DefaultName>Picture</rd:DefaultName>
+                        <Textbox Name="ItemPicture">
+                          <rd:DefaultName>ItemPicture</rd:DefaultName>
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Picture.Value</Value>
+                                  <Value>=Fields!ItemPicture.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -355,7 +327,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>2.65177cm</Height>
+        <Height>1.54052cm</Height>
         <Style />
       </Body>
       <Width>16.9473cm</Width>
@@ -431,12 +403,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -474,4 +440,38 @@ End Function
 </Code>
   <Language>=User!Language</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Item_No_">
+          <DataField>Item_No_</DataField>
+        </Field>
+        <Field Name="Vendor_No_">
+          <DataField>Vendor_No_</DataField>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+        </Field>
+        <Field Name="ItemPicture">
+          <DataField>ItemPicture</DataField>
+        </Field>
+        <Field Name="Picture">
+          <DataField>Picture</DataField>
+        </Field>
+        <Field Name="Inventory">
+          <DataField>Inventory</DataField>
+        </Field>
+        <Field Name="InventoryFormat">
+          <DataField>InventoryFormat</DataField>
+        </Field>
+        <Field Name="Meg_Vendor_Item_Code">
+          <DataField>Meg_Vendor_Item_Code</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

@@ -15,6 +15,8 @@ tableextension 70149 "Vendor Ledger Entry Ext" extends "Vendor Ledger Entry"
         {
             Caption = 'Related PO No.';
             DataClassification = CustomerContent;
+            TableRelation = "Purchase Header"."No." WHERE("No." = field("Related PO No."));
+            Editable = false;
         }
         //FQ MASQ**END
     }

@@ -20,20 +20,24 @@ report 70116 "Item Inventory With Picture"
             column(Description; Description)
             {
             }
-            column(Picture; ItemTenantMedia.Content)
+            column(ItemPicture; ItemTenantMedia.Content)
+            {
+            }
+            column(Picture; CompanyInfo.Picture)
             {
             }
             column(Inventory; Inventory) { }
-			column(Meg_Vendor_Item_Code;"Meg Vendor Item Code"){}
+            column(Meg_Vendor_Item_Code; "Meg Vendor Item Code") { }
 
             trigger OnAfterGetRecord()
             var
-                ItemLedgerEntry: Record "Item Ledger Entry";
+                ItemRec: Record Item;
             begin
-                if Item.Picture.Count > 0 then begin
-                    ItemTenantMedia.Get(Item.Picture.Item(1));
-                    ItemTenantMedia.CalcFields(Content);
-                end;
+                if ItemRec.Get("No.") then
+                    if ItemRec.Picture.Count > 0 then begin
+                        ItemTenantMedia.Get(Item.Picture.Item(1));
+                        ItemTenantMedia.CalcFields(Content);
+                    end;
             end;
         }
     }

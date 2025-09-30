@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "debuggingContext": "ff57c77d-7483-48fc-8959-7aec5b2a66c6",
+    "snapshotContext": {
+      "debugConfig": {
+        "type": "al",
+        "request": "snapshotInitialize",
+        "name": "snapshotInitialize: Microsoft production cloud",
+        "configuration": {
+          "port": 7083,
+          "tenant": "1eda1ee1-2c51-412e-8654-4901e72243c7",
+          "name": "snapshotInitialize: Microsoft production cloud",
+          "request": "snapshotInitialize",
+          "environmentType": "Production",
+          "environmentName": "production",
+          "validateServerCertificate": true,
+          "useInteractiveLogin": true
+        },
+        "userId": "DEVELOPMENT.TEAM",
+        "sessionId": -1
+      },
+      "workspacePath": "c:\\Users\\Faisal Qureshi\\OneDrive - Moonlight\\Documents\\AL development\\MASQ-Team",
+      "createdTime": "2025-09-30T12:03:22.000Z",
+      "affinityCookie": "pxH1vJJAakWXKgoL%2BhxVtg%3D%3D",
+      "status": 4,
+      "attachKind": 2
+    }
+  }
+]

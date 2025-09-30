@@ -22,6 +22,18 @@ pageextension 70108 "Vendor ledger extension" extends "Vendor Ledger Entries"
             }
         }
         //NB MASQ End
+        //FQ MASQ** Start
+        addafter("External Document No.")
+        {
+            field("Related PO No."; Rec."Related PO No.")
+            {
+                ApplicationArea = All;
+                Caption = 'Related PO No.';
+                Editable = false;
+                //Visible = (Rec."Account Type" = Rec."Account Type"::Vendor);
+            }
+            //FQ MASQ** End
+        }
 
     }
 

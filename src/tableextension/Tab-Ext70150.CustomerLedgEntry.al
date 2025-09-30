@@ -6,6 +6,8 @@ tableextension 70150 "Cust. Ledger-Related Docs" extends "Cust. Ledger Entry"
         {
             Caption = 'Related SO No.';
             DataClassification = CustomerContent;
+            TableRelation = "Sales Header"."No." WHERE("No." = field("Related SO No."));
+            Editable = false;
         }
     }
 }
