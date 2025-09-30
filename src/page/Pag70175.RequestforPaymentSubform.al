@@ -30,37 +30,48 @@ page 70175 "Request for Payment Subform"
                 {
                     ToolTip = 'Specifies the value of the Payment % field.', Comment = '%';
                 }
-                field("Payment Status"; Rec."Payment Status")
+                //NB MASQ Start 30-Sep-25
+                field("Level of Urgency"; Rec."Level of Urgency")
+                {
+                    ToolTip = 'Specifies the value of the Level of Urgency field.', Comment = '%';
+                    StyleExpr = StyleExprText;
+                }
+                field("Reason For Transfer"; Rec."Reason For Transfer")
+                {
+                    ToolTip = 'Specifies the value of the Reason For Transfer field.', Comment = '%';
+                }
+                field(Production; Rec.Production)
+                {
+                    ApplicationArea = All;
+                }
+                field("Procurment Status"; Rec."Procurment Status")
                 {
                     ToolTip = 'Specifies the value of the Payment Status field.', Comment = '%';
                     StyleExpr = PaymentApprovalStatus;
+                }
+                field("Finance Status"; Rec."Finance Status")
+                {
+                    ToolTip = 'Specifies the value of the Payment Status field.', Comment = '%';
+                    StyleExpr = PaymentApprovalStatus;
+                }
+                field("Accounting Status"; Rec."Accounting Status")
+                {
+                    ToolTip = 'Specifies the value of the Payment Status field.', Comment = '%';
+                    StyleExpr = PaymentApprovalStatus;
+                }
+                field("Bank Number"; Rec."Bank Number")
+                {
+                    ToolTip = 'Specifies the value of the Bank Number field.', Comment = '%';
                 }
                 //NB MASQ Start
                 field(Comment; Rec.Comment)
                 {
                     ApplicationArea = All;
                 }
-                field("Bank Number"; Rec."Bank Number")
-                {
-                    ToolTip = 'Specifies the value of the Bank Number field.', Comment = '%';
-                }
+                //NB MASQ End 30-Sep-25
                 field("Payment Method"; Rec."Payment Method")
                 {
                     ToolTip = 'Specifies the value of the Payment Method field.', Comment = '%';
-                }
-                field("Level of Urgency"; Rec."Level of Urgency")
-                {
-                    ToolTip = 'Specifies the value of the Level of Urgency field.', Comment = '%';
-                    StyleExpr = StyleExprText;
-                    trigger OnValidate()
-                    var
-                    begin
-                        ChangeUrgencyColor();
-                    end;
-                }
-                field("Reason For Transfer"; Rec."Reason For Transfer")
-                {
-                    ToolTip = 'Specifies the value of the Reason For Transfer field.', Comment = '%';
                 }
                 //NB MASQ End
             }
@@ -194,31 +205,31 @@ page 70175 "Request for Payment Subform"
             //NB MASQ End
         end;
     end;
-    //NB MASQ Start
+    //NB MASQ Start 30-Sep-25
     procedure ChangeUrgencyColor()
     var
     begin
         //TRANSFER FIELDS
         case Rec."Level of Urgency" of
-            rec."Level of Urgency"::"1. Critical":
-                begin
-                    StyleExprText := 'Unfavorable';
-                end;
-            rec."Level of Urgency"::"2. Major":
-                begin
-                    StyleExprText := 'Ambiguous';
-                end;
-            rec."Level of Urgency"::"3. Medium":
-                begin
-                    StyleExprText := 'Favorable';
-                end;
-            rec."Level of Urgency"::"4. Minor":
-                begin
-                    StyleExprText := 'StandardAccent';
-                end;
+        // rec."Level of Urgency"::"1. Critical":
+        //     begin
+        //         StyleExprText := 'Unfavorable';
+        //     end;
+        // rec."Level of Urgency"::"2. Major":
+        //     begin
+        //         StyleExprText := 'Ambiguous';
+        //     end;
+        // rec."Level of Urgency"::"3. Medium":
+        //     begin
+        //         StyleExprText := 'Favorable';
+        //     end;
+        // rec."Level of Urgency"::"4. Minor":
+        //     begin
+        //         StyleExprText := 'StandardAccent';
+        //     end;
         end;
     end;
-    //NB MASQ End
+    //NB MASQ End 30-Sep-25
 
     var
         customWorkMgmt: Codeunit "Custom Workflow PaymentLine";

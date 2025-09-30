@@ -43,7 +43,7 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         field(5; "SO#"; Code[50])
         {
             DataClassification = CustomerContent;
-            TableRelation = "Sales Header"."No." WHERE("Document Type" = const(Order), "Shortcut Dimension 1 Code" = field("Project Name"));
+            //TableRelation = "Sales Header"."No." WHERE("Document Type" = const(Order), "Shortcut Dimension 1 Code" = field("Project Name")); //NB MASQ 30-Sep-25
         }
         field(6; "Payment Terms"; Text[100])
         {
@@ -201,7 +201,7 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         field(35; "RFP Type"; Option)
         {
             DataClassification = ToBeClassified;
-            OptionMembers = " ","Supplier payment","Non-Supplier payment";
+            OptionMembers = " ","Facility Supplier Via Insurance","Supplier Without Insurance"; //NB MASQ 30-Sep-25
         }
         field(36; "Sent to journals"; Boolean)
         {
@@ -302,7 +302,7 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         GLSetup.Get();
         GLSetup.TestField("Request for Payment No. Series");
         NoSeriesManagement.RaiseObsoleteOnBeforeInitSeries(GLSetup."Request for Payment No. Series", xRec."No. Series", 0D, Rec."Number", Rec."No. Series", IsHandled);
-        
+
         if NoSeries.AreRelated(GLSetup."Request for Payment No. Series", xRec."No. Series") then
             Rec."No. Series" := xRec."No. Series"
         else
@@ -333,7 +333,7 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         GenJnlLines.INIT;
         GenJnlLines.VALIDATE("Journal Template Name", 'PAYMENTS');
         GenJnlLines.VALIDATE("Journal Batch Name", 'GLENDA RFP');
-    
+
         LineNo += 10000;
         GenJnlLines."Line No." := LineNo;
 
@@ -358,7 +358,7 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         GenJnlLines.INIT;
         GenJnlLines.VALIDATE("Journal Template Name", 'PAYMENTS');
         GenJnlLines.VALIDATE("Journal Batch Name", 'GLENDA RFP');
-        
+
         LineNo += 10000;
         GenJnlLines."Line No." := LineNo;
 
