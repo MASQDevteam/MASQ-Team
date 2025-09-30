@@ -10,6 +10,13 @@ tableextension 70149 "Vendor Ledger Entry Ext" extends "Vendor Ledger Entry"
                                                                 Code = field("Shortcut Dimension 8 Code")));
             Editable = false;
         }
+        //FQ MASQ**Start
+        field(70101; "Related PO No."; Code[20])
+        {
+            Caption = 'Related PO No.';
+            DataClassification = CustomerContent;
+        }
+        //FQ MASQ**END
     }
 }
 //NB MASQ End
