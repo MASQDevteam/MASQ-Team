@@ -58,10 +58,14 @@ page 70101 "Request for Payment"
                             Rec."PPI#" := '';
                     end;
                 }
-                field("Project Name"; Rec."Project Name")
+                field(Project; Rec.Project) //NB MASQ
                 {
                     ToolTip = 'Specifies the value of the Project Name field.', Comment = '%';
                     ShowMandatory = (Rec."Number" <> '');
+                }
+                field("Project Name"; Rec."Project Name") //NB MASQ
+                {
+                    ApplicationArea = All;
                 }
                 field("SO#"; Rec."SO#")
                 {
@@ -245,6 +249,8 @@ page 70101 "Request for Payment"
         AllApprovalEntries: Record "Approval Entry";
         PurchaseOrder: Record "Purchase Header";
         POEnum: Enum "Purchase Document Type";
+        DimensionValue: Record "Dimension Value";
+        PurchaseInvoiceHeader: Record "Purch. Inv. Header";
     begin
         Clear(ApprovedEntries);
         ApprovedEntries.SetRange("Document No.", Rec.Number);
@@ -293,10 +299,31 @@ page 70101 "Request for Payment"
                 Rec."PO Value" := PurchaseOrder."Amount Including VAT";
                 Rec.Currency := PurchaseOrder."Currency Code";
                 Rec."Request Amount/PO Value %" := (Rec."Requested Amount" / Rec."PO Value") * 100;
-                Rec."Project Name" := PurchaseOrder."Shortcut Dimension 1 Code";
+                Rec.Project := PurchaseOrder."Shortcut Dimension 1 Code";
+                if DimensionValue.Get('PROJECT', PurchaseOrder."Shortcut Dimension 1 Code") then //NB MASQ
+                    Rec.Validate("Project Name", DimensionValue.Name);
                 Rec."Responsibility Center" := PurchaseOrder."Responsibility Center";
+                Rec.Modify(true);
             end;
         end;
+
+        //NB MASQ Start
+        IF Rec."PPI#" <> '' then begin
+            Clear(PurchaseInvoiceHeader);
+            PurchaseInvoiceHeader.Get(Rec."PPI#");
+
+            PurchaseInvoiceHeader.CalcFields("Amount Including VAT");
+            Rec."PO Value" := PurchaseInvoiceHeader."Amount Including VAT";
+            Rec.Currency := PurchaseInvoiceHeader."Currency Code";
+            Rec."Request Amount/PO Value %" := (Rec."Requested Amount" / Rec."PO Value") * 100;
+            Rec.Project := PurchaseInvoiceHeader."Shortcut Dimension 1 Code";
+            if DimensionValue.Get('PROJECT', PurchaseInvoiceHeader."Shortcut Dimension 1 Code") then
+                Rec.Validate("Project Name", DimensionValue.Name);
+            Rec."Responsibility Center" := PurchaseInvoiceHeader."Responsibility Center";
+            Rec."PO#" := PurchaseInvoiceHeader."Order No.";
+            Rec.Modify(true);
+        end;
+        //NB MASQ End
     end;
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean

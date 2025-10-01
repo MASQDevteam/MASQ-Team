@@ -122,7 +122,7 @@ report 70101 "Request for Payment"
                 PaymentMEthodName := PAymentmethod.Description;
 
                 Clear(Dimenvalue);
-                Dimenvalue.Get('PROJECT', "Project Name");
+                Dimenvalue.Get('PROJECT', Project); //NB MASQ
                 projectname := Dimenvalue.Code + ' - ' + Dimenvalue.Name;
 
                 Clear(Dimenvalue);

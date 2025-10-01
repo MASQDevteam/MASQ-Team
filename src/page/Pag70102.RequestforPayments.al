@@ -111,7 +111,7 @@ page 70102 "Request for Payments"
                     ToolTip = 'Specifies the value of the PPI# field.', Comment = '%';
 
                 }
-                field("Project Name"; Rec."Project Name")
+                field(Project; Rec.Project) //NB MASQ
                 {
                     ToolTip = 'Specifies the value of the Project Name field.', Comment = '%';
                 }

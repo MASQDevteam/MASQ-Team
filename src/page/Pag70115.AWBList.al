@@ -37,6 +37,10 @@ page 70115 "AWB List"
                 {
                     ToolTip = 'Specifies the value of the VOLUMETRIC Weight in KG field.', Comment = '%';
                 }
+                field("CHARGABLE Weight in KG"; Rec."CHARGABLE Weight in KG") //NB MASQ
+                {
+                    ApplicationArea = All;
+                }
                 field("NET Weight in KG"; Rec."NET Weight in KG")
                 {
                     ToolTip = 'Specifies the value of the Weight in KG field.', Comment = '%';

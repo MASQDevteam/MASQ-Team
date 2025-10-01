@@ -13,10 +13,11 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
             DataClassification = CustomerContent;
             TableRelation = Vendor;
         }
-        field(3; "Project Name"; Text[100])
+        field(3; Project; Code[20]) //NB MASQ
         {
             DataClassification = CustomerContent;
             TableRelation = "Dimension Value".Code WHERE("Dimension Code" = const('PROJECT'));
+
         }
         field(4; "PO#"; Code[50])
         {
@@ -26,6 +27,7 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
             var
                 PurchaseOrder: Record "Purchase Header";
                 POEnum: Enum "Purchase Document Type";
+                DimensionValue: Record "Dimension Value";
             begin
                 IF Rec."PO#" <> '' then begin
                     Clear(PurchaseOrder);
@@ -34,7 +36,9 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
                         Rec."PO Value" := PurchaseOrder."Amount Including VAT";
                         Rec.Currency := PurchaseOrder."Currency Code";
                         Rec."Request Amount/PO Value %" := (Rec."Requested Amount" / Rec."PO Value") * 100;
-                        Rec."Project Name" := PurchaseOrder."Shortcut Dimension 1 Code";
+                        Rec.Project := PurchaseOrder."Shortcut Dimension 1 Code";
+                        if DimensionValue.Get('PROJECT', PurchaseOrder."Shortcut Dimension 1 Code") then //NB MASQ
+                            Rec.Validate("Project Name", DimensionValue.Name);
                         Rec."Responsibility Center" := PurchaseOrder."Responsibility Center";
                     end;
                 end;
@@ -228,6 +232,7 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
             var
                 PurchaseInvoiceHeader: Record "Purch. Inv. Header";
                 POEnum: Enum "Purchase Document Type";
+                DimensionValue: Record "Dimension Value";
             begin
                 IF Rec."PPI#" <> '' then begin
                     Clear(PurchaseInvoiceHeader);
@@ -237,7 +242,9 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
                     Rec."PO Value" := PurchaseInvoiceHeader."Amount Including VAT";
                     Rec.Currency := PurchaseInvoiceHeader."Currency Code";
                     Rec."Request Amount/PO Value %" := (Rec."Requested Amount" / Rec."PO Value") * 100;
-                    Rec."Project Name" := PurchaseInvoiceHeader."Shortcut Dimension 1 Code";
+                    Rec.Project := PurchaseInvoiceHeader."Shortcut Dimension 1 Code";
+                    if DimensionValue.Get('PROJECT', PurchaseInvoiceHeader."Shortcut Dimension 1 Code") then //NB MASQ
+                        Rec.Validate("Project Name", DimensionValue.Name);
                     Rec."Responsibility Center" := PurchaseInvoiceHeader."Responsibility Center";
                     Rec."PO#" := PurchaseInvoiceHeader."Order No.";
                 end;
@@ -279,6 +286,11 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         field(47; "Payment Status 3"; Enum "Document Status")
         {
 
+        }
+        field(48; "Project Name"; Text[50]) //NB MASQ
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
         }
     }
 
@@ -346,7 +358,7 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         GenJnlLines.VALIDATE("Account No.", Rec.Supplier);
         GenJnlLines.VALIDATE("Currency Code", Rec.Currency);
         GenJnlLines.VALIDATE(Amount, Rec."Total Requested Amount");
-        GenJnlLines.VALIDATE("Shortcut Dimension 1 Code", Rec."Project Name");
+        GenJnlLines.VALIDATE("Shortcut Dimension 1 Code", Rec.Project); //NB MASQ
         GenJnlLines.ValidateShortcutDimCode(4, Rec.Branch);
         GenJnlLines.ValidateShortcutDimCode(5, Rec."Requested By / Department");
         GenJnlLines.Validate("Payment Method Code", rec."Payment Method");
@@ -371,7 +383,7 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         GenJnlLines.VALIDATE("Account No.", Rec."Bank Number");
         GenJnlLines.VALIDATE("Currency Code", Rec.Currency);
         GenJnlLines.VALIDATE(Amount, -Rec."Total Requested Amount");
-        GenJnlLines.VALIDATE("Shortcut Dimension 1 Code", Rec."Project Name");
+        GenJnlLines.VALIDATE("Shortcut Dimension 1 Code", Rec.Project); //NB MASQ
         GenJnlLines.ValidateShortcutDimCode(4, Rec.Branch);
         GenJnlLines.ValidateShortcutDimCode(5, Rec."Requested By / Department");
         GenJnlLines.Validate("Payment Method Code", rec."Payment Method");
