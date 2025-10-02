@@ -202,7 +202,7 @@ page 70105 "New Approval Entries"
                                 ApprovalEntry."Supplier Name" := Vendor.Name;
 
                             ApprovalEntry."PO Number" := RFP."PO#";
-                            ApprovalEntry."Project Code" := RFP."Project Name";
+                            ApprovalEntry."Project Code" := RFP.Project; //NB MASQ
                             ApprovalEntry.Modify();
                         until ApprovalEntry.Next() = 0;
                 end;

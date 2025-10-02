@@ -30,6 +30,10 @@ page 70175 "Request for Payment Subform"
                 {
                     ToolTip = 'Specifies the value of the Payment % field.', Comment = '%';
                 }
+                field("Payment Status"; Rec."Payment Status") //NB MASQ
+                {
+                    ApplicationArea = All;
+                }
                 //NB MASQ Start 30-Sep-25
                 field("Level of Urgency"; Rec."Level of Urgency")
                 {
@@ -53,6 +57,10 @@ page 70175 "Request for Payment Subform"
                 {
                     ToolTip = 'Specifies the value of the Payment Status field.', Comment = '%';
                     StyleExpr = PaymentApprovalStatus;
+                }
+                field("Expected Execution Date"; Rec."Expected Execution Date") //NB MASQ
+                {
+                    ApplicationArea = All;
                 }
                 field("Accounting Status"; Rec."Accounting Status")
                 {
@@ -192,7 +200,7 @@ page 70175 "Request for Payment Subform"
             Rec."PO#" := SUPPLIERPAYMENTREQUEST."PO#";
             Rec."PO Value" := SUPPLIERPAYMENTREQUEST."PO Value";
             Rec."Level of Urgency" := SUPPLIERPAYMENTREQUEST."Level of Urgency";
-            Rec."Project Name" := SUPPLIERPAYMENTREQUEST."Project Name";
+            Rec."Project Name" := SUPPLIERPAYMENTREQUEST.Project; //NB MASQ
             Rec."Requested By (Person)" := SUPPLIERPAYMENTREQUEST."Requested By (Person)";
 
             //NB MASQ Start

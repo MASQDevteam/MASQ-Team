@@ -184,6 +184,10 @@ table 70139 "Payment Line"
             OptionMembers = Open,"In Process",Executed;
         }
         //NB MASQ End 30-Sep-25
+        field(28; "Expected Execution Date"; Date) //NB MASQ
+        {
+            DataClassification = CustomerContent;
+        }
         //NB MASQ End
     }
     keys
