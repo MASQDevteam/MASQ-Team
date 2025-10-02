@@ -1,7 +1,7 @@
 report 70116 "Item Inventory With Picture"
 {
     ApplicationArea = All;
-    Caption = 'Item Inventory With Picture';
+    Caption = 'List of items with pictures';
     UsageCategory = ReportsAndAnalysis;
     RDLCLayout = 'src/report/Layouts/ItemInventoryWithPicture.rdl';
 
@@ -77,6 +77,7 @@ report 70116 "Item Inventory With Picture"
                         ApplicationArea = All;
                         Caption = 'Show Only Items With Pictures';
                         ToolTip = 'Filter to show only items that have pictures attached. This will significantly improve report performance.';
+
                     }
 
                     field(ShowOnlyItemsWithInventory; ShowOnlyItemsWithInventory)
@@ -98,6 +99,8 @@ report 70116 "Item Inventory With Picture"
     begin
         CompanyInfo.GET;
         CompanyInfo.CALCFIELDS(Picture);
+        ShowOnlyItemsWithPictures := true;
+        ShowOnlyItemsWithInventory := true;
     end;
 
     var

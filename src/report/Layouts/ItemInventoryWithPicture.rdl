@@ -11,7 +11,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.1.30001.02</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-10-02T07:33:26.8880168Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-10-02T08:55:12.6438353Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -24,49 +24,6 @@
       <rd:DataSourceID>e05c4783-8c16-491c-8695-6fd23cb84f55</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="Item_No_">
-          <DataField>Item_No_</DataField>
-        </Field>
-        <Field Name="Vendor_No_">
-          <DataField>Vendor_No_</DataField>
-        </Field>
-        <Field Name="Description">
-          <DataField>Description</DataField>
-        </Field>
-        <Field Name="ItemPicture">
-          <DataField>ItemPicture</DataField>
-        </Field>
-        <Field Name="Picture">
-          <DataField>Picture</DataField>
-        </Field>
-        <Field Name="Inventory">
-          <DataField>Inventory</DataField>
-        </Field>
-        <Field Name="InventoryFormat">
-          <DataField>InventoryFormat</DataField>
-        </Field>
-        <Field Name="Meg_Vendor_Item_Code">
-          <DataField>Meg_Vendor_Item_Code</DataField>
-        </Field>
-        <Field Name="Location_Code">
-          <DataField>Location_Code</DataField>
-        </Field>
-        <Field Name="Meg_Family">
-          <DataField>Meg_Family</DataField>
-        </Field>
-        <Field Name="Meg_Item_Subcategory_Code">
-          <DataField>Meg_Item_Subcategory_Code</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -643,7 +600,7 @@
       <Width>27.9651cm</Width>
       <Page>
         <PageHeader>
-          <Height>3.22427cm</Height>
+          <Height>2.45698cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -653,8 +610,8 @@
               <MIMEType>image/jpeg</MIMEType>
               <Sizing>FitProportional</Sizing>
               <Left>0.05897cm</Left>
-              <Height>1.22773in</Height>
-              <Width>1.4175in</Width>
+              <Height>0.96731in</Height>
+              <Width>1.32375in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -676,7 +633,6 @@
                         <FontSize>16pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                         <TextDecoration>None</TextDecoration>
-                        <Color>Blue</Color>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -685,7 +641,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>2.10922cm</Top>
+              <Top>1.34193cm</Top>
               <Left>8.3962cm</Left>
               <Height>1.11505cm</Height>
               <Width>12.09096cm</Width>
@@ -762,12 +718,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -893,4 +843,47 @@ UFBQUOgsVAWloKCgoKCgoKCgoKDQWagKSkFBQUFBQUFBQUFBobNQFZSCgoKCgoKCgoKCgkJnoSooBQUF
   </EmbeddedImages>
   <Language>=User!Language</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Item_No_">
+          <DataField>Item_No_</DataField>
+        </Field>
+        <Field Name="Vendor_No_">
+          <DataField>Vendor_No_</DataField>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+        </Field>
+        <Field Name="ItemPicture">
+          <DataField>ItemPicture</DataField>
+        </Field>
+        <Field Name="Picture">
+          <DataField>Picture</DataField>
+        </Field>
+        <Field Name="Inventory">
+          <DataField>Inventory</DataField>
+        </Field>
+        <Field Name="InventoryFormat">
+          <DataField>InventoryFormat</DataField>
+        </Field>
+        <Field Name="Meg_Vendor_Item_Code">
+          <DataField>Meg_Vendor_Item_Code</DataField>
+        </Field>
+        <Field Name="Location_Code">
+          <DataField>Location_Code</DataField>
+        </Field>
+        <Field Name="Meg_Family">
+          <DataField>Meg_Family</DataField>
+        </Field>
+        <Field Name="Meg_Item_Subcategory_Code">
+          <DataField>Meg_Item_Subcategory_Code</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>
