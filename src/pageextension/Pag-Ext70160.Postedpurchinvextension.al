@@ -2,11 +2,18 @@ pageextension 70160 "Posted purch inv extension" extends "Posted Purchase Invoic
 {
     layout
     {
-        modify("Order No.")
+        modify("Order No.") //NB MASQ
         {
             Visible = true;
             ApplicationArea = All;
             Importance = Standard;
+        }
+        addafter("Order No.") //NB MASQ
+        {
+            field(Amount; Rec.Amount)
+            {
+                ApplicationArea = All;
+            }
         }
         addafter("Meg SO No.")
         {
