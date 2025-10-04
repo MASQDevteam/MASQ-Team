@@ -28,14 +28,16 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
                 PurchaseOrder: Record "Purchase Header";
                 POEnum: Enum "Purchase Document Type";
                 DimensionValue: Record "Dimension Value";
-                SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
+                SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST"; //NB MASQ
             begin
                 IF Rec."PO#" <> '' then begin
+                    //NB MASQ Start
                     SUPPLIERPAYMENTREQUEST.Reset();
                     SUPPLIERPAYMENTREQUEST.SetRange("PO#", Rec."PO#");
                     SUPPLIERPAYMENTREQUEST.SetFilter(Number, '<>%1', Rec.Number);
                     if SUPPLIERPAYMENTREQUEST.FindFirst() then
                         Error('RFP %1 is already created with PO %2', SUPPLIERPAYMENTREQUEST.Number, Rec."PO#");
+                    //NB MASQ End
 
                     Clear(PurchaseOrder);
                     if PurchaseOrder.Get(POEnum::Order, Rec."PO#") then begin
@@ -240,14 +242,16 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
                 PurchaseInvoiceHeader: Record "Purch. Inv. Header";
                 POEnum: Enum "Purchase Document Type";
                 DimensionValue: Record "Dimension Value";
-                SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
+                SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST"; //NB MASQ
             begin
                 IF Rec."PPI#" <> '' then begin
+                    //NB MASQ Start
                     SUPPLIERPAYMENTREQUEST.Reset();
                     SUPPLIERPAYMENTREQUEST.SetRange("PPI#", Rec."PPI#");
                     SUPPLIERPAYMENTREQUEST.SetFilter(Number, '<>%1', Rec.Number);
                     if SUPPLIERPAYMENTREQUEST.FindFirst() then
                         Error('RFP %1 is already created with PPI %2', SUPPLIERPAYMENTREQUEST.Number, Rec."PPI#");
+                    //NB MASQ End
 
                     Clear(PurchaseInvoiceHeader);
                     PurchaseInvoiceHeader.Get(Rec."PPI#");

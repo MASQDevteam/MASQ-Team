@@ -28,6 +28,7 @@ pageextension 70160 "Posted purch inv extension" extends "Posted Purchase Invoic
             }
         }
     }
+    //NB MASQ Start
     actions
     {
         addfirst(processing)
@@ -84,7 +85,7 @@ pageextension 70160 "Posted purch inv extension" extends "Posted Purchase Invoic
                             SUPPLIERPAYMENTREQUEST.Init();
                             SUPPLIERPAYMENTREQUEST.Validate(Number, NoSeries.GetNextNo(GeneralLedgerSetup."Request for Payment No. Series"));
                             SUPPLIERPAYMENTREQUEST.Validate(Supplier, Rec."Buy-from Vendor No.");
-                            SUPPLIERPAYMENTREQUEST.Validate("PO#", Rec."No.");
+                            SUPPLIERPAYMENTREQUEST.Validate("PPI#", Rec."No.");
                             SUPPLIERPAYMENTREQUEST.Validate("Payment Terms", Rec."Payment Terms Code");
                             //NB MASQ Start 30-Sep-25
                             //SUPPLIERPAYMENTREQUEST.Validate("Good Readiness Date", Rec."Initial ETR");
@@ -101,4 +102,5 @@ pageextension 70160 "Posted purch inv extension" extends "Posted Purchase Invoic
             }
         }
     }
+    //NB MASQ End
 }
