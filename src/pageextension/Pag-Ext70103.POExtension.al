@@ -209,7 +209,6 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
             {
                 ApplicationArea = All;
                 Promoted = true;
-                PromotedIsBig = true;
                 PromotedCategory = Process;
                 PromotedOnly = true;
                 Image = Open;
@@ -219,7 +218,6 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                 begin
                     SUPPLIERPAYMENTREQUEST.Reset();
                     SUPPLIERPAYMENTREQUEST.SetRange("PO#", Rec."No.");
-                    SUPPLIERPAYMENTREQUEST.SetRange(Supplier, Rec."Buy-from Vendor No.");
                     if SUPPLIERPAYMENTREQUEST.FindFirst() then
                         Page.RunModal(Page::"Request for Payment", SUPPLIERPAYMENTREQUEST)
                     else
@@ -230,7 +228,6 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
             {
                 ApplicationArea = All;
                 Promoted = true;
-                PromotedIsBig = true;
                 PromotedCategory = Process;
                 PromotedOnly = true;
                 Image = CreateDocument;
@@ -242,12 +239,10 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                 begin
                     SUPPLIERPAYMENTREQUEST.Reset();
                     SUPPLIERPAYMENTREQUEST.SetRange("PO#", Rec."No.");
-                    SUPPLIERPAYMENTREQUEST.SetRange(Supplier, Rec."Buy-from Vendor No.");
                     if SUPPLIERPAYMENTREQUEST.FindFirst() then
                         Message('RFP %1 is already created for PO %2', SUPPLIERPAYMENTREQUEST.Number, Rec."No.")
                     else begin
                         GeneralLedgerSetup.Get();
-
                         SUPPLIERPAYMENTREQUEST.Init();
                         SUPPLIERPAYMENTREQUEST.Validate(Number, NoSeries.GetNextNo(GeneralLedgerSetup."Request for Payment No. Series"));
                         SUPPLIERPAYMENTREQUEST.Validate(Supplier, Rec."Buy-from Vendor No.");
@@ -261,7 +256,6 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                         SUPPLIERPAYMENTREQUEST.Validate(Date, Today());
                         //NB MASQ End 30-Sep-25
                         SUPPLIERPAYMENTREQUEST.Insert(true);
-
                         Message('RFP %1 is successfully created for PO %2', SUPPLIERPAYMENTREQUEST.Number, Rec."No.");
                     end;
                 end;

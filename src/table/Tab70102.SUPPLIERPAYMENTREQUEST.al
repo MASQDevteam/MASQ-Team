@@ -28,8 +28,15 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
                 PurchaseOrder: Record "Purchase Header";
                 POEnum: Enum "Purchase Document Type";
                 DimensionValue: Record "Dimension Value";
+                SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
             begin
                 IF Rec."PO#" <> '' then begin
+                    SUPPLIERPAYMENTREQUEST.Reset();
+                    SUPPLIERPAYMENTREQUEST.SetRange("PO#", Rec."PO#");
+                    SUPPLIERPAYMENTREQUEST.SetFilter(Number, '<>%1', Rec.Number);
+                    if SUPPLIERPAYMENTREQUEST.FindFirst() then
+                        Error('RFP %1 is already created with PO %2', SUPPLIERPAYMENTREQUEST.Number, Rec."PO#");
+
                     Clear(PurchaseOrder);
                     if PurchaseOrder.Get(POEnum::Order, Rec."PO#") then begin
                         PurchaseOrder.CalcFields("Amount Including VAT");
@@ -233,8 +240,15 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
                 PurchaseInvoiceHeader: Record "Purch. Inv. Header";
                 POEnum: Enum "Purchase Document Type";
                 DimensionValue: Record "Dimension Value";
+                SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
             begin
                 IF Rec."PPI#" <> '' then begin
+                    SUPPLIERPAYMENTREQUEST.Reset();
+                    SUPPLIERPAYMENTREQUEST.SetRange("PPI#", Rec."PPI#");
+                    SUPPLIERPAYMENTREQUEST.SetFilter(Number, '<>%1', Rec.Number);
+                    if SUPPLIERPAYMENTREQUEST.FindFirst() then
+                        Error('RFP %1 is already created with PPI %2', SUPPLIERPAYMENTREQUEST.Number, Rec."PPI#");
+
                     Clear(PurchaseInvoiceHeader);
                     PurchaseInvoiceHeader.Get(Rec."PPI#");
 

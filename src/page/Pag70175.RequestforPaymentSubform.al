@@ -180,8 +180,8 @@ page 70175 "Request for Payment Subform"
                 until PaymentLine.Next() = 0;
 
             if TotalPayValue = SUPPLIERPAYMENTREQUEST."PO Value" then begin
-                SUPPLIERPAYMENTREQUEST.Validate(Status, SUPPLIERPAYMENTREQUEST.Status::Paid);
-                SUPPLIERPAYMENTREQUEST.Modify(true);
+                // SUPPLIERPAYMENTREQUEST.Validate(Status, SUPPLIERPAYMENTREQUEST.Status::Paid);
+                // SUPPLIERPAYMENTREQUEST.Modify(true);
             end;
         end;
         //NB MASQ End
