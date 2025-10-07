@@ -236,6 +236,7 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                     SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
                     NoSeries: Codeunit "No. Series";
                     GeneralLedgerSetup: Record "General Ledger Setup";
+                    Vendor: Record Vendor;
                 begin
                     SUPPLIERPAYMENTREQUEST.Reset();
                     SUPPLIERPAYMENTREQUEST.SetRange("PO#", Rec."No.");
@@ -246,6 +247,8 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                         SUPPLIERPAYMENTREQUEST.Init();
                         SUPPLIERPAYMENTREQUEST.Validate(Number, NoSeries.GetNextNo(GeneralLedgerSetup."Request for Payment No. Series"));
                         SUPPLIERPAYMENTREQUEST.Validate(Supplier, Rec."Buy-from Vendor No.");
+                        if Vendor.Get(Rec."Buy-from Vendor No.") then //NB MASQ
+                            SUPPLIERPAYMENTREQUEST.Validate("RFP Type", Vendor."RFP Type");
                         SUPPLIERPAYMENTREQUEST.Validate("PO#", Rec."No.");
                         SUPPLIERPAYMENTREQUEST.Validate("Payment Terms", Rec."Payment Terms Code");
                         //NB MASQ Start 30-Sep-25
@@ -254,6 +257,7 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                         SUPPLIERPAYMENTREQUEST.Validate("SO#", Rec."MASQ Sales Order No.");
                         SUPPLIERPAYMENTREQUEST.Validate("Requested By (Person)", UserId());
                         SUPPLIERPAYMENTREQUEST.Validate(Date, Today());
+                        SUPPLIERPAYMENTREQUEST.Validate("Assigned User ID", Rec."Assigned User ID");
                         //NB MASQ End 30-Sep-25
                         SUPPLIERPAYMENTREQUEST.Insert(true);
                         Message('RFP %1 is successfully created for PO %2', SUPPLIERPAYMENTREQUEST.Number, Rec."No.");

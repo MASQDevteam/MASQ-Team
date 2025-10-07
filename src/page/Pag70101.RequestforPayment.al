@@ -83,6 +83,7 @@ page 70101 "Request for Payment"
                 field("Good Readiness Date"; Rec."Good Readiness Date")
                 {
                     ToolTip = 'Specifies the value of the Good Readiness Date field.', Comment = '%';
+                    Caption = 'Initial ETR'; //NB MASQ
                 }
                 field("Approval Entries"; Rec."Approval Entries")
                 {
@@ -133,6 +134,10 @@ page 70101 "Request for Payment"
                     Enabled = false;
                     ToolTip = 'Specifies the value of the Requested By (Person) field.', Comment = '%';
                     ShowMandatory = (Rec."Number" <> '');
+                }
+                field("Assigned User ID"; Rec."Assigned User ID") //NB MASQ
+                {
+                    ApplicationArea = All;
                 }
             }
             part("Request for Payment Subform"; "Request for Payment Subform")
