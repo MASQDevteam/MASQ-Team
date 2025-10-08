@@ -23,13 +23,13 @@ tableextension 70140 "General Journal Ext " extends "Gen. Journal Line"
             Caption = 'Related PO No.';
             DataClassification = CustomerContent;
             TableRelation = "Purchase Header"."No." WHERE("Document Type" = CONST(Order));
-            trigger OnValidate()
-            var
-                myInt: Integer;
-            begin
-                if Rec."Account Type" <> Rec."Account Type"::Vendor then
-                    Error('Related PO No. is only allowed when Account Type is Vendor.');
-            end;
+            /*  trigger OnValidate()
+             var
+                 myInt: Integer;
+             begin
+                 if Rec."Account Type" <> Rec."Account Type"::Vendor then
+                     Error('Related PO No. is only allowed when Account Type is Vendor.');
+             end; */
         }
 
         field(70104; "Related SO No."; Code[20])
@@ -37,13 +37,13 @@ tableextension 70140 "General Journal Ext " extends "Gen. Journal Line"
             Caption = 'Related SO No.';
             DataClassification = CustomerContent;
             TableRelation = "Sales Header"."No." WHERE("Document Type" = CONST(Order));
-            trigger OnValidate()
-            var
-                myInt: Integer;
-            begin
-                if Rec."Account Type" <> Rec."Account Type"::Customer then
-                    Error('Related SO No. is only allowed when Account Type is Customer.');
-            end;
+            /*  trigger OnValidate()
+             var
+                 myInt: Integer;
+             begin
+                 if Rec."Account Type" <> Rec."Account Type"::Customer then
+                     Error('Related SO No. is only allowed when Account Type is Customer.');
+             end; */
         }
         //FQ MASQ **End
     }
