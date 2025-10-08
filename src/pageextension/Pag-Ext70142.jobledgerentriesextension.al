@@ -44,9 +44,13 @@ pageextension 70142 "job ledger entries extension" extends "Job Ledger Entries"
         // Add changes to page actions here
         addafter("Transfer To Planning Lines")
         {
+            //FQ MASQ **Start**
             action("update Charges")
             {
                 ApplicationArea = All;
+                Caption = 'Update Charges';
+                Image = AdjustItemCost;
+                ToolTip = 'Update Charges on Job Ledger Entry single line';
                 trigger OnAction()
                 var
                     MASQSubscribers: Codeunit "MASQ Subs & Functions";
@@ -54,16 +58,58 @@ pageextension 70142 "job ledger entries extension" extends "Job Ledger Entries"
                     MASQSubscribers.UpdateChargesonJobLedgerEntry(Rec);
                 end;
             }
+
+            action("Recalculate Costs (All)")
+            {
+                ApplicationArea = All;
+                Image = Recalculate;
+                ToolTip = 'Recalculate Actual Total Cost fields on current filtered Job Ledger Entries.';
+                trigger OnAction()
+                var
+                    Recalc: Codeunit "MASQ Recalc Job Costs";
+                    JobLedgEntry: Record "Job Ledger Entry";
+                    ProcessedCount: Integer;
+                begin
+                    // Count records in the current filtered set for user feedback
+                    JobLedgEntry.Reset();
+                    JobLedgEntry.CopyFilters(Rec);
+                    if JobLedgEntry.FindSet() then begin
+                        repeat
+                            ProcessedCount += 1;
+                        until JobLedgEntry.Next() = 0;
+                    end;
+
+                    Recalc.RunForFilteredSet(Rec);
+                    Message('Recalculation Actual total cost fields completed for %1 Job Ledger Entries.', ProcessedCount);
+                end;
+            }
+
             action("update Price")
             {
                 ApplicationArea = All;
+                Caption = 'Update Price';
+                Image = PriceAdjustment;
+                ToolTip = 'Update Price';
                 trigger OnAction()
                 var
                     MASQSubscribers: Codeunit "MASQ Subs & Functions";
+                    JobLedgEntry: Record "Job Ledger Entry";
+                    UpdatedCount: Integer;
                 begin
-                    MASQSubscribers.updatepriceandAmount(Rec);
+                    // Apply to all records in the current filtered set
+                    JobLedgEntry.Reset();
+                    JobLedgEntry.CopyFilters(Rec);
+                    if JobLedgEntry.FindSet() then begin
+                        repeat
+                            MASQSubscribers.updatepriceandAmount(JobLedgEntry);
+                            UpdatedCount += 1;
+                        until JobLedgEntry.Next() = 0;
+                    end;
+
+                    Message('Updated price and amount on %1 Job Ledger Entries.', UpdatedCount);
                 end;
             }
+            //FQ MASQ **End**
         }
     }
 

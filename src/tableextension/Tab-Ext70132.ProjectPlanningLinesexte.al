@@ -255,6 +255,44 @@ tableextension 70132 "Project Planning Lines exte" extends "Job Planning Line"
             FieldClass = FlowField;
             CalcFormula = lookup(Vendor.Name where("No." = field("Vendor No.")));
         }
+        //FQ MASQ **Start
+        field(70132; "Posted Invoiced Amount"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = sum("Sales Invoice Line".Amount where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Contract Entry No." = field("Job Contract Entry No.")));
+            Caption = 'Posted Invoiced Amount';
+        }
+
+        field(70133; "Sales order no"; Code[20])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup("Sales Line"."Document No." where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Contract Entry No." = field("Job Contract Entry No."), "Document Type" = const(Order)));
+            Caption = 'Sales Order No';
+        }
+        field(70134; "Posted sales invoice no"; Code[20])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup("Sales Invoice Line"."Document No." where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Contract Entry No." = field("Job Contract Entry No.")));
+            Caption = 'Posted Sales Invoice No';
+        }
+
+        field(70135; "Sales Cr.Memo Amount"; Decimal)
+        {
+            Caption = 'Sales Cr.Memo Amount';
+            FieldClass = FlowField;
+            CalcFormula = sum("Sales Line".Amount where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Contract Entry No." = field("Job Contract Entry No."), "Document Type" = filter('Credit Memo')));
+            Editable = false;
+        }
+        field(70136; "Sales Cr.Memo No."; Code[20])
+        {
+            Caption = 'Sales Cr.Memo No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Sales Line"."Document No." where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Contract Entry No." = field("Job Contract Entry No."), "Document Type" = filter('Credit Memo')));
+            Editable = false;
+        }
+
+
+        // FQ MASQ **END
     }
 
 

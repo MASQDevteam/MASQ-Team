@@ -36,6 +36,33 @@ pageextension 70138 "Job Planning Lines extension" extends "Job Planning Lines"
         }
         addafter("Invoiced Amount (LCY)")
         {
+            //FQ MASQ **Start
+            field("Posted Invoiced Amount"; Rec."Posted Invoiced Amount")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Posted Invoiced Amount field.', Comment = '%';
+            }
+            field("Sales Cr.Memo Amount"; Rec."Sales Cr.Memo Amount")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Sales Cr.Memo Amount field.', Comment = '%';
+            }
+            field("Sales order no"; Rec."Sales order no")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Sales order no field.', Comment = '%';
+            }
+            field("Posted sales invoice no"; Rec."Posted sales invoice no")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Posted sales invoice no field.', Comment = '%';
+            }
+            field("Sales Cr.Memo No."; Rec."Sales Cr.Memo No.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Sales Cr.Memo No field.', Comment = '%';
+            }
+            //FQ MASQ **END
             field("Meg Item Type"; Rec."Meg Item Type")
             {
                 ApplicationArea = All;
@@ -449,4 +476,5 @@ pageextension 70138 "Job Planning Lines extension" extends "Job Planning Lines"
 
     var
         JobCreateInvoice: Codeunit "Job Create-Invoice";
+
 }
