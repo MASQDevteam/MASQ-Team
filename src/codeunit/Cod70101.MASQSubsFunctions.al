@@ -1308,9 +1308,11 @@ codeunit 70101 "MASQ Subs & Functions"
                         IF PurchLine."Shipping By" = PurchLine."Shipping By"::InLand then//added on 27/05/2025
                             PurchLine.TestField("Truck WayBill ID");//added on 27/05/2025
 
+                        //NB MASQ Start
                         if PurchLine."Shipping By" = PurchLine."Shipping By"::" " then
                             if (PurchLine."BL/AWB ID" = '') and (PurchLine."Truck WayBill ID" = '') then
                                 Error('"BL/AWB ID" Or "Truck WayBill ID" Must have value in Purchase Line No. %1', PurchLine."Line No.");
+                        //NB MASQ End
                     end;
 
                 end;
