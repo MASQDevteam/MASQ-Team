@@ -1302,11 +1302,15 @@ codeunit 70101 "MASQ Subs & Functions"
             IF PurchHeader.Receive then begin
                 if PurchHeader."Gen. Bus. Posting Group" = 'FOREIGN' then begin
                     IF PurchLine."Qty. to Receive" <> 0 then begin
-                        IF (PurchLine."Shipping By" = PurchLine."Shipping By"::Air) OR (PurchLine."Shipping By" = PurchLine."Shipping By"::Sea) OR (PurchLine."Shipping By" = PurchLine."Shipping By"::" ") then//added on 27/05/2025
+                        IF (PurchLine."Shipping By" = PurchLine."Shipping By"::Air) OR (PurchLine."Shipping By" = PurchLine."Shipping By"::Sea) then//added on 27/05/2025
                             PurchLine.TestField("BL/AWB ID");
 
-                        IF (PurchLine."Shipping By" = PurchLine."Shipping By"::InLand) OR (PurchLine."Shipping By" = PurchLine."Shipping By"::" ") then//added on 27/05/2025
+                        IF PurchLine."Shipping By" = PurchLine."Shipping By"::InLand then//added on 27/05/2025
                             PurchLine.TestField("Truck WayBill ID");//added on 27/05/2025
+
+                        if PurchLine."Shipping By" = PurchLine."Shipping By"::" " then
+                            if (PurchLine."BL/AWB ID" = '') and (PurchLine."Truck WayBill ID" = '') then
+                                Error('"BL/AWB ID" Or "Truck WayBill ID" Must have value in Purchase Line No. %1', PurchLine."Line No.");
                     end;
 
                 end;
