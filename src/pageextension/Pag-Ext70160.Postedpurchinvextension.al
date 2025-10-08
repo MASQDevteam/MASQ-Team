@@ -70,6 +70,7 @@ pageextension 70160 "Posted purch inv extension" extends "Posted Purchase Invoic
                     SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
                     NoSeries: Codeunit "No. Series";
                     GeneralLedgerSetup: Record "General Ledger Setup";
+                    Vendor: Record Vendor;
                 begin
                     SUPPLIERPAYMENTREQUEST.Reset();
                     SUPPLIERPAYMENTREQUEST.SetRange("PPI#", Rec."No.");
@@ -85,6 +86,8 @@ pageextension 70160 "Posted purch inv extension" extends "Posted Purchase Invoic
                             SUPPLIERPAYMENTREQUEST.Init();
                             SUPPLIERPAYMENTREQUEST.Validate(Number, NoSeries.GetNextNo(GeneralLedgerSetup."Request for Payment No. Series"));
                             SUPPLIERPAYMENTREQUEST.Validate(Supplier, Rec."Buy-from Vendor No.");
+                            if Vendor.Get(Rec."Buy-from Vendor No.") then //NB MASQ
+                                SUPPLIERPAYMENTREQUEST.Validate("RFP Type", Vendor."RFP Type");
                             SUPPLIERPAYMENTREQUEST.Validate("PPI#", Rec."No.");
                             SUPPLIERPAYMENTREQUEST.Validate("Payment Terms", Rec."Payment Terms Code");
                             //NB MASQ Start 30-Sep-25

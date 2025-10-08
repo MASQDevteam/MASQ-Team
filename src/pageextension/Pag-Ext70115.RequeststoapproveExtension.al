@@ -57,7 +57,10 @@ pageextension 70115 "Requests to approve Extension" extends "Requests to Approve
             {
                 ApplicationArea = All;
                 Image = Open;
-
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process; //NB MASQ
+                PromotedOnly = true;
                 trigger OnAction()
                 var
                     RFP: Record "SUPPLIER PAYMENT REQUEST";

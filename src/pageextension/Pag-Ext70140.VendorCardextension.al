@@ -70,6 +70,13 @@ pageextension 70140 "Vendor Card extension" extends "Vendor Card"
                 ToolTip = 'Specifies the value of the Cateogry field.', Comment = '%';
             }
         }
+        addafter("Balance Due (LCY)") //NB MASQ
+        {
+            field("RFP Type"; Rec."RFP Type")
+            {
+                ApplicationArea = All;
+            }
+        }
     }
 
     actions

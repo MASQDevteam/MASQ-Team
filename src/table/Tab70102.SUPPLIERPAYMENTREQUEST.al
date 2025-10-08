@@ -12,6 +12,13 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         {
             DataClassification = CustomerContent;
             TableRelation = Vendor;
+            trigger OnValidate() //NB MASQ
+            var
+                Vendor: Record Vendor;
+            begin
+                if Vendor.Get(Supplier) then
+                    Rec.Validate("RFP Type", Vendor."RFP Type");
+            end;
         }
         field(3; Project; Code[20]) //NB MASQ
         {
@@ -306,6 +313,11 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
 
         }
         field(48; "Project Name"; Text[50]) //NB MASQ
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(49; "Assigned User ID"; Code[50]) //NB MASQ
         {
             DataClassification = CustomerContent;
             Editable = false;
