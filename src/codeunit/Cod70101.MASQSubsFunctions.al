@@ -1463,6 +1463,8 @@ codeunit 70101 "MASQ Subs & Functions"
         end;
     end;
 
+
+
     //transfer quantity to project ledger entry since condition to validate quantity is on level of invoice and credit memo only
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Job Transfer Line", 'OnFromPlanningSalesLineToJnlLineOnBeforeInitAmounts', '', false, false)]
     local procedure OnFromPlanningSalesLineToJnlLineOnBeforeInitAmounts(var JobJournalLine: Record "Job Journal Line"; var SalesLine: Record "Sales Line"; var SalesHeader: Record "Sales Header")
@@ -1556,6 +1558,11 @@ codeunit 70101 "MASQ Subs & Functions"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforePostJobContractLine', '', false, false)]//to be checked
     local procedure OnBeforePostJobContractLine(SalesHeader: Record "Sales Header"; SalesLine: Record "Sales Line"; var IsHandled: Boolean; var JobContractLine: Boolean; var InvoicePostingInterface: Interface "Invoice Posting"; SalesLineACY: Record "Sales Line"; SalesInvHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header")
     begin
+        IF SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo" then begin
+            IsHandled := false;
+            exit;
+        end;
+
         IF SalesHeader.Ship AND (NOT SalesHeader.Invoice) then begin//post contarct on post invoice only
             IsHandled := true;
         end;
@@ -1564,8 +1571,20 @@ codeunit 70101 "MASQ Subs & Functions"
             IF (SalesLine."Qty. to Ship" = 0) and (SalesLine."Qty. Shipped (Base)" = 0) then begin//dont post a contract line if the sale line is not being posted yet only post cotyract if the lines being posted
                 IsHandled := true;
             end;
-
     end;
+
+    //FQ MASQ **Start
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Job Post-Line", 'OnPostInvoiceContractLineBeforeCheckJobLine', '', false, false)]
+    local procedure OnPostInvoiceContractLineBeforeCheckJobLine(var JobLineChecked: Boolean; SalesHeader: Record "Sales Header"; var JobPlanningLine: Record "Job Planning Line"; var SalesLine: Record "Sales Line")
+    begin
+        // CRITICAL: Skip validation for credit memos - they create new planning lines with zero Qty. Transferred to Invoice
+        if SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo" then begin
+            JobLineChecked := true;
+            exit;
+        end;
+    end;
+    //FQ MASQ **END
 
     // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Job Post-Line", OnBeforePostInvoiceContractLine, '', false, false)]
     // local procedure OnBeforePostInvoiceContractLine(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var IsHandled: Boolean)
