@@ -1,1 +1,1 @@
-﻿{"Added":[],"Modified":[],"Removed":[]}
+﻿{"Added":[],"Modified":[{"Id":70100,"Kind":26,"Name":"masq","Namespace":""},{"Id":70101,"Kind":11,"Name":"MASQ Subs & Functions","Namespace":""}],"Removed":[{"Id":70180,"Kind":12,"Name":"Project Invoice Qty Log","Namespace":""},{"Id":70140,"Kind":10,"Name":"Project Invoice Qty Log Entry","Namespace":""},{"Kind":106,"Name":"RequestOptionsPage","Namespace":""},{"Id":70117,"Kind":13,"Name":"Fix Project Invoice Quantities","Namespace":""}]}
