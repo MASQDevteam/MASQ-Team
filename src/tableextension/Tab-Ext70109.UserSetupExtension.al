@@ -157,6 +157,11 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
             DataClassification = ToBeClassified;
             Caption = 'Can edit Cust/vend Fields of SO and PO lines';
         }
+        field(70134; "Skip Project Qty.trans Inv"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Skip Project Qty.transferred Invoice validation';
+        }
         //FQ MASQ End
 
         field(70133; "Create Direct RFP"; Boolean)

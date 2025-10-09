@@ -165,6 +165,11 @@ pageextension 70111 "User Setup Extension" extends "User Setup"
             {
                 ApplicationArea = All;
             }
+            field("Skip Project Qty.trans Inv"; Rec."Skip Project Qty.trans Inv")
+            {
+                ApplicationArea = All;
+            }
+
             // FQ MASQ End
 
         }

@@ -1538,11 +1538,6 @@ codeunit 70101 "MASQ Subs & Functions"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforePostJobContractLine', '', false, false)]//to be checked
     local procedure OnBeforePostJobContractLine(SalesHeader: Record "Sales Header"; SalesLine: Record "Sales Line"; var IsHandled: Boolean; var JobContractLine: Boolean; var InvoicePostingInterface: Interface "Invoice Posting"; SalesLineACY: Record "Sales Line"; SalesInvHeader: Record "Sales Invoice Header"; SalesCrMemoHeader: Record "Sales Cr.Memo Header")
     begin
-        IF SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo" then begin
-            IsHandled := false;
-            exit;
-        end;
-
         IF SalesHeader.Ship AND (NOT SalesHeader.Invoice) then begin//post contarct on post invoice only
             IsHandled := true;
         end;
@@ -1557,11 +1552,16 @@ codeunit 70101 "MASQ Subs & Functions"
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Job Post-Line", 'OnPostInvoiceContractLineBeforeCheckJobLine', '', false, false)]
     local procedure OnPostInvoiceContractLineBeforeCheckJobLine(var JobLineChecked: Boolean; SalesHeader: Record "Sales Header"; var JobPlanningLine: Record "Job Planning Line"; var SalesLine: Record "Sales Line")
+    var
+        usersetup: Record "User Setup";
     begin
         // CRITICAL: Skip validation for credit memos - they create new planning lines with zero Qty. Transferred to Invoice
-        if SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo" then begin
-            JobLineChecked := true;
-            exit;
+        usersetup.Get(UserId);
+        if usersetup."Skip Project Qty.trans Inv" = true then begin
+            if SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo" then begin
+                JobLineChecked := true;
+                exit;
+            end;
         end;
     end;
     //FQ MASQ **END
