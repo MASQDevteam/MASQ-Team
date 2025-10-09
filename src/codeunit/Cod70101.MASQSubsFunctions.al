@@ -1293,47 +1293,27 @@ codeunit 70101 "MASQ Subs & Functions"
         Purchaseinvoice: Record "Purch. Inv. Header";
     begin
         //AN 06/26/2025
-        // if PurchHeader."Document Type" = PurchHeader."Document Type"::Order then begin
-        //     PurchHeader.TestField("Invoice Received Date");
-        // end;
         IF (PurchLine.Type = PurchLine.Type::Item) AND (PurchLine."Document Type" = PurchLine."Document Type"::Order) then begin
-
             // no post receive if not linked to bl/awb if it is an order
             IF PurchHeader.Receive then begin
                 if PurchHeader."Gen. Bus. Posting Group" = 'FOREIGN' then begin
                     IF PurchLine."Qty. to Receive" <> 0 then begin
-                        IF (PurchLine."Shipping By" = PurchLine."Shipping By"::Air) OR (PurchLine."Shipping By" = PurchLine."Shipping By"::Sea) OR (PurchLine."Shipping By" = PurchLine."Shipping By"::" ") then//added on 27/05/2025
+                        IF (PurchLine."Shipping By" = PurchLine."Shipping By"::Air) OR (PurchLine."Shipping By" = PurchLine."Shipping By"::Sea) then//added on 27/05/2025
                             PurchLine.TestField("BL/AWB ID");
 
-                        IF (PurchLine."Shipping By" = PurchLine."Shipping By"::InLand) OR (PurchLine."Shipping By" = PurchLine."Shipping By"::" ") then//added on 27/05/2025
+                        IF PurchLine."Shipping By" = PurchLine."Shipping By"::InLand then//added on 27/05/2025
                             PurchLine.TestField("Truck WayBill ID");//added on 27/05/2025
-                    end;
 
+                        //NB MASQ Start
+                        if PurchLine."Shipping By" = PurchLine."Shipping By"::" " then
+                            if (PurchLine."BL/AWB ID" = '') and (PurchLine."Truck WayBill ID" = '') then
+                                Error('"BL/AWB ID" Or "Truck WayBill ID" Must have value in Purchase Line No. %1', PurchLine."Line No.");
+                        //NB MASQ End
+                    end;
                 end;
             end;
-
-            //   IF PurchLine."Batch Number" = '' then begin//stopped to publish production
-            //       GLSetup.Get();
-            //       GLSetup.TestField("Batch No. series");
-            //       BatchNumber := NoSeries.GetNextNo(GLSetup."Batch No. series");
-            //       //  ItemJnlLine."Batch Number" := BatchNumber;
-            //       PurchLine."Batch Number" := BatchNumber;
-            //       //   PurchLine.Modify();
-            //       //add it to the LOG
-            //       Clear(BatchLOG);
-            //       BatchLOG.Init();
-            //       BatchLOG."PO Number" := PurchLine."Document No.";
-            //       BatchLOG."PO Line Number" := PurchLine."Line No.";
-            //       BatchLOG."Item Number" := PurchLine."No.";
-            //       BatchLOG."Location Code" := PurchLine."Location Code";
-            //       BatchLOG."Batch Number" := BatchNumber;
-            //       BatchLOG.Insert();
-            //   end;
-
         end;
-
         //for credit memos only
-
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnPostSalesLineOnBeforeTestUnitOfMeasureCode', '', false, false)]//for batch posting

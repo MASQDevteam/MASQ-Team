@@ -2,7 +2,11 @@
     "id": "d6509362-8039-47d1-9023-a627a460f969",
     "name": "MASQ Team",
     "publisher": "MASQ Publisher",
+<<<<<<< HEAD
     "version": "25.0.1.121",
+=======
+    "version": "25.0.1.120",
+>>>>>>> e002d3e02c0be5ce8f2ac7a0e38ef7be4121fccc
     "brief": "",
     "privacyStatement": "",
     "description": "",
