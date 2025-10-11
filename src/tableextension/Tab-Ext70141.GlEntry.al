@@ -30,7 +30,19 @@ tableextension 70141 GlEntry extends "G/L Entry"
             FieldClass = FlowField;
             CalcFormula = lookup("G/L Account".Name where("No." = field("G/L Account No.")));
         }
-       
-
+        // FQ MASQ **START
+        field(70105; "Related PO No."; Code[20])
+        {
+            Caption = 'Related PO No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(70106; "Related SO No."; Code[20])
+        {
+            Caption = 'Related SO No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        // FQ MASQ **END
     }
 }

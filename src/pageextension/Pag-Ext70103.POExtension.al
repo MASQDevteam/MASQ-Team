@@ -47,6 +47,14 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
         {
             ShowMandatory = true;
         }
+        //FQ MASQ ** Start
+        modify("Responsibility Center")
+        {
+            ShowMandatory = false;
+            Visible = false;
+        }
+        // FQ MASQ ** END
+
         // Add changes to page layout here
         addafter(Status)
         {

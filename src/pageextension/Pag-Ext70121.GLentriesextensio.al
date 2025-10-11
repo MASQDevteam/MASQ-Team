@@ -11,6 +11,20 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
                 ToolTip = 'Displays the name of the G/L account associated with this entry.';
                 Editable = false;
             }
+            //FQ MASQ **START**
+            field("Related SO No."; Rec."Related SO No.")
+            {
+                ApplicationArea = All;
+                Caption = 'Related SO No.';
+                Editable = false;
+            }
+            field("Related PO No."; Rec."Related PO No.")
+            {
+                ApplicationArea = All;
+                Caption = 'Related PO No.';
+                Editable = false;
+            }
+            //FQ MASQ **END**
         }
         addafter("Global Dimension 1 Code")
         {
@@ -55,6 +69,9 @@ pageextension 70121 "GL entries extensio" extends "General Ledger Entries"
                 ApplicationArea = All;
             }
         }
+
+
+
     }
 
     // actions

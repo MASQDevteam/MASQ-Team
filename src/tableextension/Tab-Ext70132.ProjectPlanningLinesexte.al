@@ -260,7 +260,7 @@ tableextension 70132 "Project Planning Lines exte" extends "Job Planning Line"
         {
             FieldClass = FlowField;
             CalcFormula = sum("Sales Invoice Line".Amount where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Contract Entry No." = field("Job Contract Entry No.")));
-            Caption = 'Posted Invoiced Amount';
+            Caption = 'Posted Sales Invoice Amount';
         }
 
         field(70133; "Sales order no"; Code[20])
@@ -278,9 +278,9 @@ tableextension 70132 "Project Planning Lines exte" extends "Job Planning Line"
 
         field(70135; "Sales Cr.Memo Amount"; Decimal)
         {
-            Caption = 'Sales Cr.Memo Amount';
+            Caption = 'Posted Sales Cr.Memo Amount';
             FieldClass = FlowField;
-            CalcFormula = sum("Sales Line".Amount where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Contract Entry No." = field("Job Contract Entry No."), "Document Type" = filter('Credit Memo')));
+            CalcFormula = sum("Sales Cr.Memo Line".Amount where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Contract Entry No." = field("Job Contract Entry No.")));
             Editable = false;
         }
         field(70136; "Sales Cr.Memo No."; Code[20])
@@ -290,7 +290,13 @@ tableextension 70132 "Project Planning Lines exte" extends "Job Planning Line"
             CalcFormula = lookup("Sales Line"."Document No." where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Contract Entry No." = field("Job Contract Entry No."), "Document Type" = filter('Credit Memo')));
             Editable = false;
         }
-
+        field(70137; "Posted Sales Cr.Memo No."; Code[20])
+        {
+            Caption = 'Posted Sales Cr.Memo No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Sales Cr.Memo Line"."Document No." where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Contract Entry No." = field("Job Contract Entry No.")));
+            Editable = false;
+        }
 
         // FQ MASQ **END
     }

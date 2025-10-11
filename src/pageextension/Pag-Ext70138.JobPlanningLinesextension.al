@@ -37,16 +37,6 @@ pageextension 70138 "Job Planning Lines extension" extends "Job Planning Lines"
         addafter("Invoiced Amount (LCY)")
         {
             //FQ MASQ **Start
-            field("Posted Invoiced Amount"; Rec."Posted Invoiced Amount")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Posted Invoiced Amount field.', Comment = '%';
-            }
-            field("Sales Cr.Memo Amount"; Rec."Sales Cr.Memo Amount")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Sales Cr.Memo Amount field.', Comment = '%';
-            }
             field("Sales order no"; Rec."Sales order no")
             {
                 ApplicationArea = All;
@@ -57,10 +47,26 @@ pageextension 70138 "Job Planning Lines extension" extends "Job Planning Lines"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Posted sales invoice no field.', Comment = '%';
             }
+            field("Posted Invoiced Amount"; Rec."Posted Invoiced Amount")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Posted Invoiced Amount field.', Comment = '%';
+            }
+
             field("Sales Cr.Memo No."; Rec."Sales Cr.Memo No.")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Sales Cr.Memo No field.', Comment = '%';
+            }
+            field("Posted Sales Cr.Memo No."; Rec."Posted Sales Cr.Memo No.")
+            {
+                ApplicationArea = All;
+            }
+            field("Sales Cr.Memo Amount"; Rec."Sales Cr.Memo Amount")
+            {
+                ApplicationArea = All;
+                Caption = 'Posted Sales Cr.Memo Amount';
+                ToolTip = 'Specifies the value of the Posted Sales Cr.Memo Amount field.', Comment = '%';
             }
             //FQ MASQ **END
             field("Meg Item Type"; Rec."Meg Item Type")

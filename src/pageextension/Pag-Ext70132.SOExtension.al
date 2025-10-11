@@ -20,7 +20,9 @@ pageextension 70132 "SO Extension" extends "Sales Order"
         }
         modify("Responsibility Center")
         {
-            ShowMandatory = true;
+            ShowMandatory = false;//FQ MASQ 
+            Visible = false;//FQ MASQ 
+
         }
         modify("Assigned User ID")
         {

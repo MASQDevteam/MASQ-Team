@@ -170,10 +170,12 @@ page 70102 "Request for Payments"
                 {
                     ToolTip = 'Specifies the value of the RFP Type field.', Comment = '%';
                 }
-                field("Responsibility Center"; Rec."Responsibility Center")
-                {
-                    ToolTip = 'Specifies the value of the Responsibility Center field.', Comment = '%';
-                }
+                //FQ MASQ ** START
+                /*  field("Responsibility Center"; Rec."Responsibility Center")
+                 {
+                     ToolTip = 'Specifies the value of the Responsibility Center field.', Comment = '%';
+                 } */
+                //FQ MASQ ** END
             }
         }
         area(factboxes)

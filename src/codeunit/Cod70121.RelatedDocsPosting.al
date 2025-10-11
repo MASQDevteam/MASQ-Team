@@ -14,6 +14,13 @@ codeunit 70121 "Related Docs Posting"
         CustLedgerEntry.Validate("Related SO No.", GenJournalLine."Related SO No.");
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", OnBeforeInsertGlEntry, '', true, true)]
+    local procedure OnBeforeInsertGlEntrys(var GenJnlLine: Record "Gen. Journal Line"; var GLEntry: Record "G/L Entry"; var IsHandled: Boolean)
+    var
+    begin
+        GLEntry.Validate("Related PO No.", GenJnlLine."Related PO No.");
+        GLEntry.Validate("Related SO No.", GenJnlLine."Related SO No.");
+    end;
 
 }
 //FQ MASQ **END
