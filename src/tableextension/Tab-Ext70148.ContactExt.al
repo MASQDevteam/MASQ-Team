@@ -2,7 +2,7 @@ tableextension 70148 "Contact Ext" extends Contact
 {
     fields
     {
-        field(70108; Department; Code[20])
+        field(70115; Department; Code[20])
         {
             Caption = 'Department';
             DataClassification = ToBeClassified;
