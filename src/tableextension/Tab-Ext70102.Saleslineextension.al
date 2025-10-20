@@ -477,6 +477,7 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
 
     trigger OnModify()
     var
+        PurchLine: Record "Purchase Line";
     begin
 
         IF rec."MASQ Purchase Order No." = '' then begin//transfer fields after validating fields that has impact on other fields
@@ -520,7 +521,6 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
 
         IF (Rec."Sent to PO" = false) and (xRec."Sent to PO") then//added on 02/04/2025
             Rec."Sent to PO" := xRec."Sent to PO";
-
     end;
 
     trigger OnDelete()
@@ -538,7 +538,23 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
                         Error(Text000, "MASQ Purchase Order No.", "MASQ Purchase Order Line No.");
 
     end;
+    //FQ MASQ ** Start
+    trigger OnAfterInsert()
+    var
+        PurchLine: Record "Purchase Line";
+    begin
+        // Ensure reciprocal linkage for the exact linked PO line, if any
+        if (Rec."MASQ Purchase Order No." <> '') and (Rec."MASQ Purchase Order Line No." <> 0) then
+            if PurchLine.Get(PurchLine."Document Type"::Order, Rec."MASQ Purchase Order No.", Rec."MASQ Purchase Order Line No.") then begin
+                if (PurchLine."MASQ Sales Order No." = Rec."Document No.") and (PurchLine."MASQ Sales Order Line No." <> Rec."Line No.") then begin
+                    PurchLine."MASQ Sales Order Line No." := Rec."Line No.";
+                    PurchLine.Modify();
+                end;
+            end;
+    end;
 
+
+    //FQ MASQ ** Start
     var
         Text000: Label 'You cannot delete the order line because it is associated with purchase order %1 line %2.';
         Text002: Label 'You can''t change %1 because the order line is associated with purchase order %2 line %3.', Comment = '%1=field name, %2=Document No., %3=Line No.';

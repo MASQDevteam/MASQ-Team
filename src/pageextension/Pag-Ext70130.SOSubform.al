@@ -483,14 +483,11 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
                 Caption = 'Move Up';
                 ApplicationArea = All;
                 Image = MoveUp;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                ToolTip = 'Move current line up.';
+                ToolTip = 'Move up line fixeble.';
 
                 trigger OnAction()
                 begin
-                    MoveLine(-1);
+                    HandleMoveAction(-1);//FQ MASQ
                 end;
             }
             action("Move Down")
@@ -498,14 +495,11 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
                 Caption = 'Move Down';
                 ApplicationArea = All;
                 Image = MoveDown;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                ToolTip = 'Move current line down.';
+                ToolTip = 'Move Down line fixeble.';
 
                 trigger OnAction()
                 begin
-                    MoveLine(1);
+                    HandleMoveAction(1);//FQ MASQ
                 end;
             }
         }
@@ -626,77 +620,196 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
     end;
     //NB MASQ End
 
-    procedure MoveLine(Direction: Integer)
+    //FQ MASQ ** START
+    local procedure HandleMoveAction(Direction: Integer)
     var
-        SalesLine: Record "Sales Line";
-        SwapLine: Record "Sales Line";
-        TempSalesLine: Record "Sales Line";
-        TempSwapLine: Record "Sales Line";
-        TempLineNo: Integer;
-        FilterOperator: Text;
+        MenuChoice: Integer;
+        Steps: Integer;
+        TargetPos: Integer;
+        CountLines: Integer;
+        Lines: Record "Sales Line";
+        OptionsTxt: Text;
+        i: Integer;
     begin
         if Direction = 0 then
             exit;
 
-        SalesLine := Rec;
-        SalesLine.LockTable();
+        // Determine total lines for the current document
+        Lines.Reset();
+        Lines.SetRange("Document Type", Rec."Document Type");
+        Lines.SetRange("Document No.", Rec."Document No.");
+        if Lines.FindSet() then begin
+            repeat
+                CountLines += 1;
+            until Lines.Next() = 0;
+        end;
 
-        SwapLine.Reset();
-        SwapLine.SetRange("Document Type", SalesLine."Document Type");
-        SwapLine.SetRange("Document No.", SalesLine."Document No.");
+        MenuChoice := StrMenu('Move by 1,Move by 3,Move by 5,Move by 10,Move to position,Cancel', 1);
+        case MenuChoice of
+            1:
+                MoveLineFlexible(Direction, 1, 0);
+            2:
+                MoveLineFlexible(Direction, 3, 0);
+            3:
+                MoveLineFlexible(Direction, 5, 0);
+            4:
+                MoveLineFlexible(Direction, 10, 0);
+            5:
+                begin
+                    if CountLines <= 1 then
+                        exit;
 
-        if Direction = -1 then
-            FilterOperator := '<%1'
-        else
-            FilterOperator := '>%1';
-
-        SwapLine.SetFilter("Line No.", StrSubstNo(FilterOperator, SalesLine."Line No."));
-        // SwapLine.SetFilter(Type, '<>%1', SwapLine.Type::" "); // Optional
-
-        if Direction = -1 then begin
-            if SwapLine.FindLast() then begin
-                // Copy data
-                TempSalesLine := SalesLine;
-                TempSwapLine := SwapLine;
-
-                // Swap line numbers
-                TempLineNo := TempSalesLine."Line No.";
-                TempSalesLine."Line No." := TempSwapLine."Line No.";
-                TempSwapLine."Line No." := TempLineNo;
-
-                // Delete originals
-                SalesLine.Delete();
-                SwapLine.Delete();
-
-                // Insert new
-                TempSwapLine.Insert();
-                TempSalesLine.Insert();
-
-                CurrPage.Update(false);
-            end;
-        end else begin
-            if SwapLine.FindFirst() then begin
-                // Copy data
-                TempSalesLine := SalesLine;
-                TempSwapLine := SwapLine;
-
-                // Swap line numbers
-                TempLineNo := TempSalesLine."Line No.";
-                TempSalesLine."Line No." := TempSwapLine."Line No.";
-                TempSwapLine."Line No." := TempLineNo;
-
-                // Delete originals
-                SalesLine.Delete();
-                SwapLine.Delete();
-
-                // Insert new
-                TempSwapLine.Insert();
-                TempSalesLine.Insert();
-
-                CurrPage.Update(false);
-            end;
+                    OptionsTxt := '';
+                    i := 0;
+                    Lines.Reset();
+                    Lines.SetCurrentKey("Document Type", "Document No.", "Line No.");
+                    Lines.SetRange("Document Type", Rec."Document Type");
+                    Lines.SetRange("Document No.", Rec."Document No.");
+                    if Lines.FindSet() then
+                        repeat
+                            i += 1;
+                            if i = 1 then
+                                OptionsTxt := StrSubstNo('%1 - %2 - %3', Format(i), Lines."No.", Format(Lines."Meg Item Type"))
+                            else
+                                OptionsTxt := StrSubstNo('%1,%2', OptionsTxt, StrSubstNo('%1 - %2 - %3', Format(i), Lines."No.", Format(Lines."Meg Item Type")));
+                        until Lines.Next() = 0;
+                    TargetPos := StrMenu(OptionsTxt, 1);
+                    if TargetPos > 0 then
+                        MoveLineFlexible(Direction, 0, TargetPos);
+                end;
+            else
+                exit;
         end;
     end;
+
+    procedure MoveLineFlexible(Direction: Integer; Steps: Integer; TargetPos: Integer)
+    var
+        Lines: Record "Sales Line";
+        LineToMoveNo: Integer;
+        LineNos: List of [Integer];
+        NewOrder: List of [Integer];
+        i: Integer;
+        currentIndex: Integer;
+        targetIndex: Integer;
+        count: Integer;
+        TempBase: Integer;
+        NewLineNo: Integer;
+        WorkLine: Record "Sales Line";
+        NewLine: Record "Sales Line";
+        TempLineNo: Integer;
+    begin
+        if Rec."Document No." = '' then
+            exit;
+
+        Clear(LineNos);
+        Lines.Reset();
+        Lines.SetCurrentKey("Document Type", "Document No.", "Line No.");
+        Lines.SetRange("Document Type", Rec."Document Type");
+        Lines.SetRange("Document No.", Rec."Document No.");
+        if not Lines.FindSet() then
+            exit;
+
+        repeat
+            LineNos.Add(Lines."Line No.");
+        until Lines.Next() = 0;
+
+        count := LineNos.Count();
+        if count <= 1 then
+            exit;
+
+        LineToMoveNo := Rec."Line No.";
+        currentIndex := -1;
+        for i := 1 to count do begin
+            if LineNos.Get(i) = LineToMoveNo then begin
+                currentIndex := i - 1; // zero-based
+                break;
+            end;
+        end;
+        if currentIndex = -1 then
+            exit;
+
+        if TargetPos > 0 then begin
+            targetIndex := TargetPos - 1; // convert to zero-based
+        end else begin
+            if Steps <= 0 then
+                Steps := 1;
+            targetIndex := currentIndex + (Direction * Steps);
+        end;
+
+        if targetIndex < 0 then
+            targetIndex := 0;
+        if targetIndex > (count - 1) then
+            targetIndex := count - 1;
+
+        if targetIndex = currentIndex then
+            exit;
+
+        // Build new ordering list
+        NewOrder := LineNos; // copy
+        // Remove current line no from its position
+        NewOrder.RemoveAt(currentIndex + 1);
+        // Insert at new position
+        NewOrder.Insert(targetIndex + 1, LineToMoveNo);
+
+        // Lock and re-create with temporary high numbers to avoid key collisions (no rename)
+        Lines.LockTable();
+        TempBase := 500000000; // large offset within Integer range
+
+        // Phase A: Insert reordered copies with temporary line nos
+        for i := 1 to count do begin
+            TempLineNo := NewOrder.Get(i);
+            WorkLine.Reset();
+            WorkLine.SetRange("Document Type", Rec."Document Type");
+            WorkLine.SetRange("Document No.", Rec."Document No.");
+            WorkLine.SetRange("Line No.", TempLineNo);
+            if WorkLine.FindFirst() then begin
+                Clear(NewLine);
+                NewLine.Init();
+                NewLine.TransferFields(WorkLine, true);
+                NewLine."Line No." := TempBase + (i * 10000);
+                NewLine.Insert(true);
+            end;
+        end;
+
+        // Phase B: Delete originals (those below TempBase)
+        WorkLine.Reset();
+        WorkLine.SetRange("Document Type", Rec."Document Type");
+        WorkLine.SetRange("Document No.", Rec."Document No.");
+        WorkLine.SetFilter("Line No.", '<%1', TempBase);
+        if WorkLine.FindSet(true) then
+            repeat
+                WorkLine.Delete();
+            until WorkLine.Next() = 0;
+
+        // Phase C: Create final 10000-spaced copies, then delete temporary ones
+        // Insert finals
+        for i := 1 to count do begin
+            WorkLine.Reset();
+            WorkLine.SetRange("Document Type", Rec."Document Type");
+            WorkLine.SetRange("Document No.", Rec."Document No.");
+            WorkLine.SetRange("Line No.", TempBase + (i * 10000));
+            if WorkLine.FindFirst() then begin
+                Clear(NewLine);
+                NewLine.Init();
+                NewLine.TransferFields(WorkLine, true);
+                NewLine."Line No." := i * 10000;
+                NewLine.Insert(true);
+            end;
+        end;
+
+        // Delete temporaries
+        WorkLine.Reset();
+        WorkLine.SetRange("Document Type", Rec."Document Type");
+        WorkLine.SetRange("Document No.", Rec."Document No.");
+        WorkLine.SetFilter("Line No.", '>=%1', TempBase);
+        if WorkLine.FindSet(true) then
+            repeat
+                WorkLine.Delete();
+            until WorkLine.Next() = 0;
+
+        CurrPage.Update(false);
+    end;
+    //FQ MASQ ** END
 
     var
         Text002: Label 'You can''t change %1 because the order line is associated with purchase order %2 line %3.', Comment = '%1=field name, %2=Document No., %3=Line No.';

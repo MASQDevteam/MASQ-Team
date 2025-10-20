@@ -28,6 +28,7 @@ codeunit 70101 "MASQ Subs & Functions"
     var
         SalesLine: Record "Sales Line";
         txt001: Label 'Please do Fill the item type field in the lines before posting this Document';
+        txt002: Label 'Please check and confirm the posting date before proceeding with shipment posting.\\Posting Date: %1\\Do you want to continue?';
     begin
         IF SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo" then begin
             Clear(SalesLine);
@@ -39,6 +40,12 @@ codeunit 70101 "MASQ Subs & Functions"
                 Error(txt001);
         end;
         if SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
+            //FQ MASQ **START
+            // Display alert to check and confirm posting date before shipment posting
+            if not Confirm(StrSubstNo(txt002, SalesHeader."Posting Date")) then
+                Error('Posting cancelled by user.');
+            //FQ MASQ **END
+
             if SalesHeader."Shipment Date" <> SalesHeader."Posting Date" then
                 if Confirm('The Shipment Date is not equal to the Posting Date, do you want to update the shipment date?') = true then begin
                     SalesHeader.Validate("Shipment Date", SalesHeader."Posting Date");

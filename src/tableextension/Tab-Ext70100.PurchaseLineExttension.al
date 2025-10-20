@@ -861,6 +861,7 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
 
     trigger OnModify()
     var
+        SalesLine: Record "Sales Line";
     begin
         IF rec."BL/AWB ID" = '' then begin//transfer fields after validating fields that has impact on other fields
             rec."BL/AWB ID" := xRec."BL/AWB ID";
@@ -971,9 +972,6 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
 
         IF Rec."Truck Details Line No." = 0 then
             Rec."Truck Details Line No." := Xrec."Truck Details Line No.";
-
-
-
     end;
 
     trigger OnDelete()
@@ -1002,6 +1000,21 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
         //NB MASQ End
 
     end;
+    //FQ MASQ ** Start
+    trigger OnAfterInsert()
+    var
+        SalesLine: Record "Sales Line";
+    begin
+        // Ensure reciprocal linkage for the exact linked SO line, if any
+        if (Rec."MASQ Sales Order No." <> '') and (Rec."MASQ Sales Order Line No." <> 0) then
+            if SalesLine.Get(SalesLine."Document Type"::Order, Rec."MASQ Sales Order No.", Rec."MASQ Sales Order Line No.") then begin
+                if (SalesLine."MASQ Purchase Order No." = Rec."Document No.") and (SalesLine."MASQ Purchase Order Line No." <> Rec."Line No.") then begin
+                    SalesLine."MASQ Purchase Order Line No." := Rec."Line No.";
+                    SalesLine.Modify();
+                end;
+            end;
+    end;
+    //FQ MASQ ** End
 
     //AN 8/1/2025
     trigger OnAfterModify()

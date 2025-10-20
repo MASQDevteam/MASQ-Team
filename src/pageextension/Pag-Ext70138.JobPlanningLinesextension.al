@@ -42,6 +42,17 @@ pageextension 70138 "Job Planning Lines extension" extends "Job Planning Lines"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Sales order no field.', Comment = '%';
             }
+            field("Purchase Order No."; Rec."Purchase Order No.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Purchase Order No. field.', Comment = '%';
+            }
+
+            field("PPI NO."; Rec."PPI NO.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the PPI NO. field.', Comment = '%';
+            }
             field("Posted sales invoice no"; Rec."Posted sales invoice no")
             {
                 ApplicationArea = All;
