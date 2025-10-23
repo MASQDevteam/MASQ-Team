@@ -270,10 +270,22 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
             trigger OnAfterValidate()
             var
                 Item: Record Item;
+                JobPlanningLineInvoice: Record "Job Planning Line Invoice";
             begin
                 if Item.Get("No.") then begin
                     Item.CalcFields(Inventory);
                     Rec.Validate("Available Inventory", Item.Inventory);
+                end;
+
+                JobPlanningLineInvoice.Reset();
+                JobPlanningLineInvoice.SetRange("Job No.", Rec."Job No.");
+                JobPlanningLineInvoice.SetRange("Job Task No.", Rec."Job Task No.");
+                JobPlanningLineInvoice.SetRange("Job Planning Line No.", Rec."Job Planning Line No.");
+                JobPlanningLineInvoice.SetRange("Document Type", JobPlanningLineInvoice."Document Type"::Order);
+                JobPlanningLineInvoice.SetRange("Document No.", Rec."Document No.");
+                if JobPlanningLineInvoice.FindFirst() then begin
+                    JobPlanningLineInvoice.Validate("Quantity Transferred", Rec.Quantity);
+                    JobPlanningLineInvoice.Modify();
                 end;
             end;
         }
