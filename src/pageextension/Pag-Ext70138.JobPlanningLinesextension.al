@@ -58,6 +58,12 @@ pageextension 70138 "Job Planning Lines extension" extends "Job Planning Lines"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Posted sales invoice no field.', Comment = '%';
             }
+            field("PSS NO."; Rec."PSS NO.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Posted sales Shipment no field.', Comment = '%';
+            }
+
             field("Posted Invoiced Amount"; Rec."Posted Invoiced Amount")
             {
                 ApplicationArea = All;

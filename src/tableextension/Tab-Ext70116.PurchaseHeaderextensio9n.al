@@ -278,6 +278,12 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
         {
             DataClassification = ToBeClassified;
         }
+        field(70132; "Custom Status"; Enum "Custom Purchase Status")
+        {
+            Caption = 'Custom Status';
+            Editable = false;
+            DataClassification = CustomerContent;
+        }
         /*  modify("Assigned User ID")
          {
              trigger OnAfterValidate()
@@ -305,17 +311,44 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
     {
         // Add changes to field groups here
     }
+    //FQ MASQ** START
+    trigger OnAfterInsert()
+    begin
+        InitializeCustomStatus();
+    end;
 
-    // //AN 03/05/25 
-    // trigger OnInsert()
-    // var
-    //     myInt: Integer;
-    // begin
-    //     if Rec."Document Type" = Rec."Document Type"::Order then
-    //         MASQEmail.SendEmailPurchOrder(Rec);
-    //     if Rec."Document Type" = Rec."Document Type"::"Credit Memo" then
-    //         MASQEmail.SendEmailPurchCrMemo(Rec);
-    // end;
+    trigger OnAfterModify()
+    begin
+        // Update custom status when standard Status field changes
+        if Rec.Status <> xRec.Status then
+            UpdateStatusBasedOnDocumentStatus();
+    end;
+
+    local procedure InitializeCustomStatus()
+    begin
+        case Status of
+            Status::Open:
+                "Custom Status" := "Custom Status"::Open;
+            Status::Released:
+                "Custom Status" := "Custom Status"::Released;
+            else
+                "Custom Status" := "Custom Status"::Open;
+        end;
+    end;
+
+    local procedure UpdateStatusBasedOnDocumentStatus()
+    begin
+        // Only update if we're in a basic state (Open/Released) without posting activity
+        if "Custom Status" in ["Custom Status"::Open, "Custom Status"::Released,
+                                "Custom Status"::"Pending Approval", "Custom Status"::"Pending Prepayment"] then
+            case Status of
+                Status::Open:
+                    "Custom Status" := "Custom Status"::Open;
+                Status::Released:
+                    "Custom Status" := "Custom Status"::Released;
+            end;
+    end;
+    //FQ MASQ **END**
     procedure CalculateTotalWithCharge()
     var
     begin
@@ -323,6 +356,7 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
         TotalWithCharges := ("Amount Including VAT" + Rec."Freight Charges Value" + Rec."Documentation Charges Value" + Rec."Other Charges Value");//FQ MASQ  
         Modify();
     end;
+
 
     var
         MASQEmail: Codeunit "MASQ Email";

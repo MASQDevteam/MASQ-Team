@@ -106,6 +106,23 @@ pageextension 70132 "SO Extension" extends "Sales Order"
             }
 
         }
+
+        addafter(Status)
+        {
+            field("Custom Status"; Rec."Custom Status")
+            {
+                ApplicationArea = All;
+                Editable = false;
+                ToolTip = 'Shows the custom status based on shipping and invoicing progress';
+                StyleExpr = CustomStatusStyle;
+
+                trigger OnDrillDown()
+                begin
+                    ShowStatusDetails();
+                end;
+            }
+        }
+
         // FQ MASQ **END
         // Add changes to page layout here
         addafter("Attached Documents")
@@ -225,6 +242,72 @@ pageextension 70132 "SO Extension" extends "Sales Order"
         }
     }
 
+
+    //FQ MASQ **START
+
+    trigger OnAfterGetRecord()
+    begin
+        UpdateStatusStyle();
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        UpdateStatusStyle();
+    end;
+
+    local procedure UpdateStatusStyle()
+    var
+        CustomStatusStyleMgmt: Codeunit "Custom Status Style";
+    begin
+        CustomStatusStyle := CustomStatusStyleMgmt.GetStyleForSalesStatus(Rec."Custom Status");
+    end;
+
+    local procedure ShowStatusDetails()
+    var
+        SalesLine: Record "Sales Line";
+        StatusDetails: Text;
+        TotalQty: Decimal;
+        ShippedQty: Decimal;
+        InvoicedQty: Decimal;
+    begin
+        SalesLine.SetRange("Document Type", Rec."Document Type");
+        SalesLine.SetRange("Document No.", Rec."No.");
+        SalesLine.SetFilter(Type, '<>%1', SalesLine.Type::" ");
+
+        if SalesLine.FindSet() then
+            repeat
+                TotalQty += SalesLine.Quantity;
+                ShippedQty += SalesLine."Quantity Shipped";
+                InvoicedQty += SalesLine."Quantity Invoiced";
+            until SalesLine.Next() = 0;
+
+        StatusDetails := StrSubstNo(
+            'Status Details:\' +
+            'Total Quantity: %1\' +
+            'Quantity Shipped: %2 (%3%)\' +
+            'Quantity Invoiced: %4 (%5%)',
+            TotalQty,
+            ShippedQty,
+            GetPercentage(ShippedQty, TotalQty),
+            InvoicedQty,
+            GetPercentage(InvoicedQty, TotalQty));
+
+        Message(StatusDetails);
+    end;
+
+    local procedure GetPercentage(PartialQty: Decimal; TotalQty: Decimal): Text
+    var
+        Percentage: Decimal;
+    begin
+        if TotalQty = 0 then
+            exit('0');
+
+        Percentage := Round((PartialQty / TotalQty) * 100, 1);
+        exit(Format(Percentage, 0, '<Precision,2:2><Standard Format,0>'));
+    end;
+    //FQ MASQ **END
+
     var
         myInt: Integer;
+        CustomStatusStyle: Text; //FQ MASQ
 }

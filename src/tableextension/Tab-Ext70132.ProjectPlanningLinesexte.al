@@ -311,6 +311,14 @@ tableextension 70132 "Project Planning Lines exte" extends "Job Planning Line"
             CalcFormula = lookup("Purch. Inv. Line"."Document No." where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Planning Line No." = field("Line No.")));
             Editable = false;
         }
+        field(70140; "PSS NO."; Code[20])
+        {
+            Caption = 'Posted Sales Shipment No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Sales Shipment Line"."Document No." where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Contract Entry No." = field("Job Contract Entry No.")));
+            Editable = false;
+        }
+
         // FQ MASQ **END
     }
 
@@ -357,25 +365,6 @@ tableextension 70132 "Project Planning Lines exte" extends "Job Planning Line"
             Rec."Custom Cost" := 0;
         end;
     end;
-
-    local procedure GetPurchaseOrderFromInvoice(): Code[20]
-    var
-        PurchInvHeader: Record "Purch. Inv. Header";
-        SalesLine: Record "Sales Line";
-    begin
-        // First try to get from Sales Line
-        if SalesLine.Get(SalesLine."Document Type"::Order, SalesLine."Document No.", SalesLine."Line No.") then
-            if SalesLine."MASQ Purchase Order No." <> '' then
-                exit(SalesLine."MASQ Purchase Order No.");
-
-        // If not found, try to get from Posted Purchase Invoice
-        if PurchInvHeader.Get(Rec."PPI NO.") then
-            exit(PurchInvHeader."Order No.");
-
-        exit('');
-    end;
-
-
 
     var
         myInt: Integer;

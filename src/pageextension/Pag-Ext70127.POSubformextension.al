@@ -1159,131 +1159,97 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
 
     procedure MoveLineFlexible(Direction: Integer; Steps: Integer; TargetPos: Integer)
     var
-        Lines: Record "Purchase Line";
-        LineToMoveNo: Integer;
+        PurchLines: Record "Purchase Line";
+        TempPurchLines: Record "Purchase Line" temporary;
         LineNos: List of [Integer];
-        NewOrder: List of [Integer];
-        i: Integer;
-        currentIndex: Integer;
-        targetIndex: Integer;
-        count: Integer;
-        TempBase: Integer;
-        NewLineNo: Integer;
-        WorkLine: Record "Purchase Line";
-        NewLine: Record "Purchase Line";
-        TempLineNo: Integer;
-        OldToNewMap: Dictionary of [Integer, Integer];
-        SalesLineToSync: Record "Sales Line";
+        LineToMoveNo: Integer;
+        CurrentIndex, TargetIndex, Count, i : Integer;
+        LineNoStep: Integer;
     begin
-        // Guard clauses
+        //  Validate current record
         if Rec."Document No." = '' then
             exit;
 
-        Clear(LineNos);
-        Lines.Reset();
-        Lines.SetCurrentKey("Document Type", "Document No.", "Line No.");
-        Lines.SetRange("Document Type", Rec."Document Type");
-        Lines.SetRange("Document No.", Rec."Document No.");
-        if not Lines.FindSet() then
+        //  Collect all line numbers for this document
+        PurchLines.Reset();
+        PurchLines.SetRange("Document Type", Rec."Document Type");
+        PurchLines.SetRange("Document No.", Rec."Document No.");
+        PurchLines.SetCurrentKey("Line No.");
+        if not PurchLines.FindSet() then
             exit;
 
         repeat
-            LineNos.Add(Lines."Line No.");
-        until Lines.Next() = 0;
+            LineNos.Add(PurchLines."Line No.");
+        until PurchLines.Next() = 0;
 
-        count := LineNos.Count();
-        if count <= 1 then
+        Count := LineNos.Count();
+        if Count <= 1 then
             exit;
 
+        //  Identify current line position
         LineToMoveNo := Rec."Line No.";
-        currentIndex := -1;
-        for i := 1 to count do begin
+        for i := 1 to Count do
             if LineNos.Get(i) = LineToMoveNo then begin
-                currentIndex := i - 1; // zero-based
+                CurrentIndex := i;
                 break;
             end;
-        end;
-        if currentIndex = -1 then
+
+        if CurrentIndex = 0 then
             exit;
 
-        if TargetPos > 0 then begin
-            targetIndex := TargetPos - 1; // convert to zero-based
-        end else begin
-            if Steps <= 0 then
+        // 🧩 4. Compute target position
+        if TargetPos > 0 then
+            TargetIndex := TargetPos
+        else begin
+            if Steps = 0 then
                 Steps := 1;
-            targetIndex := currentIndex + (Direction * Steps);
+            TargetIndex := CurrentIndex + (Direction * Steps);
         end;
 
-        if targetIndex < 0 then
-            targetIndex := 0;
-        if targetIndex > (count - 1) then
-            targetIndex := count - 1;
-
-        if targetIndex = currentIndex then
+        if TargetIndex < 1 then
+            TargetIndex := 1;
+        if TargetIndex > Count then
+            TargetIndex := Count;
+        if TargetIndex = CurrentIndex then
             exit;
 
-        // Build new ordering list
-        NewOrder := LineNos; // copy
-        // Remove current line no from its position
-        NewOrder.RemoveAt(currentIndex + 1);
-        // Insert at new position
-        NewOrder.Insert(targetIndex + 1, LineToMoveNo);
+        //  Rearrange order in memory
+        LineNos.RemoveAt(CurrentIndex);
+        LineNos.Insert(TargetIndex, LineToMoveNo);
 
-        // Lock and re-create with temporary high numbers to avoid key collisions (no rename)
-        Lines.LockTable();
-        TempBase := 500000000; // large offset within Integer range
+        //  Use temporary table to store reordered lines
+        PurchLines.LockTable();
+        LineNoStep := 10000;
 
-        // Phase A: Insert reordered copies with temporary line nos
-        for i := 1 to count do begin
-            TempLineNo := NewOrder.Get(i);
-            WorkLine.Reset();
-            WorkLine.SetRange("Document Type", Rec."Document Type");
-            WorkLine.SetRange("Document No.", Rec."Document No.");
-            WorkLine.SetRange("Line No.", TempLineNo);
-            if WorkLine.FindFirst() then begin
-                Clear(NewLine);
-                NewLine.Init();
-                NewLine.TransferFields(WorkLine, true);
-                NewLine."Line No." := TempBase + (i * 10000);
-                NewLine.Insert(true);
+        for i := 1 to Count do begin
+            PurchLines.Reset();
+            PurchLines.SetRange("Document Type", Rec."Document Type");
+            PurchLines.SetRange("Document No.", Rec."Document No.");
+            PurchLines.SetRange("Line No.", LineNos.Get(i));
+            if PurchLines.FindFirst() then begin
+                TempPurchLines.Init();
+                TempPurchLines.TransferFields(PurchLines, true);
+                TempPurchLines."Line No." := i * LineNoStep;
+                TempPurchLines.Insert();
             end;
         end;
 
-        // Phase B: Delete originals (those below TempBase)
-        WorkLine.Reset();
-        WorkLine.SetRange("Document Type", Rec."Document Type");
-        WorkLine.SetRange("Document No.", Rec."Document No.");
-        WorkLine.SetFilter("Line No.", '<%1', TempBase);
-        if WorkLine.FindSet(true) then
+        // Delete all original lines for this document
+        PurchLines.Reset();
+        PurchLines.SetRange("Document Type", Rec."Document Type");
+        PurchLines.SetRange("Document No.", Rec."Document No.");
+        if PurchLines.FindSet(true) then
             repeat
-                WorkLine.Delete();
-            until WorkLine.Next() = 0;
+                PurchLines.Delete();
+            until PurchLines.Next() = 0;
 
-        // Phase C: Create final 10000-spaced copies, then delete temporary ones
-        // Insert finals
-        for i := 1 to count do begin
-            WorkLine.Reset();
-            WorkLine.SetRange("Document Type", Rec."Document Type");
-            WorkLine.SetRange("Document No.", Rec."Document No.");
-            WorkLine.SetRange("Line No.", TempBase + (i * 10000));
-            if WorkLine.FindFirst() then begin
-                Clear(NewLine);
-                NewLine.Init();
-                NewLine.TransferFields(WorkLine, true);
-                NewLine."Line No." := i * 10000;
-                NewLine.Insert(true);
-            end;
-        end;
-
-        // Delete temporaries
-        WorkLine.Reset();
-        WorkLine.SetRange("Document Type", Rec."Document Type");
-        WorkLine.SetRange("Document No.", Rec."Document No.");
-        WorkLine.SetFilter("Line No.", '>=%1', TempBase);
-        if WorkLine.FindSet(true) then
+        //  Reinsert from temporary in correct order
+        if TempPurchLines.FindSet() then
             repeat
-                WorkLine.Delete();
-            until WorkLine.Next() = 0;
+                PurchLines.Init();
+                PurchLines.TransferFields(TempPurchLines, true);
+                PurchLines.Insert();
+            until TempPurchLines.Next() = 0;
 
         CurrPage.Update(false);
     end;

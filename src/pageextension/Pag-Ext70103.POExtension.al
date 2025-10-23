@@ -53,6 +53,21 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
             ShowMandatory = false;
             Visible = false;
         }
+        addafter(Status)
+        {
+            field("Custom Status"; Rec."Custom Status")
+            {
+                ApplicationArea = All;
+                Editable = false;
+                ToolTip = 'Shows the custom status based on receiving and invoicing progress';
+                StyleExpr = CustomStatusStyle;
+
+                trigger OnDrillDown()
+                begin
+                    ShowStatusDetails();
+                end;
+            }
+        }
         // FQ MASQ ** END
 
         // Add changes to page layout here
@@ -339,9 +354,73 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
             until ShipQuote.Next() = 0;
 
         Rec."Shipping Quotation No." := ResultList;
+
+        UpdateStatusStyle();
     end;
 
 
+    //FQ MASQ **START
+
+    trigger OnAfterGetCurrRecord()
     var
         myInt: Integer;
+    begin
+        UpdateStatusStyle();
+    end;
+
+    local procedure UpdateStatusStyle()
+    var
+        CustomStatusStyleMgmt: Codeunit "Custom Status Style";
+    begin
+        CustomStatusStyle := CustomStatusStyleMgmt.GetStyleForPurchaseStatus(Rec."Custom Status");
+    end;
+
+    local procedure ShowStatusDetails()
+    var
+        PurchLine: Record "Purchase Line";
+        StatusDetails: Text;
+        TotalQty: Decimal;
+        ReceivedQty: Decimal;
+        InvoicedQty: Decimal;
+    begin
+        PurchLine.SetRange("Document Type", Rec."Document Type");
+        PurchLine.SetRange("Document No.", Rec."No.");
+        PurchLine.SetFilter(Type, '<>%1', PurchLine.Type::" ");
+
+        if PurchLine.FindSet() then
+            repeat
+                TotalQty += PurchLine.Quantity;
+                ReceivedQty += PurchLine."Quantity Received";
+                InvoicedQty += PurchLine."Quantity Invoiced";
+            until PurchLine.Next() = 0;
+
+        StatusDetails := StrSubstNo(
+            'Status Details:\' +
+            'Total Quantity: %1\' +
+            'Quantity Received: %2 (%3%)\' +
+            'Quantity Invoiced: %4 (%5%)',
+            TotalQty,
+            ReceivedQty,
+            GetPercentage(ReceivedQty, TotalQty),
+            InvoicedQty,
+            GetPercentage(InvoicedQty, TotalQty));
+
+        Message(StatusDetails);
+    end;
+
+    local procedure GetPercentage(PartialQty: Decimal; TotalQty: Decimal): Text
+    var
+        Percentage: Decimal;
+    begin
+        if TotalQty = 0 then
+            exit('0');
+
+        Percentage := Round((PartialQty / TotalQty) * 100, 1);
+        exit(Format(Percentage, 0, '<Precision,2:2><Standard Format,0>'));
+    end;
+
+    //FQ MASQ **END
+    var
+        myInt: Integer;
+        CustomStatusStyle: Text; //FQ MASQ
 }
