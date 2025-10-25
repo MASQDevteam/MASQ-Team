@@ -55,7 +55,32 @@ table 70139 "Payment Line"
         field(5; "Payment %"; Decimal)
         {
             Caption = 'Payment %';
-            Editable = false;
+            trigger OnValidate()
+            var
+                PaymentLine: Record "Payment Line";
+                TotalPercent: Decimal;
+            begin
+                // Rule 1: Single line cannot exceed 100%
+                if "Payment %" > 100 then
+                    Error('Payment % cannot be more than 100.');
+
+                // Rule 2: Total % for all lines under same Request No. cannot exceed 100%
+                PaymentLine.Reset();
+                PaymentLine.SetRange("Number", "Number");
+                if PaymentLine.FindSet() then
+                    repeat
+                        if PaymentLine."Line No" <> Rec."Line No" then
+                            TotalPercent += PaymentLine."Payment %";
+                    until PaymentLine.Next() = 0;
+
+                TotalPercent += "Payment %"; // include current line
+
+                if TotalPercent > 100 then
+                    Error('Total Payment % for all lines cannot exceed 100%. Current total is %1%.', TotalPercent);
+
+                // calculate value based on PO Value
+                "Payment Value" := Round(("Payment %" / 100) * "PO Value", 0.01);
+            end;
         }
         field(6; "Payment Date"; Date)
         {
