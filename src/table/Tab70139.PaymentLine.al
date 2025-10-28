@@ -58,28 +58,45 @@ table 70139 "Payment Line"
             trigger OnValidate()
             var
                 PaymentLine: Record "Payment Line";
-                TotalPercent: Decimal;
+                TotalPercentExcl: Decimal;
+                TotalPaymentValueExcl: Decimal;
+                CalculatedValue: Decimal;
             begin
-                // Rule 1: Single line cannot exceed 100%
+                // Single line cannot exceed 100%
                 if "Payment %" > 100 then
                     Error('Payment % cannot be more than 100.');
 
-                // Rule 2: Total % for all lines under same Request No. cannot exceed 100%
+                // Calculate provisional payment value (rounded to 2 decimals)
+                CalculatedValue := Round(("PO Value" * "Payment %") / 100, 0.01);
+
+                // Compute totals excluding current line
+                TotalPercentExcl := 0;
+                TotalPaymentValueExcl := 0;
                 PaymentLine.Reset();
                 PaymentLine.SetRange("Number", "Number");
                 if PaymentLine.FindSet() then
                     repeat
-                        if PaymentLine."Line No" <> Rec."Line No" then
-                            TotalPercent += PaymentLine."Payment %";
+                        if PaymentLine."Line No" <> "Line No" then begin
+                            TotalPercentExcl += PaymentLine."Payment %";
+                            TotalPaymentValueExcl += PaymentLine."Payment Value";
+                        end;
                     until PaymentLine.Next() = 0;
 
-                TotalPercent += "Payment %"; // include current line
+                // Check total percent will not exceed 100
+                if (TotalPercentExcl + "Payment %") > 100 then
+                    Error('Total Payment % for all lines cannot exceed 100%. Current total if saved would be %1%.', TotalPercentExcl + "Payment %");
 
-                if TotalPercent > 100 then
-                    Error('Total Payment % for all lines cannot exceed 100%. Current total is %1%.', TotalPercent);
-
-                // calculate value based on PO Value
-                "Payment Value" := Round(("Payment %" / 100) * "PO Value", 0.01);
+                // If this line makes total percent exactly 100, adjust value to absorb rounding diffs
+                if (TotalPercentExcl + "Payment %") = 100 then begin
+                    "Payment Value" := "PO Value" - TotalPaymentValueExcl;
+                    // Defensive rounding to 2 decimals
+                    "Payment Value" := Round("Payment Value", 0.01);
+                    // Recompute % from adjusted value to keep UI consistent (optional)
+                    "Payment %" := Round(("Payment Value" / "PO Value") * 100, 0.01);
+                end else begin
+                    // Normal case
+                    "Payment Value" := CalculatedValue;
+                end;
             end;
         }
         field(6; "Payment Date"; Date)
