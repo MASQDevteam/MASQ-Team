@@ -42,6 +42,10 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
                 ToolTip = 'Specifies the value of the Initial ETAW field.', Comment = '%';
                 ShowMandatory = true;
             }
+            field("Production Days"; Rec."Production Days") //NB MASQ
+            {
+                ApplicationArea = All;
+            }
             field("Final ETR"; Rec."Final ETR")
             {
                 ApplicationArea = All;
@@ -1280,6 +1284,9 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
 
     trigger OnOpenPage()
     var
+        PurchaseLine: Record "Purchase Line";
+        PurchaseHeader: Record "Purchase Header";
+        PaymentLine: Record "Payment Line";
     begin
         MessagetoFillInitials();
         Clear(UserSetup);
@@ -1287,6 +1294,33 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
         CanRemovePOLinesfromContainer := UserSetup."Remove PO lines from Container";
         CanEditPO_SO_Lines := UserSetup."Can Edit SO/PO Details";
         CanEditVendorFields := UserSetup."Can View SO Customer Fields";//FQ MASQ
+
+        //NB MASQ Start
+        if PurchaseHeader.Get(Rec."Document Type", Rec."Document No.") then begin
+            PurchaseLine.Reset();
+            PurchaseLine.SetRange("Document Type", Rec."Document Type");
+            PurchaseLine.SetRange("Document No.", Rec."Document No.");
+            if PurchaseLine.FindSet() then
+                repeat
+                    if StrPos(UpperCase(PurchaseHeader."Payment Terms Code"), 'ADV') <= 0 then begin
+                        if (PurchaseLine."Final ETR" <> 0D) and (PurchaseLine."Order Date" <> 0D) then begin
+                            PurchaseLine.Validate("Production Days", PurchaseLine."Final ETR" - PurchaseLine."Order Date");
+                            PurchaseLine.Modify();
+                        end;
+                    end else begin
+                        PaymentLine.Reset();
+                        PaymentLine.SetRange("PO#", Rec."Document No.");
+                        PaymentLine.SetRange("Accounting Status", PaymentLine."Accounting Status"::Executed);
+                        if PaymentLine.FindFirst() then begin
+                            if (PurchaseLine."Final ETR" <> 0D) and (PaymentLine."Payment Date" <> 0D) then begin
+                                PurchaseLine.Validate("Production Days", PurchaseLine."Final ETR" - PaymentLine."Payment Date");
+                                PurchaseLine.Modify();
+                            end;
+                        end;
+                    end;
+                until PurchaseLine.Next() = 0;
+        end;
+        //NB MASQ End
     end;
 
     var

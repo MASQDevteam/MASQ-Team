@@ -3,8 +3,6 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
     fields
     {
         // Add changes to table fields here       
-
-
         field(70100; "Shortcut Dimension 3 Code"; Code[20])
         {
             CaptionClass = '1,2,3';
@@ -190,6 +188,8 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
             trigger OnValidate()
             var
                 ShippingDateLOG: Record "Supply Chain LOG";
+                PurchaseHeader: Record "Purchase Header";
+                PaymentLine: Record "Payment Line";
             begin
                 IF (Rec.ATA <> 0D) AND (Rec."Final ETA" <> 0D) AND (Rec."Final ETAW" <> 0D) AND (Rec."Final ETD" <> 0D) AND (Rec."Final ETR" <> 0D) then begin
                     ShippingDateLOG.Init();
@@ -204,6 +204,22 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
                     ShippingDateLOG.ATA := Rec.ATA;
                     ShippingDateLOG.Insert(true);
                 end;
+
+                //NB MASQ Start
+                PurchaseHeader.Get(Rec."Document Type", Rec."Document No.");
+                if StrPos(UpperCase(PurchaseHeader."Payment Terms Code"), 'ADV') <= 0 then begin
+                    if (Rec."Final ETR" <> 0D) and (Rec."Order Date" <> 0D) then
+                        Rec.Validate("Production Days", Rec."Final ETR" - Rec."Order Date")
+                end else begin
+                    PaymentLine.Reset();
+                    PaymentLine.SetRange("PO#", Rec."Document No.");
+                    PaymentLine.SetRange("Accounting Status", PaymentLine."Accounting Status"::Executed);
+                    if PaymentLine.FindFirst() then begin
+                        if (Rec."Final ETR" <> 0D) and (PaymentLine."Payment Date" <> 0D) then
+                            Rec.Validate("Production Days", Rec."Final ETR" - PaymentLine."Payment Date");
+                    end;
+                end;
+                //NB MASQ End
             end;
         }
         field(70121; "Final ETD"; Date)
@@ -572,6 +588,11 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
         {
             Editable = false;
             DataClassification = CustomerContent;
+        }
+        field(70157; "Production Days"; Integer) //NB MASQ
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
         }
         //NB MASQ End
 
@@ -1004,6 +1025,8 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
     trigger OnAfterInsert()
     var
         SalesLine: Record "Sales Line";
+        PurchaseHeader: Record "Purchase Header";
+        PaymentLine: Record "Payment Line";
     begin
         // Ensure reciprocal linkage for the exact linked SO line, if any
         if (Rec."MASQ Sales Order No." <> '') and (Rec."MASQ Sales Order Line No." <> 0) then
@@ -1013,6 +1036,22 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
                     SalesLine.Modify();
                 end;
             end;
+
+        //NB MASQ Start
+        PurchaseHeader.Get(Rec."Document Type", Rec."Document No.");
+        if StrPos(UpperCase(PurchaseHeader."Payment Terms Code"), 'ADV') <= 0 then begin
+            if (Rec."Final ETR" <> 0D) and (Rec."Order Date" <> 0D) then
+                Rec.Validate("Production Days", Rec."Final ETR" - Rec."Order Date")
+        end else begin
+            PaymentLine.Reset();
+            PaymentLine.SetRange("PO#", Rec."Document No.");
+            PaymentLine.SetRange("Accounting Status", PaymentLine."Accounting Status"::Executed);
+            if PaymentLine.FindFirst() then begin
+                if (Rec."Final ETR" <> 0D) and (PaymentLine."Payment Date" <> 0D) then
+                    Rec.Validate("Production Days", Rec."Final ETR" - PaymentLine."Payment Date");
+            end;
+        end;
+        //NB MASQ End
     end;
     //FQ MASQ ** End
 
@@ -1020,9 +1059,26 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
     trigger OnAfterModify()
     var
         PurchaseHeader: Record "Purchase Header";
+        PaymentLine: Record "Payment Line";
     begin
         if PurchaseHeader.Get("Document Type", "Document No.") then
             PurchaseHeader.CalculateTotalWithCharge();
+
+        //NB MASQ Start
+        PurchaseHeader.Get(Rec."Document Type", Rec."Document No.");
+        if StrPos(UpperCase(PurchaseHeader."Payment Terms Code"), 'ADV') <= 0 then begin
+            if (Rec."Final ETR" <> 0D) and (Rec."Order Date" <> 0D) then
+                Rec.Validate("Production Days", Rec."Final ETR" - Rec."Order Date")
+        end else begin
+            PaymentLine.Reset();
+            PaymentLine.SetRange("PO#", Rec."Document No.");
+            PaymentLine.SetRange("Accounting Status", PaymentLine."Accounting Status"::Executed);
+            if PaymentLine.FindFirst() then begin
+                if (Rec."Final ETR" <> 0D) and (PaymentLine."Payment Date" <> 0D) then
+                    Rec.Validate("Production Days", Rec."Final ETR" - PaymentLine."Payment Date");
+            end;
+        end;
+        //NB MASQ End
     end;
 
     trigger OnAfterDelete()

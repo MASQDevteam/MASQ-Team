@@ -194,6 +194,8 @@ permissionset 70100 masq
         page "Fast Cleanup Request"=X,
         page "Item Api page"=X,
         page "ItemPictures API"=X,
-        page RecordLinkList=X;
+        page RecordLinkList=X,
+        codeunit "Modify Approval Entry"=X,
+        page "Shipping Dates Log List"=X;
 //codeunit "Payment Req WorkFlow Functions" = X;
 }
