@@ -45,6 +45,9 @@ tableextension 70139 "Sales Header Extension" extends "Sales Header"
         field(70105; "Order Coming into force"; Date)
         {
             DataClassification = ToBeClassified;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The user no longer wants this field';
+            ObsoleteTag = '25.0.1.131';
         }
         field(70106; "Custom Status"; Enum "Custom Sales Status")
         {

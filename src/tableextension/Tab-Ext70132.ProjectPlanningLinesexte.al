@@ -318,6 +318,13 @@ tableextension 70132 "Project Planning Lines exte" extends "Job Planning Line"
             CalcFormula = lookup("Sales Shipment Line"."Document No." where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Contract Entry No." = field("Job Contract Entry No.")));
             Editable = false;
         }
+        field(70141; "PPR NO."; Code[20])
+        {
+            Caption = 'Posted Purchase Receipt No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Purch. Rcpt. Line"."Document No." where("Job No." = field("Job No."), "Job Task No." = field("Job Task No."), "Job Planning Line No." = field("Line No.")));
+            Editable = false;
+        }
 
         // FQ MASQ **END
     }

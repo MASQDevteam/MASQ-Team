@@ -169,7 +169,10 @@ pageextension 70111 "User Setup Extension" extends "User Setup"
             {
                 ApplicationArea = All;
             }
-
+            field("Create Direct SCC"; Rec."Create Direct SCC")
+            {
+                ApplicationArea = All;
+            }
             // FQ MASQ End
 
         }

@@ -7,5 +7,12 @@ tableextension 70144 "Company Info Ext" extends "Company Information"
             Caption = 'MOF #';
             DataClassification = ToBeClassified;
         }
+        //FQ MASQ **START
+        field(70101; "SCC Module Enabled"; Boolean)
+        {
+            Caption = 'SCC Module Enabled';
+            DataClassification = ToBeClassified;
+        }
+        //FQ MASQ **END
     }
 }

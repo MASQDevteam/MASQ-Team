@@ -284,6 +284,17 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
             Editable = false;
             DataClassification = CustomerContent;
         }
+        field(70133; "SCC Count"; Integer)
+        {
+            Caption = 'Shipping Conformity Certificates';
+            FieldClass = FlowField;
+            CalcFormula = count("SCC Order Line" where("Purchase Order No." = field("No.")));
+            Editable = false;
+        }
+        field(70134; "Shipment Mode"; Enum "SCC Shipment Mode")
+        {
+            DataClassification = ToBeClassified;
+        }
         /*  modify("Assigned User ID")
          {
              trigger OnAfterValidate()

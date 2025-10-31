@@ -42,34 +42,36 @@ pageextension 70138 "Job Planning Lines extension" extends "Job Planning Lines"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Sales order no field.', Comment = '%';
             }
-            field("Purchase Order No."; Rec."Purchase Order No.")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Purchase Order No. field.', Comment = '%';
-            }
-
-            field("PPI NO."; Rec."PPI NO.")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the value of the PPI NO. field.', Comment = '%';
-            }
             field("Posted sales invoice no"; Rec."Posted sales invoice no")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Posted sales invoice no field.', Comment = '%';
+            }
+            field("Posted Invoiced Amount"; Rec."Posted Invoiced Amount")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Posted Invoiced Amount field.', Comment = '%';
             }
             field("PSS NO."; Rec."PSS NO.")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Posted sales Shipment no field.', Comment = '%';
             }
-
-            field("Posted Invoiced Amount"; Rec."Posted Invoiced Amount")
+            field("Purchase Order No."; Rec."Purchase Order No.")
             {
                 ApplicationArea = All;
-                ToolTip = 'Specifies the value of the Posted Invoiced Amount field.', Comment = '%';
+                ToolTip = 'Specifies the value of the Purchase Order No. field.', Comment = '%';
             }
-
+            field("PPI NO."; Rec."PPI NO.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Posted Purchase Invoice NO. field.', Comment = '%';
+            }
+            field("PPR NO."; Rec."PPR NO.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Posted Purchase Receipt NO. field.', Comment = '%';
+            }
             field("Sales Cr.Memo No."; Rec."Sales Cr.Memo No.")
             {
                 ApplicationArea = All;

@@ -97,15 +97,6 @@ pageextension 70132 "SO Extension" extends "Sales Order"
 
         }
         // FQ MASQ **Start
-        addafter("Due Date")
-        {
-            field("Order Coming into force"; Rec."Order Coming into force")
-            {
-                ApplicationArea = All;
-                ToolTip = 'Specifies the date when SO confirmed by customer.';
-            }
-
-        }
 
         addafter(Status)
         {
@@ -147,6 +138,16 @@ pageextension 70132 "SO Extension" extends "Sales Order"
 
     actions
     {   // FQ MASQ ** Start
+
+        modify(SendApprovalRequest)
+        {
+            trigger OnBeforeAction()
+            var
+                myInt: Integer;
+            begin
+                rec.TestField("Assigned User ID");
+            end;
+        }
         addfirst(Processing)
         {
             action(RefreshData)

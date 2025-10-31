@@ -14,6 +14,12 @@ tableextension 70137 "Purchase setup extension" extends "Purchases & Payables Se
             DataClassification = ToBeClassified;
             TableRelation = Vendor."No.";
         }
+        field(70102; "SCC Nos."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Shipment Conformaity Cert Nos.';
+            TableRelation = "No. Series";
+        }
     }
 
     keys

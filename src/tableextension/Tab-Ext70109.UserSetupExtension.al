@@ -162,6 +162,11 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
             DataClassification = ToBeClassified;
             Caption = 'Skip Project Qty.transferred Invoice validation';
         }
+        field(70135; "Create Direct SCC"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Create Direct SCC';
+        }
         //FQ MASQ End
 
         field(70133; "Create Direct RFP"; Boolean)

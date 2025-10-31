@@ -53,6 +53,10 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
             ShowMandatory = false;
             Visible = false;
         }
+        modify("Assigned User ID")
+        {
+            ShowMandatory = true;
+        }
         addafter(Status)
         {
             field("Custom Status"; Rec."Custom Status")
@@ -67,6 +71,48 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                     ShowStatusDetails();
                 end;
             }
+
+        }
+        addafter("Shipment Method Code")
+        {
+            field("Shipment Mode"; Rec."Shipment Mode")
+            {
+                ApplicationArea = All;
+                Caption = 'Shipment Mode';
+                trigger OnValidate()
+                var
+                    SCCLine: Record "SCC Order Line";
+                    ConfirmTxt: Label 'Changing shipment mode to Express will remove this Purchase Order from any Shipping Conformity Certificates. Continue?';
+                begin
+                    if Rec."Shipment Mode" = Rec."Shipment Mode"::Express then begin
+                        SCCLine.SetRange("Purchase Order No.", Rec."No.");
+                        if not SCCLine.IsEmpty() then begin
+                            if Confirm(ConfirmTxt, false) then begin
+                                SCCLine.DeleteAll(true);
+                            end else
+                                Error('Operation cancelled by user.');
+                        end;
+                    end;
+                    UpdateSCCStatus();
+                    CurrPage.Update(false);
+                end;
+            }
+            field("SCC Count"; Rec."SCC Count")
+            {
+                ApplicationArea = All;
+                Caption = 'Shipping Conformity Certificates';
+                ToolTip = 'Shows the total number of shipping conformity certificates for this purchase order.';
+                StyleExpr = SCCStyle;
+                DrillDown = true;
+                Enabled = ShowSCCField;
+                trigger OnDrillDown()
+                var
+                    SCCMgt: Codeunit "SCC Management";
+                begin
+                    SCCMgt.OpenSCCListForPO(Rec."No.");
+                end;
+            }
+
         }
         // FQ MASQ ** END
 
@@ -208,6 +254,15 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
     {
         // Add changes to page actions here
         // FQ MASQ ** Start
+        modify(SendApprovalRequest)
+        {
+            trigger OnBeforeAction()
+            var
+                myInt: Integer;
+            begin
+                rec.TestField("Assigned User ID");
+            end;
+        }
         addfirst(Processing)
         {
             action(RefreshData)
@@ -289,7 +344,36 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
             }
             //NB MASQ End
 
+            //FQ MASQ **START**
+            action(CreateSCC)
+            {
+                ApplicationArea = All;
+                Caption = 'Create SCC';
+                ToolTip = 'Create a new Shipping Conformity Certificate for this purchase order.';
+                Image = NewDocument;
+                Promoted = true;
+                PromotedCategory = Process;
+                Enabled = CanCreateSCC and ShowSCCField;
+
+                trigger OnAction()
+                var
+                    SCCMgt: Codeunit "SCC Management";
+                    NewSCC: Record "Shipping Conformity Cert";
+                begin
+                    if (rec."Shipment Mode" = rec."Shipment Mode"::Express) or (rec."Shipment Mode" = rec."Shipment Mode"::" ") then begin
+                        error('The shipment mode is express or empty, so SCC cannot be created')
+                    end
+                    else begin
+                        NewSCC := SCCMgt.CreateSCCFromPO(Rec."No.");
+                        Page.Run(Page::"Shipping Conformity Cert. Card", NewSCC);
+                        CurrPage.Update(false);
+                    end;
+                end;
+            }
+            //FQ MASQ **END**
+
         }
+
         addafter(Receipts)
         {
             action("Open SO")
@@ -355,7 +439,9 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
 
         Rec."Shipping Quotation No." := ResultList;
 
-        UpdateStatusStyle();
+        UpdateStatusStyle();// FQ MASQ
+        UpdateSCCStatus();//FQ MASQ
+        CurrPage.Update(false);
     end;
 
 
@@ -365,7 +451,9 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
     var
         myInt: Integer;
     begin
-        UpdateStatusStyle();
+        UpdateStatusStyle();//FQ MASQ
+        UpdateSCCStatus();//FQ MASQ
+        CurrPage.Update(false);
     end;
 
     local procedure UpdateStatusStyle()
@@ -419,8 +507,34 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
         exit(Format(Percentage, 0, '<Precision,2:2><Standard Format,0>'));
     end;
 
+
+
+    local procedure UpdateSCCStatus()
+    var
+        SCCMgt: Codeunit "SCC Management";
+        SCC: Record "Shipping Conformity Cert";
+
+    begin
+        Rec.CalcFields("SCC Count");
+        // Set style based on certificate status
+        SCCStyle := 'Favorable';
+        // Determine if user can create a new SCC
+        CompInfo.Get();
+        if CompInfo."SCC Module Enabled" then begin
+            if (rec."Shipment Mode" = rec."Shipment Mode"::Air) or (rec."Shipment Mode" = rec."Shipment Mode"::Sea) or (rec."Shipment Mode" = rec."Shipment Mode"::Land) then
+                ShowSCCField := true;
+            CanCreateSCC := SCCMgt.CanCreateNewSCC(Rec."No.");
+        end else begin
+            ShowSCCField := false;
+            CanCreateSCC := false;
+        end;
+    end;
+
     //FQ MASQ **END
     var
         myInt: Integer;
-        CustomStatusStyle: Text; //FQ MASQ
+        CustomStatusStyle: Text;
+        SCCStyle: Text;
+        CanCreateSCC, ShowSCCField : Boolean;
+        CompInfo: Record "Company Information"; //FQ MASQ
 }

@@ -8,6 +8,12 @@ pageextension 70157 "Company Info Page Ext" extends "Company Information"
             {
                 ApplicationArea = All;
             }
+            //FQ MASQ **START
+            field("SCC Module Enabled"; Rec."SCC Module Enabled")
+            {
+                ApplicationArea = All;
+            }
+            //FQ MASQ **END
         }
         addlast(Content)
         {
