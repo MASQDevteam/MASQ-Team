@@ -594,25 +594,17 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(70158; "Item Subcategory Code"; Code[20])
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
         //NB MASQ End
 
-        // modify("Amount Including VAT")
-        // {
-        //AN 07/04/2025
-        // trigger OnAfterValidate()
-        // var
-        //     PurchaseHeader: Record "Purchase Header";
-        // begin
-        //     if PurchaseHeader.get(Rec."Document Type", Rec."Document No.") then begin
-        //         PurchaseHeader.CalculateTotalWithCharge();
-        //     end;
-        // end;
-        //    / }
         modify("No.")
         {
             trigger OnAfterValidate()
             var
-
                 SalesLine: Record "Sales Line";
                 ProjectLine: Record "Job Planning Line";
                 ProjectLineunitCost: Decimal;
@@ -625,6 +617,7 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
                 ProjectDim5: Code[20];
                 ProjectDim6: Code[20];
                 CostVariationLOG: Record "Cost Variation LOG";
+                Item: Record Item;
             begin
                 ProjectLineunitCost := 0;
                 PurchLineunitCost := 0;
@@ -825,49 +818,11 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
                 IF Rec."Truck Details Line No." = 0 then
                     Rec."Truck Details Line No." := Xrec."Truck Details Line No.";
 
-
-
+                Clear(Rec."Item Subcategory Code");
+                if Item.Get(Rec."No.") then
+                    Rec.Validate("Item Subcategory Code", Item."Meg Item Subcategory Code"); //NB MASQ
             end;
-
-
-
-
-
-
         }
-
-        // modify(Quantity)//moved to page subform
-        // {
-        //     trigger OnAfterValidate()
-        //     var
-        //     begin
-        //         if "MASQ Sales Order Line No." <> 0 then
-        //             Error(Text002, FieldCaption(Quantity), "MASQ Sales Order No.", "MASQ Sales Order Line No.");
-        //     end;
-
-        // }
-
-        //AN 04/22/2025
-        /*modify("Direct Unit Cost")//moved to page by AI
-        {
-            trigger OnAfterValidate()
-            var
-                CostVariationLOG: Record "Cost Variation LOG";
-            begin
-                if xRec."Direct Unit Cost" <> 0 then begin
-                    CostVariationLOG.Init();
-                    CostVariationLOG."Item Number" := Rec."No.";
-                    CostVariationLOG."New Cost" := Rec."Direct Unit Cost";
-                    CostVariationLOG."Old Cost" := xRec."Direct Unit Cost";
-                    CostVariationLOG."PO Number" := Rec."Document No.";
-                    CostVariationLOG."PO Line Number" := Rec."Line No.";
-                    CostVariationLOG."Project No." := Rec."Job No.";
-                    CostVariationLOG."Project planning Line No." := Rec."Job Planning Line No.";
-                    CostVariationLOG."Created By" := UserId;
-                    CostVariationLOG.Insert(true);
-                end;
-            end;
-        }*/
     }
 
     keys

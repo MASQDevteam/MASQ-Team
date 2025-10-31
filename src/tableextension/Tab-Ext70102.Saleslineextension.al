@@ -250,6 +250,11 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
         {
             Editable = false;
         }
+        field(70143; "Item Subcategory Code"; Code[20]) //NB MASQ
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
         //NB MASQ End
 
         modify("Planned Delivery Date")
@@ -291,140 +296,18 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
         }
         //NB MASQ End
 
-        //AN 04/22/2025
-        /*    modify("Unit Price")//moved to page by AI
-            {
-                trigger OnAfterValidate()
-                var
-                    CostVariationLOG: Record "Cost Variation LOG";
-                begin
-                    if xRec."Unit Price" <> 0 then begin
-                        CostVariationLOG.Init();
-                        CostVariationLOG."Item Number" := Rec."No.";
-                        CostVariationLOG."New Price" := Rec."Unit Price";
-                        CostVariationLOG."Old Price" := xRec."Unit Price";
-                        CostVariationLOG."SO Number" := Rec."Document No.";
-                        CostVariationLOG."SO Line Number" := Rec."Line No.";
-                        CostVariationLOG."Project No." := Rec."Job No.";
-                        CostVariationLOG."Project planning Line No." := Rec."Job Planning Line No.";
-                        CostVariationLOG."Created By" := UserId;
-                        CostVariationLOG.Insert(true);
-                    end;
-                end;
-            }*/
         modify("No.")
         {
             trigger OnAfterValidate()
-            /*  var
-                  PurchaseLine: Record "Purchase Line";
-                  ProjectLine: Record "Job Planning Line";
-                  ProjectLineunitCost: Decimal;
-                  PurchLineunitCost: Decimal;
-                  ProjectLocationCode: code[20];//added on 07/05/2025
-                  ProjectDim1: Code[20];
-                  ProjectDim2: Code[20];
-                  ProjectDim3: Code[20];
-                  ProjectDim4: Code[20];
-                  ProjectDim5: Code[20];
-                  ProjectDim6: Code[20];
-                  CostVariationLOG: Record "Cost Variation LOG";*/
+            var
+                Item: Record Item;
             begin
-                /*ProjectLineunitCost := 0;
-                PurchLineunitCost := 0;
-                ProjectLocationCode := '';//added on 07/05/2025
-                ProjectDim1 := '';
-                ;
-                ProjectDim2 := '';
-                ;
-                ProjectDim3 := '';
-                ;
-                ProjectDim4 := '';
-                ;
-                ProjectDim5 := '';
-                ;
-                ProjectDim6 := '';
-                ;
-                Clear(PurchaseLine);
-                Clear(ProjectLine);
                 IF rec."MASQ Purchase Order No." = '' then begin//transfer fields after validating fields that has impact on other fields
                     rec."MASQ Purchase Order No." := xRec."MASQ Purchase Order No.";
                 end;
                 IF rec."MASQ Purchase Order Line No." = 0 then begin//transfer fields after validating fields that has impact on other fields
                     rec."MASQ Purchase Order Line No." := xRec."MASQ Purchase Order Line No.";
                 end;
-
-                IF PurchaseLine.get(PurchaseLine."Document Type"::Order, Rec."MASQ Purchase Order No.", Rec."MASQ Purchase Order Line No.") then begin
-                    IF Rec."No." <> '' then begin
-                        IF Rec."No." <> PurchaseLine."No." then begin
-                            IF Confirm(StrSubstNo('Warninig! the Item Number in the sales Line is different from the purchase %1 line %2. Do you want to update the item Number on the Purchase Line too?', Rec."MASQ Purchase Order No.", Rec."MASQ Purchase Order Line No.")) then begin
-                                IF ProjectLine.Get(PurchaseLine."Job No.", PurchaseLine."Job Task No.", PurchaseLine."Job Planning Line No.") then begin
-                                    ProjectLineunitCost := ProjectLine."Unit Cost";//added on 07/05/2025
-                                    ProjectLocationCode := ProjectLine."Location Code";//added on 07/05/2025
-                                    ProjectDim1 := ProjectLine."Shortcut Dimension 1 Code";
-                                    ProjectDim2 := ProjectLine."Shortcut Dimension 2 Code";
-                                    ProjectDim3 := ProjectLine."Shortcut Dimension 3 Code";
-                                    ProjectDim4 := ProjectLine."Shortcut Dimension 4 Code";
-                                    ProjectDim5 := ProjectLine."Shortcut Dimension 5 Code";
-                                    ProjectDim6 := ProjectLine."Shortcut Dimension 6 Code";
-
-                                    ProjectLine.Validate("No.", Rec."No.");
-                                    ProjectLine.Validate("Unit Price", Rec."Unit Price");//added on 07/05/2025
-
-                                    IF (ProjectLocationCode <> '') and (ProjectLine."Location Code" = '') then//added on 07/05/2025
-                                        ProjectLine.Validate("Location Code", ProjectLocationCode);
-
-                                    IF (ProjectDim1 <> '') and (ProjectLine."Shortcut Dimension 1 Code" = '') then
-                                        ProjectLine.Validate("Shortcut Dimension 1 Code", ProjectDim1);
-
-                                    IF (ProjectDim2 <> '') and (ProjectLine."Shortcut Dimension 2 Code" = '') then
-                                        ProjectLine.Validate("Shortcut Dimension 2 Code", ProjectDim2);
-
-                                    IF (ProjectDim3 <> '') and (ProjectLine."Shortcut Dimension 3 Code" = '') then
-                                        ProjectLine.Validate("Shortcut Dimension 3 Code", ProjectDim3);
-
-                                    IF (ProjectDim4 <> '') and (ProjectLine."Shortcut Dimension 4 Code" = '') then
-                                        ProjectLine.Validate("Shortcut Dimension 4 Code", ProjectDim4);
-
-                                    IF (ProjectDim5 <> '') and (ProjectLine."Shortcut Dimension 5 Code" = '') then
-                                        ProjectLine.Validate("Shortcut Dimension 5 Code", ProjectDim5);
-
-                                    IF (ProjectDim6 <> '') and (ProjectLine."Shortcut Dimension 6 Code" = '') then
-                                        ProjectLine.Validate("Shortcut Dimension 6 Code", ProjectDim6);
-
-
-                                    IF ProjectLineunitCost <> 0 then//added on 07/05/2025
-                                        ProjectLine.Validate("Unit Cost", ProjectLineunitCost);//added on 07/05/2025
-
-                                    ProjectLine.Modify();
-                                end;
-
-
-                                PurchaseLine.Validate("No.", Rec."No.");
-                                PurchaseLine.Modify();
-
-                                CostVariationLOG.Init();
-                                CostVariationLOG."Item Number" := Rec."No.";
-                                CostVariationLOG."old Item number" := xRec."No.";
-                                CostVariationLOG."new Item number" := Rec."No.";
-                                CostVariationLOG."PO Number" := Rec."Document No.";
-                                CostVariationLOG."PO Line Number" := Rec."Line No.";
-                                CostVariationLOG."Project No." := Rec."Job No.";
-                                CostVariationLOG."Project planning Line No." := Rec."Job Planning Line No.";
-                                CostVariationLOG."Created By" := UserId;
-                                CostVariationLOG.Insert(true);
-
-                            end;
-                        end;
-                    end;
-                end;*/
-                IF rec."MASQ Purchase Order No." = '' then begin//transfer fields after validating fields that has impact on other fields
-                    rec."MASQ Purchase Order No." := xRec."MASQ Purchase Order No.";
-                end;
-                IF rec."MASQ Purchase Order Line No." = 0 then begin//transfer fields after validating fields that has impact on other fields
-                    rec."MASQ Purchase Order Line No." := xRec."MASQ Purchase Order Line No.";
-                end;
-
-
                 IF rec."Line is Splitted" = false then begin//transfer fields after validating fields that has impact on other fields
                     rec."Line is Splitted" := xRec."Line is Splitted";
                 end;
@@ -470,12 +353,13 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
 
                 IF (Rec."Sent to PO" = false) and (xRec."Sent to PO") then//added on 02/04/2025
                     Rec."Sent to PO" := xRec."Sent to PO";
+
+                Clear(Rec."Item Subcategory Code");
+                if Item.Get(Rec."No.") then
+                    Rec.Validate("Item Subcategory Code", Item."Meg Item Subcategory Code"); //NB MASQ
             end;
         }
-
-
     }
-
 
     keys
     {

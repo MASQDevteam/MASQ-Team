@@ -5,14 +5,16 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
 
         addafter("No.")
         {
+            field("Item Subcategory Code"; Rec."Item Subcategory Code") //NB MASQ
+            {
+                ApplicationArea = All;
+            }
             field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
             {
                 ApplicationArea = All;
                 Visible = true;
                 Editable = CanEditVendorFields;
             }
-
-
         }
         // Add changes to page layout here
         addafter("Expected Receipt Date")
