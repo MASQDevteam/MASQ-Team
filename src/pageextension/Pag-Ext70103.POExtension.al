@@ -196,6 +196,12 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the MASQ Sales Order No. field.', Comment = '%';
             }
+            //NB MASQ Start
+            field("Logistics Coordinator"; Rec."Logistics Coordinator")
+            {
+                ApplicationArea = All;
+            }
+            //NB MASQ End
             //FQ MASQ ** Start
 
             field("Gen. Bus. Posting Group"; Rec."Gen. Bus. Posting Group")
@@ -394,7 +400,14 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
             }
         }
     }
-
+    trigger OnOpenPage()
+    var
+        SalesHeader: Record "Sales Header";
+    begin
+        Rec.CalcFields("MASQ Sales Order No.");
+        if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then
+            Rec.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
+    end;
 
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     var
@@ -423,6 +436,7 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
     var
         ShipQuote: Record "Shipping Quotation";
         ResultList: Text;
+        SalesHeader: Record "Sales Header";
     begin
         Clear(Rec."Shipping Quotation No.");
         ResultList := '';
@@ -441,6 +455,10 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
 
         UpdateStatusStyle();// FQ MASQ
         UpdateSCCStatus();//FQ MASQ
+
+        Rec.CalcFields("MASQ Sales Order No.");
+        if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then
+            Rec.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
         CurrPage.Update(false);
     end;
 
@@ -450,9 +468,14 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
     trigger OnAfterGetCurrRecord()
     var
         myInt: Integer;
+        SalesHeader: Record "Sales Header";
     begin
         UpdateStatusStyle();//FQ MASQ
         UpdateSCCStatus();//FQ MASQ
+
+        Rec.CalcFields("MASQ Sales Order No.");
+        if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then
+            Rec.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
         CurrPage.Update(false);
     end;
 

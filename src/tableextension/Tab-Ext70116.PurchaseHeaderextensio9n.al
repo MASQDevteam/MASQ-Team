@@ -47,9 +47,7 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
                 //  end;
             end;
         }
-        field(70112;
-        "Initial ETD";
-        Date)
+        field(70112; "Initial ETD"; Date)
         {
             Caption = 'Initial ETD';
             trigger OnValidate()
@@ -295,6 +293,12 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
         {
             DataClassification = ToBeClassified;
         }
+        //NB MASQ Start
+        field(70135; "Logistics Coordinator"; Enum "Logistics Coordinator")
+        {
+            DataClassification = CustomerContent;
+        }
+        //NB MASQ End
         /*  modify("Assigned User ID")
          {
              trigger OnAfterValidate()

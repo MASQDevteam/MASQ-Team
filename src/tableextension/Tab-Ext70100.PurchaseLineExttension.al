@@ -982,6 +982,7 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
         SalesLine: Record "Sales Line";
         PurchaseHeader: Record "Purchase Header";
         PaymentLine: Record "Payment Line";
+        SalesHeader: Record "Sales Header";
     begin
         // Ensure reciprocal linkage for the exact linked SO line, if any
         if (Rec."MASQ Sales Order No." <> '') and (Rec."MASQ Sales Order Line No." <> 0) then
@@ -1006,6 +1007,13 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
                     Rec.Validate("Production Days", Rec."Final ETR" - PaymentLine."Payment Date");
             end;
         end;
+
+        if PurchaseHeader.Get(Rec."Document Type", Rec."Document No.") then begin
+            if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then begin
+                PurchaseHeader.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
+                PurchaseHeader.Modify();
+            end;
+        end;
         //NB MASQ End
     end;
     //FQ MASQ ** End
@@ -1015,6 +1023,7 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
     var
         PurchaseHeader: Record "Purchase Header";
         PaymentLine: Record "Payment Line";
+        SalesHeader: Record "Sales Header";
     begin
         if PurchaseHeader.Get("Document Type", "Document No.") then
             PurchaseHeader.CalculateTotalWithCharge();
@@ -1031,6 +1040,13 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
             if PaymentLine.FindFirst() then begin
                 if (Rec."Final ETR" <> 0D) and (PaymentLine."Payment Date" <> 0D) then
                     Rec.Validate("Production Days", Rec."Final ETR" - PaymentLine."Payment Date");
+            end;
+        end;
+
+        if PurchaseHeader.Get(Rec."Document Type", Rec."Document No.") then begin
+            if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then begin
+                PurchaseHeader.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
+                PurchaseHeader.Modify();
             end;
         end;
         //NB MASQ End
