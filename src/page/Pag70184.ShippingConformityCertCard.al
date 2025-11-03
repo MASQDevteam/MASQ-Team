@@ -143,19 +143,6 @@ page 70184 "Shipping Conformity Cert. Card"
                     ToolTip = 'Specifies the certificate date from SABER platform.';
                 }
             }
-            group(PurchaseOrders)
-            {
-                Caption = 'Purchase Orders';
-
-                part(SCCOrderLines; "SCC Order Lines")
-                {
-                    ApplicationArea = All;
-                    Caption = 'Purchase Orders';
-                    SubPageLink = "SCC No." = field("No.");
-                    UpdatePropagation = Both;
-                    ShowFilter = true;
-                }
-            }
             group(HSCodes)
             {
                 Caption = 'HS Code Information';
@@ -170,6 +157,20 @@ page 70184 "Shipping Conformity Cert. Card"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the HS Code as per supplier documents.';
+                }
+            }
+
+            group(PurchaseOrders)
+            {
+                Caption = 'Purchase Orders';
+
+                part(SCCOrderLines; "SCC Order Lines")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Purchase Orders';
+                    SubPageLink = "SCC No." = field("No.");
+                    UpdatePropagation = Both;
+                    ShowFilter = true;
                 }
             }
 

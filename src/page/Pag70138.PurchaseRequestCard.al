@@ -477,7 +477,7 @@ page 70138 "Purchase Request Card"
         RecNo: Integer;
         Window: Dialog;
         Text009: Label 'Import from Excel';
-        [InDataSet]
+        //[InDataSet]
         IsVisible: Boolean;
 
         PurchaseOrder: Record "Purchase Header";

@@ -254,7 +254,7 @@ page 70141 "Purchase Request List"
 
     var
         UserSetup: Record "User Setup";
-        [InDataSet]
+        //[InDataSet]
         Allowed: Boolean;
         Ans: Boolean;
         txtcon: Label 'Are you sure to delete Request No %1';

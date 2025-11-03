@@ -231,9 +231,9 @@ page 70144 "Budget Card"
 
 
     var
-        [InDataSet]
+       // [InDataSet]
         InvoiceCurrencyCodeEditable: Boolean;
-        [InDataSet]
+       // [InDataSet]
         CurrencyCodeEditable: Boolean;
         JobSimplificationAvailable: Boolean;
         JobTask: Record "Job Task";

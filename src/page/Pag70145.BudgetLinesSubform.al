@@ -316,7 +316,7 @@ page 70145 "Budget Lines Subform"
     end;
 
     var
-        [InDataSet]
+       // [InDataSet]
         StyleIsStrong: Boolean;
         JobTaskLines: Page "Job Task Lines";
         PostingBudget: Boolean;
