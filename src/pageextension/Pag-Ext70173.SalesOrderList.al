@@ -45,7 +45,7 @@ pageextension 70173 "Sales Order List Custom" extends "Sales Order List"
     trigger OnOpenPage()
     begin
         // Apply filter to exclude fully delivered and fully invoiced
-        rec.SetFilter("Custom Status", '<> %1', rec."Custom Status"::"Fully Delivered/Fully Invoiced");
+        //rec.SetFilter("Custom Status", '<> %1', rec."Custom Status"::"Fully Delivered/Fully Invoiced");
     end;
 
     local procedure UpdateStatusStyle()

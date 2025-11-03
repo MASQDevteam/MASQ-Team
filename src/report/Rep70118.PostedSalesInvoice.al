@@ -466,6 +466,7 @@ report 70118 "Posted-Sales-Invoice"
             column(Payment_Method_Code; "Payment Method Code") { }
             column(DimensionProjectName; DimensionProjectName) { }
             column(AmountInWords; AmountInWords) { }
+            column(Payment_Terms_Code; "Payment Terms Code") { }
             dataitem(Line; "Sales Invoice Line")
             {
                 DataItemLink = "Document No." = field("No.");
@@ -478,6 +479,10 @@ report 70118 "Posted-Sales-Invoice"
                 {
                     AutoFormatExpression = GetCurrencyCode();
                     AutoFormatType = 1;
+                }
+                column(Item_Category_Code; "Item Category Code")
+                {
+
                 }
                 column(AmountExcludingVAT_Line_Lbl; FieldCaption(Amount))
                 {
