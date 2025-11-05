@@ -363,6 +363,15 @@ tableextension 70116 "Purchase Header extensio9n" extends "Purchase Header"
                     "Custom Status" := "Custom Status"::Released;
             end;
     end;
+
+    trigger OnDelete()
+    var
+        myInt: Integer;
+    begin
+        if rec."Custom Status" = rec."Custom Status"::"Fully Received/Fully Invoiced" then begin
+            Error('You cannot Delete a PO once it has been fully received and fully invoiced.');
+        end;
+    end;
     //FQ MASQ **END**
     procedure CalculateTotalWithCharge()
     var

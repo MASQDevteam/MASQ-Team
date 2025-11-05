@@ -148,6 +148,17 @@ pageextension 70132 "SO Extension" extends "Sales Order"
                 rec.TestField("Assigned User ID");
             end;
         }
+        modify(Reopen)
+        {
+            trigger OnAfterAction()
+            var
+                myInt: Integer;
+            begin
+                if rec."Custom Status" = rec."Custom Status"::"Fully Delivered/Fully Invoiced" then begin
+                    Error('You cannot reopen a SO once it has been fully Delivered and fully invoiced.');
+                end;
+            end;
+        }
         addfirst(Processing)
         {
             action(RefreshData)

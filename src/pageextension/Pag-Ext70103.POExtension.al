@@ -269,6 +269,17 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                 rec.TestField("Assigned User ID");
             end;
         }
+        modify(Reopen)
+        {
+            trigger OnAfterAction()
+            var
+                myInt: Integer;
+            begin
+                if rec."Custom Status" = rec."Custom Status" ::"Fully Received/Fully Invoiced" then begin
+                    Error('You cannot reopen a PO once it has been fully received and fully invoiced.');
+                end;
+            end;
+        }
         addfirst(Processing)
         {
             action(RefreshData)

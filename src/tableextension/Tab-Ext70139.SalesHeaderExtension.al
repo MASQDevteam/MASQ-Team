@@ -2,11 +2,6 @@ tableextension 70139 "Sales Header Extension" extends "Sales Header"
 {
     fields
     {
-        // Add changes to table fields here
-        // field(70100; "PO from PR"; Boolean)//this fields will be used to crerate the PO from the PR if needed
-        // {
-        //     DataClassification = ToBeClassified;
-        // }
         field(70101; "Pro-Forma Description"; Text[1000])
         {
             DataClassification = ToBeClassified;
@@ -55,6 +50,14 @@ tableextension 70139 "Sales Header Extension" extends "Sales Header"
             Editable = false;
             DataClassification = CustomerContent;
         }
+        modify("Shortcut Dimension 1 Code")
+        {
+            trigger OnAfterValidate()
+            var
+            begin
+                UpdateMegOCNo();
+            end;
+        }
         // FQ MASQ ** END
     }
 
@@ -72,6 +75,15 @@ tableextension 70139 "Sales Header Extension" extends "Sales Header"
     trigger OnAfterInsert()
     begin
         InitializeCustomStatus();
+    end;
+
+    trigger OnDelete()
+    var
+        myInt: Integer;
+    begin
+        if rec."Custom Status" = rec."Custom Status"::"Fully Delivered/Fully Invoiced" then begin
+            Error('You cannot Delete a SO once it has been fully Delivered and fully invoiced.');
+        end;
     end;
 
     trigger OnAfterModify()
@@ -105,9 +117,23 @@ tableextension 70139 "Sales Header Extension" extends "Sales Header"
                     "Custom Status" := "Custom Status"::Released;
             end;
     end;
+
+    local procedure UpdateMegOCNo()
+    begin
+        DimensionValue.Reset();
+        DimensionValue.SetRange("Dimension Code", 'PROJECT');
+        DimensionValue.SetRange(Code, Rec."Shortcut Dimension 1 Code");
+        if DimensionValue.FindFirst() then begin
+            if Rec."Meg OC No." = '' then begin
+                rec."Meg OC No." := Rec."Shortcut Dimension 1 Code" + '-' + DimensionValue.Name;
+                rec.Modify();
+            end;
+        end;
+    end;
     //FQ MASQ ** END
 
 
     var
         MASQEmail: Codeunit "MASQ Email";
+        DimensionValue: Record "Dimension Value";
 }
