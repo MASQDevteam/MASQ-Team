@@ -29,6 +29,7 @@ page 70101 "Request for Payment"
                 field("Supplier Name"; Rec."Supplier Name")
                 {
                     ToolTip = 'Specifies the value of the Supplier Name field.', Comment = '%';
+                    ApplicationArea = All;
                 }
                 field("RFP Type"; Rec."RFP Type") //NB MASQ 30-Sep-25
                 {

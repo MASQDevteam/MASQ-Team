@@ -11,27 +11,22 @@ tableextension 70122 "Item extension" extends Item
         {
             DataClassification = ToBeClassified;
         }
-
         field(70102; "MASQ Cover Color"; Text[30])
         {
             DataClassification = ToBeClassified;
         }
-
         field(70103; "MASQ Luminous Flux (Lm)"; Decimal)
         {
             DataClassification = ToBeClassified;
         }
-
         field(70104; "MASQ IP Rating"; Code[10])
         {
             DataClassification = ToBeClassified;
         }
-
         field(70105; "MASQ Optic/Diffuser"; Text[50])
         {
             DataClassification = ToBeClassified;
         }
-
         field(70106; "MASQ Main Group"; Code[20])
         {
             DataClassification = ToBeClassified;
@@ -52,21 +47,13 @@ tableextension 70122 "Item extension" extends Item
         {
             DataClassification = ToBeClassified;
         }
-
-        // modify("Meg Vendor Item Code")
-        // {
-
-        //     trigger OnAfterValidate()
-        //     var
-        //     begin
-        //         Clear(ItemRec);
-        //         ItemRec.SetRange("Meg Vendor Item Code", Rec."Meg Vendor Item Code");
-        //         ItemRec.SetFilter("No.", '<> %1', Rec."No.");
-
-        //         IF ItemRec.FindFirst() then
-        //             Error('Vendor item Code already exist in this database');
-        //     end;
-        // }
+        modify(Description)
+        {
+            trigger OnAfterValidate()
+            begin
+                Rec.Validate("Meg Other Details", Description);
+            end;
+        }
     }
 
 
