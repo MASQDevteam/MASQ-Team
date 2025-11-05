@@ -21,8 +21,8 @@ codeunit 70106 "MASQ Email"
         UserSetup: Record "User Setup";
         ErrorMessage: record "Error Message";
         ClientTypeManagement: Codeunit "Client Type Management";
-    // User: Record User;
-
+        // User: Record User;
+        EnvironmentInfo: Codeunit "Environment Information";
     begin
         //  Clear(UserSetup);
         //   UserSetup.Get(UserId);
@@ -76,7 +76,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
 
         // Set Subject
-        Subject := Format(CurrentClientType()) + ' : Travel Request Approval entries';
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Travel Request Approval entries';
 
         // Add Recipient
         UserSetup.Get(User."User Name");
@@ -263,6 +263,7 @@ codeunit 70106 "MASQ Email"
         Recipients: text[100];
         UserSetup: Record "User Setup";
         ClientTypeManagement: Codeunit "Client Type Management";
+        EnvironmentInfo: Codeunit "Environment Information";
     begin
         // Write Body
         Body := 'This is a system generated email to inform you about the new Payment Request with the below details: <br><br>';
@@ -280,7 +281,7 @@ codeunit 70106 "MASQ Email"
         IF PaymentRequest.Supplier <> '' then
             Vendor.get(PaymentRequest.Supplier);
 
-        Subject := Format(CurrentClientType()) + ' : Payment Request PO# ' + PaymentRequest."PO#" + ' Vendor Name ' + Vendor.Name + ' Level of Urgency ' + Format(PaymentRequest."Level of Urgency");
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Payment Request PO# ' + PaymentRequest."PO#" + ' Vendor Name ' + Vendor.Name + ' Level of Urgency ' + Format(PaymentRequest."Level of Urgency");
 
         // Add Recipient
         UserSetup.Get(User."User Name");
@@ -315,7 +316,7 @@ codeunit 70106 "MASQ Email"
         ProjName: Text[100];
         AppProjNumber: Code[50];
     // User: Record User;
-
+        EnvironmentInfo: Codeunit "Environment Information";
     begin
         //  Clear(UserSetup);
         //   UserSetup.Get(UserId);
@@ -394,7 +395,7 @@ codeunit 70106 "MASQ Email"
 
         // Set Subject
 
-        Subject := Format(CurrentClientType()) + ' : Variaion Order Project# ' + VariationOrder."Project Code" + 'Variation Order Number ' + VariationOrder.Number;
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Variaion Order Project# ' + VariationOrder."Project Code" + 'Variation Order Number ' + VariationOrder.Number;
 
 
         // Add Recipient
@@ -443,6 +444,7 @@ codeunit 70106 "MASQ Email"
         SalesLine: Record "Sales Line";
         AppProjectManager: Code[50];
         AppProjNumber: Code[50];
+        EnvironmentInfo: Codeunit "Environment Information";
     begin
         GLSetup.Get();
 
@@ -478,7 +480,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
                            // Set Subject
-        Subject := Format(CurrentClientType()) + ' : Sales Order ' + SalesHeader."No.";
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Sales Order ' + SalesHeader."No.";
 
         // Add Recipient
         UserSetup.SetRange(Reciever, true);
@@ -529,6 +531,7 @@ codeunit 70106 "MASQ Email"
         SalesLine: Record "Sales Line";
         AppProjectManager: Code[50];
         AppProjNumber: Code[50];
+        EnvironmentInfo: Codeunit "Environment Information";
     begin
         GLSetup.Get();
         Body := 'This is a system generated email to inform you about the new Sales Order: <br><br>';
@@ -563,7 +566,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
                            // Set Subject
-        Subject := Format(CurrentClientType()) + ' : Sales Order ' + SalesHeader."No.";
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Sales Order ' + SalesHeader."No.";
 
         // Add Recipient
         UserSetup.SetRange(Reciever, true);
@@ -613,6 +616,7 @@ codeunit 70106 "MASQ Email"
         Job: Record Job;
         AppProjectManager: Code[50];
         AppProjID: Code[50];
+        EnvironmentInfo: Codeunit "Environment Information";
     begin
         Job.SetRange("No.", SubmittalComment."Dynamics Project Number");
         if Job.FindFirst() then begin
@@ -632,7 +636,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := Format(CurrentClientType()) + ' : Submital Comment ID: ' + Format(SubmittalComment.SubmittalCommentId);
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Submital Comment ID: ' + Format(SubmittalComment.SubmittalCommentId);
 
         // Add Recipient
         UserSetup.SetRange("Submittal Cmt Rec", true);
@@ -669,6 +673,7 @@ codeunit 70106 "MASQ Email"
         UserSetup: Record "User Setup";
         ErrorMessage: record "Error Message";
         ClientTypeManagement: Codeunit "Client Type Management";
+        EnvironmentInfo: Codeunit "Environment Information";
     begin
         Body := 'This is a system generated email to inform you about the new Intermediate Item: <br><br>';
         Body += '<table  style="margin-left:15px">';
@@ -681,7 +686,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := Format(CurrentClientType()) + ' : Intermediate Item: ' + IntermediateItems."No.";
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Intermediate Item: ' + IntermediateItems."No.";
 
         // Add Recipient
         UserSetup.SetRange("InterItem Reciever", true);
@@ -720,6 +725,7 @@ codeunit 70106 "MASQ Email"
         ClientTypeManagement: Codeunit "Client Type Management";
     // AppProjNumber: Code[50];
     // Job: Record Job;
+    EnvironmentInfo: Codeunit "Environment Information";
     begin
         Body := 'This is a system generated email to inform you about the new Intermediate Customer: <br><br>';
         Body += '<table  style="margin-left:15px">';
@@ -730,7 +736,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := Format(CurrentClientType()) + ' : Intermediate Customer: ' + IntermediateCusts."No.";
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Intermediate Customer: ' + IntermediateCusts."No.";
 
         // Add Recipient
         UserSetup.SetRange("InterCust Reciever", true);
@@ -767,6 +773,7 @@ codeunit 70106 "MASQ Email"
         UserSetup: Record "User Setup";
         ErrorMessage: record "Error Message";
         ClientTypeManagement: Codeunit "Client Type Management";
+        EnvironmentInfo: Codeunit "Environment Information";
     begin
         Body := 'This is a system generated email to inform you about the new Intermediate Vendor: <br><br>';
         Body += '<table  style="margin-left:15px">';
@@ -777,7 +784,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := Format(CurrentClientType()) + ' : Intermediate Vendor: ' + IntermediateVends."No.";
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Intermediate Vendor: ' + IntermediateVends."No.";
 
         // Add Recipient
 
@@ -819,6 +826,7 @@ codeunit 70106 "MASQ Email"
         Job: Record Job;
         PurchaseLine: Record "Purchase Line";
         AppProjNumber: Code[50];
+        EnvironmentInfo: Codeunit "Environment Information";
     begin
         PurchaseLine.SetRange("Document Type", PurchHeader."Document Type");
         PurchaseLine.SetRange("Document No.", PurchHeader."No.");
@@ -868,7 +876,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := Format(CurrentClientType()) + ' : Purchase Order ' + PurchHeader."No.";
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Purchase Order ' + PurchHeader."No.";
         //an
         // Add Recipient
         UserSetup.SetRange("PO Reciever", true);
@@ -909,6 +917,7 @@ codeunit 70106 "MASQ Email"
         Job: Record Job;
         PurchaseLine: Record "Purchase Line";
         AppProjNumber: Code[50];
+        EnvironmentInfo: Codeunit "Environment Information";
     begin
         PurchaseLine.SetRange("Document Type", PurchHeader."Document Type");
         PurchaseLine.SetRange("Document No.", PurchHeader."No.");
@@ -949,7 +958,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := Format(CurrentClientType()) + ' : Purchase Credit Memo ' + PurchHeader."No.";
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Purchase Credit Memo ' + PurchHeader."No.";
 
         // Add Recipient
         UserSetup.SetRange("PO Reciever", true);
@@ -974,6 +983,7 @@ codeunit 70106 "MASQ Email"
         MultiRecipients: Text;
         UserSetup: Record "User Setup";
         Job: Record Job;
+        EnvironmentInfo: Codeunit "Environment Information";
     begin
         if Job.Get(JobTask."Job No.") then begin
             Body := 'This is a system generated email to inform you about the new project lines are exported: <br><br>';
@@ -991,7 +1001,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
                            // Set Subject
-        Subject := Format(CurrentClientType()) + ' : Project No: ' + JobTask."Job No.";
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Project No: ' + JobTask."Job No.";
 
         // Add Recipient
         UserSetup.SetRange("Projects Reciever", true);
@@ -1014,6 +1024,7 @@ codeunit 70106 "MASQ Email"
         Body: Text;
         MultiRecipients: Text;
         UserSetup: Record "User Setup";
+        EnvironmentInfo: Codeunit "Environment Information";
     begin
         Body := 'This is a system generated email to inform you that the Shipping Quotation is approved. <br><br>';
         Body += '<table  style="margin-left:15px">';
@@ -1024,7 +1035,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := Format(CurrentClientType()) + ' : Approved Shipping Quotation: ' + ShippingQuotation."Comparison ID";
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Approved Shipping Quotation: ' + ShippingQuotation."Comparison ID";
 
         // Add Recipient
 
@@ -1049,6 +1060,7 @@ codeunit 70106 "MASQ Email"
         Body: Text;
         MultiRecipients: Text;
         UserSetup: Record "User Setup";
+        EnvironmentInfo: Codeunit "Environment Information";
     begin
         Body := 'This is a system generated email to inform you that new project is being exported. <br><br>';
         Body += '<table  style="margin-left:15px">';
@@ -1060,7 +1072,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := Format(CurrentClientType()) + ' : Project No: ' + Job."No.";
+        Subject := EnvironmentInfo.GetEnvironmentName() + ' : Project No: ' + Job."No.";
 
         // Add Recipient
 

@@ -17,6 +17,7 @@ page 70175 "Request for Payment Subform"
                     ToolTip = 'Specifies the value of the Payment Date field.', Comment = '%';
                     //NB MASQ Start
                     Editable = (Rec."Payment Status" = Rec."Payment Status"::Open) or (EditLine and (Rec."Payment Status" = Rec."Payment Status"::Released));
+                    Caption = 'Recomended Payment Date';
                     //NB MASQ End
                 }
                 field("Payment Value"; Rec."Payment Value")
