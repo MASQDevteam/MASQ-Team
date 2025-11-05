@@ -234,7 +234,6 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         }
         field(38; "Supplier Name"; Text[100])
         {
-            Caption = 'Supplier Name';
             Editable = false;
             FieldClass = FlowField;
             CalcFormula = lookup(Vendor.Name where("No." = field(Supplier)));

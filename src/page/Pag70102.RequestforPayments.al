@@ -23,6 +23,7 @@ page 70102 "Request for Payments"
                 field("Supplier Name"; Rec."Supplier Name")
                 {
                     ToolTip = 'Specifies the value of the Supplier Name field.', Comment = '%';
+                    ApplicationArea = All;
                 }
                 field("Payment Terms"; Rec."Payment Terms")
                 {

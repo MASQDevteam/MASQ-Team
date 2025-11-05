@@ -8,11 +8,6 @@ pageextension 70104 "Item card Extension" extends "Item Card"
         }
         // Add changes to page layout here
 
-        // modify("Meg Vendor Item Code")
-        // {
-
-        //     Editable = false;
-        // }\
         addafter("Meg Beam Angle")
         {
             field("MASQ IP Rating"; Rec."MASQ IP Rating")
@@ -72,22 +67,7 @@ pageextension 70104 "Item card Extension" extends "Item Card"
             }
         }
         moveafter("Item Category Code"; "Meg Item Subcategory Code")// FQ MASQ 
-        // modify("Meg Vendor Item Code")
-        // {
-
-        //     trigger OnAfterValidate()
-        //     var
-        //     begin
-        //         Clear(ItemRec);
-        //         ItemRec.SetRange("Meg Vendor Item Code", Rec."Meg Vendor Item Code");
-        //         ItemRec.SetFilter("No.", '<> %1', Rec."No.");
-
-        //         IF ItemRec.FindFirst() then
-        //             Error('Vendor item Code already exist in this database');
-        //     end;
-        // }
-
-
+        moveafter(Description; "Meg Vendor Item Code", "Meg Other Details")
     }
 
     actions

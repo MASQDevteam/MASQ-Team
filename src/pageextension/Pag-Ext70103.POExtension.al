@@ -405,8 +405,10 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
         SalesHeader: Record "Sales Header";
     begin
         Rec.CalcFields("MASQ Sales Order No.");
-        if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then
+        if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then begin
             Rec.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
+            Rec.Validate("Assigned User ID", SalesHeader."Assigned User ID");
+        end;
     end;
 
     trigger OnQueryClosePage(CloseAction: Action): Boolean
@@ -457,8 +459,11 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
         UpdateSCCStatus();//FQ MASQ
 
         Rec.CalcFields("MASQ Sales Order No.");
-        if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then
+        if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then begin
             Rec.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
+            Rec.Validate("Assigned User ID", SalesHeader."Assigned User ID");
+        end;
+
         CurrPage.Update(false);
     end;
 
@@ -474,8 +479,11 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
         UpdateSCCStatus();//FQ MASQ
 
         Rec.CalcFields("MASQ Sales Order No.");
-        if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then
+        if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then begin
             Rec.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
+            Rec.Validate("Assigned User ID", SalesHeader."Assigned User ID");
+        end;
+        
         CurrPage.Update(false);
     end;
 

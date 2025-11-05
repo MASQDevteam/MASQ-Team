@@ -1011,6 +1011,7 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
         if PurchaseHeader.Get(Rec."Document Type", Rec."Document No.") then begin
             if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then begin
                 PurchaseHeader.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
+                PurchaseHeader.Validate("Assigned User ID", SalesHeader."Assigned User ID");
                 PurchaseHeader.Modify();
             end;
         end;
@@ -1046,6 +1047,7 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
         if PurchaseHeader.Get(Rec."Document Type", Rec."Document No.") then begin
             if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then begin
                 PurchaseHeader.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
+                PurchaseHeader.Validate("Assigned User ID", SalesHeader."Assigned User ID");
                 PurchaseHeader.Modify();
             end;
         end;

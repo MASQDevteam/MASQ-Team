@@ -76,8 +76,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
 
         // Set Subject
-        Subject := 'Travel Request Approval entries';
-
+        Subject := Format(CurrentClientType()) + ' : Travel Request Approval entries';
 
         // Add Recipient
         UserSetup.Get(User."User Name");
@@ -281,7 +280,7 @@ codeunit 70106 "MASQ Email"
         IF PaymentRequest.Supplier <> '' then
             Vendor.get(PaymentRequest.Supplier);
 
-        Subject := 'Payment Request PO# ' + PaymentRequest."PO#" + ' Vendor Name ' + Vendor.Name + ' Level of Urgency ' + Format(PaymentRequest."Level of Urgency");
+        Subject := Format(CurrentClientType()) + ' : Payment Request PO# ' + PaymentRequest."PO#" + ' Vendor Name ' + Vendor.Name + ' Level of Urgency ' + Format(PaymentRequest."Level of Urgency");
 
         // Add Recipient
         UserSetup.Get(User."User Name");
@@ -395,7 +394,7 @@ codeunit 70106 "MASQ Email"
 
         // Set Subject
 
-        Subject := 'Variaion Order Project# ' + VariationOrder."Project Code" + 'Variation Order Number ' + VariationOrder.Number;
+        Subject := Format(CurrentClientType()) + ' : Variaion Order Project# ' + VariationOrder."Project Code" + 'Variation Order Number ' + VariationOrder.Number;
 
 
         // Add Recipient
@@ -479,7 +478,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
                            // Set Subject
-        Subject := 'Sales Order ' + SalesHeader."No.";
+        Subject := Format(CurrentClientType()) + ' : Sales Order ' + SalesHeader."No.";
 
         // Add Recipient
         UserSetup.SetRange(Reciever, true);
@@ -564,7 +563,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
                            // Set Subject
-        Subject := 'Sales Order ' + SalesHeader."No.";
+        Subject := Format(CurrentClientType()) + ' : Sales Order ' + SalesHeader."No.";
 
         // Add Recipient
         UserSetup.SetRange(Reciever, true);
@@ -633,7 +632,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := 'Submital Comment ID: ' + Format(SubmittalComment.SubmittalCommentId);
+        Subject := Format(CurrentClientType()) + ' : Submital Comment ID: ' + Format(SubmittalComment.SubmittalCommentId);
 
         // Add Recipient
         UserSetup.SetRange("Submittal Cmt Rec", true);
@@ -682,7 +681,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := 'Intermediate Item: ' + IntermediateItems."No.";
+        Subject := Format(CurrentClientType()) + ' : Intermediate Item: ' + IntermediateItems."No.";
 
         // Add Recipient
         UserSetup.SetRange("InterItem Reciever", true);
@@ -731,7 +730,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := 'Intermediate Customer: ' + IntermediateCusts."No.";
+        Subject := Format(CurrentClientType()) + ' : Intermediate Customer: ' + IntermediateCusts."No.";
 
         // Add Recipient
         UserSetup.SetRange("InterCust Reciever", true);
@@ -778,7 +777,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := 'Intermediate Vendor: ' + IntermediateVends."No.";
+        Subject := Format(CurrentClientType()) + ' : Intermediate Vendor: ' + IntermediateVends."No.";
 
         // Add Recipient
 
@@ -869,7 +868,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := 'Purchase Order ' + PurchHeader."No.";
+        Subject := Format(CurrentClientType()) + ' : Purchase Order ' + PurchHeader."No.";
         //an
         // Add Recipient
         UserSetup.SetRange("PO Reciever", true);
@@ -950,7 +949,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := 'Purchase Credit Memo ' + PurchHeader."No.";
+        Subject := Format(CurrentClientType()) + ' : Purchase Credit Memo ' + PurchHeader."No.";
 
         // Add Recipient
         UserSetup.SetRange("PO Reciever", true);
@@ -992,7 +991,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
                            // Set Subject
-        Subject := 'Project No: ' + JobTask."Job No.";
+        Subject := Format(CurrentClientType()) + ' : Project No: ' + JobTask."Job No.";
 
         // Add Recipient
         UserSetup.SetRange("Projects Reciever", true);
@@ -1025,7 +1024,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := 'Approved Shipping Quotation: ' + ShippingQuotation."Comparison ID";
+        Subject := Format(CurrentClientType()) + ' : Approved Shipping Quotation: ' + ShippingQuotation."Comparison ID";
 
         // Add Recipient
 
@@ -1061,7 +1060,7 @@ codeunit 70106 "MASQ Email"
         Body += 'Thank you.<br><br>';
         Body += 'Regards,';//<br><br>Nathalie Dimassi';
         // Set Subject
-        Subject := 'Project No: ' + Job."No.";
+        Subject := Format(CurrentClientType()) + ' : Project No: ' + Job."No.";
 
         // Add Recipient
 
