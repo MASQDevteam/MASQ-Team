@@ -275,7 +275,7 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
             var
                 myInt: Integer;
             begin
-                if rec."Custom Status" = rec."Custom Status" ::"Fully Received/Fully Invoiced" then begin
+                if rec."Custom Status" = rec."Custom Status"::"Fully Received/Fully Invoiced" then begin
                     Error('You cannot reopen a PO once it has been fully received and fully invoiced.');
                 end;
             end;
@@ -418,7 +418,8 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
         Rec.CalcFields("MASQ Sales Order No.");
         if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then begin
             Rec.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
-            Rec.Validate("Assigned User ID", SalesHeader."Assigned User ID");
+            if Rec."Assigned User ID" = '' then
+                Rec.Validate("Assigned User ID", SalesHeader."Assigned User ID");
         end;
     end;
 
@@ -472,7 +473,8 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
         Rec.CalcFields("MASQ Sales Order No.");
         if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then begin
             Rec.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
-            Rec.Validate("Assigned User ID", SalesHeader."Assigned User ID");
+            if Rec."Assigned User ID" = '' then
+                Rec.Validate("Assigned User ID", SalesHeader."Assigned User ID");
         end;
 
         CurrPage.Update(false);
@@ -492,9 +494,10 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
         Rec.CalcFields("MASQ Sales Order No.");
         if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."MASQ Sales Order No.") then begin
             Rec.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
-            Rec.Validate("Assigned User ID", SalesHeader."Assigned User ID");
+            if Rec."Assigned User ID" = '' then
+                Rec.Validate("Assigned User ID", SalesHeader."Assigned User ID");
         end;
-        
+
         CurrPage.Update(false);
     end;
 
