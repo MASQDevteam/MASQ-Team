@@ -283,6 +283,52 @@ tableextension 70101 "Purchg inv line extensi9on" extends "Purch. Inv. Line"
         {
             DataClassification = ToBeClassified;
         }
+
+
+        //FQ MASQ **START**
+        field(70160; "Waybill Reference ID"; Code[20])
+        {
+            Caption = 'Waybill Reference ID';
+            DataClassification = ToBeClassified;
+        }
+
+        field(70161; "Waybill Type"; Option)
+        {
+            Caption = 'Waybill Type';
+            DataClassification = ToBeClassified;
+            OptionMembers = " ",Air,Truck,BL;
+        }
+
+        field(70162; "Waybill Document No."; Code[50])
+        {
+            Caption = 'Waybill Document No.';
+            DataClassification = ToBeClassified;
+        }
+
+        field(70163; "Waybill PO References"; Text[1000])
+        {
+            Caption = 'Waybill PO References';
+            DataClassification = ToBeClassified;
+        }
+
+        field(70164; "Linked PO No."; Code[20])
+        {
+            Caption = 'Linked PO No.';
+            DataClassification = ToBeClassified;
+        }
+
+        field(70165; "Waybill Vendor Name"; Text[100])
+        {
+            Caption = 'Waybill Vendor Name';
+            DataClassification = ToBeClassified;
+        }
+
+        field(70166; "Waybill Project Code"; Code[20])
+        {
+            Caption = 'Waybill Project Code';
+            DataClassification = ToBeClassified;
+        }
+        //FQ MASQ **END**
     }
 
     keys

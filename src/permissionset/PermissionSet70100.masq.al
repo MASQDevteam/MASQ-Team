@@ -206,6 +206,8 @@ permissionset 70100 masq
         page "SCC Details FactBox" = x,
         page "Shipping Conformity Cert. Card" = x,
         page "Shipping Conformity Cert. List" = x,
-        report "Posted-Sales-Invoice" = x;
+        report "Posted-Sales-Invoice" = x,
+        report "SCC Simple Report" = X,
+        page PurchaseOrderCustomAPI = X;
     //codeunit "Payment Req WorkFlow Functions" = X;
 }

@@ -114,6 +114,42 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
             }
 
         }
+        modify("Buy-from Vendor Name")
+        {
+            Editable = false;
+        }
+        modify("Buy-from Address")
+        {
+            Editable = false;
+        }
+        modify("Buy-from Address 2")
+        {
+            Editable = false;
+        }
+        modify("Buy-from City")
+        {
+            Editable = false;
+        }
+        modify("Buy-from Post Code")
+        {
+            Editable = false;
+        }
+        modify("Buy-from Country/Region Code")
+        {
+            Editable = false;
+        }
+        modify("Buy-from Contact No.")
+        {
+            Editable = false;
+        }
+        modify("VAT Bus. Posting Group")
+        {
+            Editable = false;
+        }
+        modify("Vendor Posting Group")
+        {
+            Editable = false;
+        }
         // FQ MASQ ** END
 
         // Add changes to page layout here
@@ -275,7 +311,7 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
             var
                 myInt: Integer;
             begin
-                if rec."Custom Status" = rec."Custom Status" ::"Fully Received/Fully Invoiced" then begin
+                if rec."Custom Status" = rec."Custom Status"::"Fully Received/Fully Invoiced" then begin
                     Error('You cannot reopen a PO once it has been fully received and fully invoiced.');
                 end;
             end;
@@ -295,6 +331,37 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
                 trigger OnAction()
                 begin
                     CurrPage.Update(false);
+                end;
+            }
+            action(updateCustomerdata)
+            {
+                ApplicationArea = All;
+                Caption = 'Update Vendor Fields';
+                Image = UpdateDescription;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Update Vendor Field in Purchase header';
+                trigger OnAction()
+                var
+                    Vendor: Record Vendor;
+                begin
+                    if Rec."Buy-from Vendor No." <> '' then begin
+                        if Vendor.Get(Rec."Buy-from Vendor No.") then begin
+                            Rec."Buy-from Vendor Name" := Vendor.Name;
+                            Rec."Buy-from Address" := Vendor.Address;
+                            Rec."Buy-from Address 2" := Vendor."Address 2";
+                            Rec."Buy-from City" := Vendor.City;
+                            Rec."Buy-from Post Code" := Vendor."Post Code";
+                            Rec."Buy-from Country/Region Code" := Vendor."Country/Region Code";
+                            Rec."Buy-from Contact No." := Vendor.Contact;
+                            Rec."VAT Bus. Posting Group" := Vendor."VAT Bus. Posting Group";
+                            Rec."Vendor Posting Group" := Vendor."Vendor Posting Group";
+                            Rec.Modify();
+                            Message('The vendor fields has been updated successfully');
+                            CurrPage.Update(false);
+                        end;
+                    end;
                 end;
             }
             // FQ MASQ ** End
@@ -494,7 +561,7 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
             Rec.Validate("Logistics Coordinator", SalesHeader."Logistics Coordinator");
             Rec.Validate("Assigned User ID", SalesHeader."Assigned User ID");
         end;
-        
+
         CurrPage.Update(false);
     end;
 

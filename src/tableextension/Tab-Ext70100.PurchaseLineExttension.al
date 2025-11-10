@@ -488,106 +488,42 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
         field(70152; "AWB Number"; Code[50])
         {
             DataClassification = CustomerContent;
-            TableRelation = "AWB Details"."AWB Number";
-            ValidateTableRelation = false;
-            trigger OnValidate()
-            var
-                AWBDetails: Record "AWB Details";
-            begin
-                Clear("AWB PO No.");
-                Clear("PO No.");
-                Clear("Vendor Name");
-                Clear("Project Code");
-
-                AWBDetails.Reset();
-                AWBDetails.SetRange("AWB Number", Rec."AWB Number");
-                AWBDetails.SetFilter("PO No.", '<>%1', '');
-                if AWBDetails.FindFirst() then begin
-                    Rec.Validate("AWB PO No.", AWBDetails."PO No.");
-                    if StrLen(AWBDetails."PO No.") = 9 then
-                        Rec.Validate("PO No.", AWBDetails."PO No.");
-                end;
-            end;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The user no longer wants this field';
+            ObsoleteTag = '25.0.1.139';
         }
         field(70153; "AWB PO No."; Text[1000])
         {
             DataClassification = CustomerContent;
             Editable = false;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The user no longer wants this field';
+            ObsoleteTag = '25.0.1.139';
         }
         field(70154; "PO No."; Code[20])
         {
             DataClassification = CustomerContent;
-            trigger OnValidate()
-            var
-                PurchaseHeader: Record "Purchase Header";
-                DimensionSetEntry: Record "Dimension Set Entry";
-                PurchInvHeader: Record "Purch. Inv. Header";
-                AWBPoList: List of [Text];
-                AWBPo: Text;
-                Found: Boolean;
-            begin
-                if Rec."PO No." <> '' then begin
-                    if StrLen(Rec."AWB PO No.") > 9 then begin
-                        // Split the AWB PO No. field values (comma separated)
-                        AWBPoList := "AWB PO No.".Split(',');
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The user no longer wants this field';
+            ObsoleteTag = '25.0.1.139';
 
-                        Found := false;
-                        foreach AWBPo in AWBPoList do begin
-                            // Use DelChr to trim spaces around text
-                            AWBPo := DelChr(AWBPo, '<>', ' ');
-
-                            if AWBPo = Rec."PO No." then
-                                Found := true;
-                        end;
-
-                        if not Found then
-                            Error('PO No. %1 is not available in AWB PO No. %2', "PO No.", "AWB PO No.");
-                    end else begin
-                        if Rec."AWB PO No." <> Rec."PO No." then
-                            Error('PO No. %1 is not available in AWB PO No. %2', "PO No.", "AWB PO No.");
-                    end;
-                end;
-
-                Clear("Vendor Name");
-                Clear("Project Code");
-
-                if Rec."PO No." <> '' then begin
-                    PurchaseHeader.Reset();
-                    PurchaseHeader.SetRange("Document Type", PurchaseHeader."Document Type"::Order);
-                    PurchaseHeader.SetRange("No.", Rec."PO No.");
-                    if PurchaseHeader.FindFirst() then begin
-                        Rec.Validate("Vendor Name", PurchaseHeader."Buy-from Vendor Name");
-
-                        DimensionSetEntry.Reset();
-                        DimensionSetEntry.SetRange("Dimension Set ID", PurchaseHeader."Dimension Set ID");
-                        DimensionSetEntry.SetRange("Dimension Code", 'PROJECT');
-                        if DimensionSetEntry.FindFirst() then
-                            Rec.Validate("Project Code", DimensionSetEntry."Dimension Value Code");
-                    end else begin
-                        PurchInvHeader.Reset();
-                        PurchInvHeader.SetRange("Order No.", Rec."PO No.");
-                        if PurchInvHeader.FindFirst() then begin
-                            Rec.Validate("Vendor Name", PurchInvHeader."Buy-from Vendor Name");
-
-                            DimensionSetEntry.Reset();
-                            DimensionSetEntry.SetRange("Dimension Set ID", PurchInvHeader."Dimension Set ID");
-                            DimensionSetEntry.SetRange("Dimension Code", 'PROJECT');
-                            if DimensionSetEntry.FindFirst() then
-                                Rec.Validate("Project Code", DimensionSetEntry."Dimension Value Code");
-                        end;
-                    end;
-                end;
-            end;
         }
         field(70155; "Vendor Name"; Text[100])
         {
             DataClassification = CustomerContent;
             Editable = false;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The user no longer wants this field';
+            ObsoleteTag = '25.0.1.131';
         }
         field(70156; "Project Code"; Code[20])
         {
             Editable = false;
             DataClassification = CustomerContent;
+            ObsoleteState = Pending;
+            ObsoleteReason = 'The user no longer wants this field';
+            ObsoleteTag = '25.0.1.131';
+
         }
         field(70157; "Production Days"; Integer) //NB MASQ
         {
@@ -600,6 +536,255 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
             Editable = false;
         }
         //NB MASQ End
+
+        //FQ MASQ **START**
+
+        field(70160; "Waybill Reference ID"; Code[20])
+        {
+            Caption = 'Waybill Reference ID';
+            DataClassification = ToBeClassified;
+
+            trigger OnLookup()
+            var
+                WaybillType: Integer;
+                AWBDetails: Record "AWB Details";
+                TruckWaybill: Record "Truck WayBill";
+                BLDetails: Record "BL Details";
+            begin
+                //    if (rec."Qty. to Assign" = 0) and (rec.Type = rec.Type::"Charge (Item)") then
+                //    Error('The waybill reference cannot be selected for a line with quantity to assign zero. Please assign first, then add the waybill reference.');
+                WaybillType := StrMenu('Air Waybill (AWB),Truck Waybill,Bill of Lading (BL)', 1, 'Select Waybill Type:');
+
+                case WaybillType of
+                    1: // Air Waybill
+                        begin
+                            if PAGE.RunModal(PAGE::"AWB List", AWBDetails) = ACTION::LookupOK then begin
+                                Rec.Validate("Waybill Reference ID", AWBDetails."AWB ID");
+                                Rec.Validate("Waybill Type", Rec."Waybill Type"::Air);
+                                PopulateFromAWB(AWBDetails);
+                            end;
+                        end;
+                    2: // Truck Waybill
+                        begin
+                            if PAGE.RunModal(PAGE::"Truck Waybill List", TruckWaybill) = ACTION::LookupOK then begin
+                                Rec.Validate("Waybill Reference ID", TruckWaybill."Truck WayBill ID");
+                                Rec.Validate("Waybill Type", Rec."Waybill Type"::Truck);
+                                PopulateFromTruckWaybill(TruckWaybill);
+                            end;
+                        end;
+                    3: // Bill of Lading
+                        begin
+                            if PAGE.RunModal(PAGE::"BL List", BLDetails) = ACTION::LookupOK then begin
+                                Rec.Validate("Waybill Reference ID", BLDetails."BL ID");
+                                Rec.Validate("Waybill Type", Rec."Waybill Type"::BL);
+                                PopulateFromBL(BLDetails);
+                            end;
+                        end;
+                end;
+            end;
+
+            trigger OnValidate()
+            var
+                AWBDetails: Record "AWB Details";
+                TruckWaybill: Record "Truck WayBill";
+                BLDetails: Record "BL Details";
+            begin
+                // Only validate if Waybill Reference ID actually changed AND we have a type set
+                if (Rec."Waybill Reference ID" <> xRec."Waybill Reference ID") and (Rec."Waybill Type" <> Rec."Waybill Type"::" ") then begin
+                    // Clear dependent fields first
+                    Clear(Rec."Waybill Document No.");
+                    Clear(Rec."Waybill PO References");
+                    Clear(Rec."Linked PO No.");
+                    Clear(Rec."Waybill Vendor Name");
+                    Clear(Rec."Waybill Project Code");
+
+                    // Only populate if we have a value
+                    if Rec."Waybill Reference ID" <> '' then begin
+                        case Rec."Waybill Type" of
+                            Rec."Waybill Type"::Air:
+                                begin
+                                    AWBDetails.Reset();
+                                    AWBDetails.SetRange("AWB ID", Rec."Waybill Reference ID");
+                                    if AWBDetails.FindFirst() then
+                                        PopulateFromAWB(AWBDetails)
+                                    else
+                                        Error('AWB ID %1 does not exist.', Rec."Waybill Reference ID");
+                                end;
+                            Rec."Waybill Type"::Truck:
+                                begin
+                                    TruckWaybill.Reset();
+                                    TruckWaybill.SetRange("Truck WayBill ID", Rec."Waybill Reference ID");
+                                    if TruckWaybill.FindFirst() then
+                                        PopulateFromTruckWaybill(TruckWaybill)
+                                    else
+                                        Error('Truck Waybill ID %1 does not exist.', Rec."Waybill Reference ID");
+                                end;
+                            Rec."Waybill Type"::BL:
+                                begin
+                                    BLDetails.Reset();
+                                    BLDetails.SetRange("BL ID", Rec."Waybill Reference ID");
+                                    if BLDetails.FindFirst() then
+                                        PopulateFromBL(BLDetails)
+                                    else
+                                        Error('Bill of Lading ID %1 does not exist.', Rec."Waybill Reference ID");
+                                end;
+                        end;
+                    end;
+                end;
+            end;
+        }
+
+        field(70161; "Waybill Type"; Option)
+        {
+            Caption = 'Waybill Type';
+            DataClassification = ToBeClassified;
+            OptionMembers = " ",Air,Truck,BL;
+
+            trigger OnValidate()
+            begin
+                // Clear all dependent fields if type changes
+                if (xRec."Waybill Type" <> Rec."Waybill Type") and (xRec."Waybill Type" <> xRec."Waybill Type"::" ") then begin
+                    Clear(Rec."Waybill Reference ID");
+                    Clear(Rec."Waybill Document No.");
+                    Clear(Rec."Waybill PO References");
+                    Clear(Rec."Linked PO No.");
+                    Clear(Rec."Waybill Vendor Name");
+                    Rec.Modify();
+                end;
+            end;
+        }
+        field(70162; "Waybill Document No."; Code[50])
+        {
+            Caption = 'Waybill Document No.';
+            DataClassification = ToBeClassified;
+            Editable = false;
+            ToolTip = 'Document number from the waybill (AWB Number, Truck Waybill No., or BL Number)';
+        }
+        field(70163; "Waybill PO References"; Text[1000])
+        {
+            Caption = 'Waybill PO References';
+            DataClassification = ToBeClassified;
+            Editable = false;
+            ToolTip = 'All PO numbers referenced in this waybill (comma-separated if multiple)';
+        }
+        field(70164; "Linked PO No."; Code[20])
+        {
+            Caption = 'Linked PO No.';
+            DataClassification = ToBeClassified;
+            ToolTip = 'The specific PO number selected from the waybill PO references';
+
+            trigger OnValidate()
+            var
+                PurchaseHeader: Record "Purchase Header";
+                DimensionSetEntry: Record "Dimension Set Entry";
+                PurchInvHeader: Record "Purch. Inv. Header";
+                POList: List of [Text];
+                PO: Text;
+                Found: Boolean;
+            begin
+                Clear(Rec."Waybill Vendor Name");
+                Clear(Rec."Waybill Project Code");
+
+                if Rec."Linked PO No." <> '' then begin
+                    // Validate PO exists in Waybill PO References (only if references exist)
+                    if StrLen(Rec."Waybill PO References") > 0 then begin
+                        POList := GetPOListFromReferences(Rec."Waybill PO References");
+
+                        if POList.Count > 0 then begin
+                            Found := false;
+                            foreach PO in POList do begin
+                                if PO = Rec."Linked PO No." then
+                                    Found := true;
+                            end;
+
+                            if not Found then
+                                Error('PO No. %1 is not available in Waybill PO References: %2', Rec."Linked PO No.", Rec."Waybill PO References");
+                        end;
+                    end;
+
+                    // Get vendor and project info from PO (first check open orders)
+                    PurchaseHeader.Reset();
+                    PurchaseHeader.SetRange("Document Type", PurchaseHeader."Document Type"::Order);
+                    PurchaseHeader.SetRange("No.", Rec."Linked PO No.");
+                    if PurchaseHeader.FindFirst() then begin
+                        Rec."Waybill Vendor Name" := PurchaseHeader."Buy-from Vendor Name";
+
+                        DimensionSetEntry.Reset();
+                        DimensionSetEntry.SetRange("Dimension Set ID", PurchaseHeader."Dimension Set ID");
+                        DimensionSetEntry.SetRange("Dimension Code", 'PROJECT');
+                        if DimensionSetEntry.FindFirst() then
+                            Rec."Waybill Project Code" := DimensionSetEntry."Dimension Value Code";
+                    end else begin
+                        // Check in posted invoices
+                        PurchInvHeader.Reset();
+                        PurchInvHeader.SetRange("Order No.", Rec."Linked PO No.");
+                        if PurchInvHeader.FindFirst() then begin
+                            Rec."Waybill Vendor Name" := PurchInvHeader."Buy-from Vendor Name";
+
+                            DimensionSetEntry.Reset();
+                            DimensionSetEntry.SetRange("Dimension Set ID", PurchInvHeader."Dimension Set ID");
+                            DimensionSetEntry.SetRange("Dimension Code", 'PROJECT');
+                            if DimensionSetEntry.FindFirst() then
+                                Rec."Waybill Project Code" := DimensionSetEntry."Dimension Value Code";
+                        end;
+                    end;
+                end;
+            end;
+
+            trigger OnLookup()
+            var
+                POList: List of [Text];
+                PO: Text;
+                POOptions: Text;
+                Selection: Integer;
+            begin
+                // Only show lookup if there are PO references
+                if StrLen(Rec."Waybill PO References") = 0 then
+                    exit;
+
+                // Get list of POs handling multiple separator formats
+                POList := GetPOListFromReferences(Rec."Waybill PO References");
+
+                // If single PO, set it directly
+                if POList.Count = 1 then begin
+                    POList.Get(1, PO);
+                    Rec.Validate("Linked PO No.", PO);
+                    exit;
+                end;
+                // Multiple POs - build options string
+                if POList.Count > 1 then begin
+                    POOptions := '';
+                    foreach PO in POList do begin
+                        if POOptions <> '' then
+                            POOptions += ',';
+                        POOptions += PO;
+                    end;
+                    // Show selection dialog
+                    Selection := StrMenu(POOptions, 1, 'Select PO Number:');
+                    if Selection > 0 then begin
+                        POList.Get(Selection, PO);
+                        Rec.Validate("Linked PO No.", PO);
+                    end;
+                end;
+            end;
+        }
+        field(70165; "Waybill Vendor Name"; Text[100])
+        {
+            Caption = 'Waybill Vendor Name';
+            DataClassification = ToBeClassified;
+            Editable = false;
+            ToolTip = 'Vendor name from the linked PO';
+        }
+
+        field(70166; "Waybill Project Code"; Code[20])
+        {
+            Caption = 'Waybill Project Code';
+            DataClassification = ToBeClassified;
+            Editable = false;
+            TableRelation = "Dimension Value".Code where("Dimension Code" = const('PROJECT'));
+            ToolTip = 'Project code from the linked PO';
+        }
+        //FQ MASQ **END**
 
         modify("No.")
         {
@@ -821,6 +1006,10 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
                 Clear(Rec."Item Subcategory Code");
                 if Item.Get(Rec."No.") then
                     Rec.Validate("Item Subcategory Code", Item."Meg Item Subcategory Code"); //NB MASQ
+
+                //FQ MASQ **START** 
+                PreserveWaybillFields();
+                //FQ MASQ **END**
             end;
         }
     }
@@ -931,8 +1120,6 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
 
         IF (rec."Job Planning Line No." = 0) AND (xRec."Job Planning Line No." <> 0) then
             Rec.Validate("Job Planning Line No.", xRec."Job Planning Line No.");
-
-
         //added on 25/02/2025
         IF Rec."Job#" = '' then
             Rec."Job#" := Xrec."Job#";
@@ -948,6 +1135,10 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
 
         IF Rec."Truck Details Line No." = 0 then
             Rec."Truck Details Line No." := Xrec."Truck Details Line No.";
+
+        //FQ MASQ **START**
+        PreserveWaybillFields();
+        //FQ MASQ **END**
     end;
 
     trigger OnDelete()
@@ -957,7 +1148,6 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
     begin
         Clear(UserSetup);
         UserSetup.Get(UserId);
-
         //NB MASQ Start
         IF (NOT UserSetup."Can Edit SO/PO Details") then begin
             IF Rec."Document Type" = REc."Document Type"::Order then
@@ -974,7 +1164,6 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
             end;
         end;
         //NB MASQ End
-
     end;
     //FQ MASQ ** Start
     trigger OnAfterInsert()
@@ -1052,6 +1241,13 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
             end;
         end;
         //NB MASQ End
+
+
+        //FQ MASQ **START**
+        // Additional safeguard for charge items
+        if Rec.Type = Rec.Type::"Charge (Item)" then
+            PreserveWaybillFields();
+        //FQ MASQ **END**
     end;
 
     trigger OnAfterDelete()
@@ -1061,6 +1257,145 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
         if PurchaseHeader.Get("Document Type", "Document No.") then
             PurchaseHeader.CalculateTotalWithCharge();
     end;
+
+    //FQ MASQ **START**
+    local procedure PopulateFromAWB(AWBDetails: Record "AWB Details")
+    begin
+        Rec."Waybill Document No." := AWBDetails."AWB Number";
+        Rec."Waybill PO References" := AWBDetails."PO No.";
+
+        // Auto-select PO if only one exists
+        if (StrLen(AWBDetails."PO No.") = 9) and (StrPos(AWBDetails."PO No.", ',') = 0) then
+            Rec.Validate("Linked PO No.", AWBDetails."PO No.")
+        else
+            Clear(Rec."Linked PO No.");
+    end;
+
+    local procedure PopulateFromTruckWaybill(TruckWaybill: Record "Truck WayBill")
+    var
+        PONumbers: Text[1000];
+        FirstPO: Code[20];
+        POCount: Integer;
+    begin
+        // Get waybill document number
+        Rec."Waybill Document No." := TruckWaybill."Truck WayBill ID";
+
+        // Get PO numbers from Truck WayBill header (it already has this info)
+        PONumbers := TruckWaybill."PO No.";
+
+        Rec."Waybill PO References" := PONumbers;
+
+        // Count unique POs and get first one
+        if PONumbers <> '' then begin
+            if StrPos(PONumbers, ',') > 0 then begin
+                // Multiple POs - just get the first one before comma
+                FirstPO := CopyStr(PONumbers, 1, StrPos(PONumbers, ',') - 1);
+                FirstPO := DelChr(FirstPO, '<>', ' ');
+                POCount := 2; // More than 1
+            end else begin
+                // Single PO
+                POCount := 1;
+                FirstPO := DelChr(PONumbers, '<>', ' ');
+            end;
+
+            // Auto-select if only one PO
+            if POCount = 1 then
+                Rec.Validate("Linked PO No.", FirstPO)
+            else
+                Clear(Rec."Linked PO No.");
+        end else
+            Clear(Rec."Linked PO No.");
+    end;
+
+    local procedure PopulateFromBL(BLDetails: Record "BL Details")
+    var
+        PONumbers: Text[1000];
+        FirstPO: Code[20];
+        POCount: Integer;
+        POList: List of [Text];
+        PO: Text;
+    begin
+        // Get BL document number
+        Rec."Waybill Document No." := BLDetails."BL Number";
+        // Get PO numbers from BL Details table (it already has this info)
+        PONumbers := BLDetails."PO No.";
+        Rec."Waybill PO References" := PONumbers;
+        // Count unique POs and get first one
+        if PONumbers <> '' then begin
+            if StrPos(PONumbers, ',') > 0 then begin
+                // Multiple POs
+                POList := PONumbers.Split(',');
+                POCount := 0;
+                foreach PO in POList do begin
+                    POCount += 1;
+                    PO := DelChr(PO, '<>', ' ');
+                    if POCount = 1 then
+                        FirstPO := PO;
+                end;
+            end else begin
+                // Single PO
+                POCount := 1;
+                FirstPO := DelChr(PONumbers, '<>', ' ');
+            end;
+            // Auto-select if only one PO
+            if POCount = 1 then
+                Rec.Validate("Linked PO No.", FirstPO)
+            else
+                Clear(Rec."Linked PO No.");
+        end else
+            Clear(Rec."Linked PO No.");
+    end;
+
+    local procedure PreserveWaybillFields()
+    begin
+        // Preserve Waybill Reference fields during modifications
+        if Rec."Waybill Reference ID" = '' then
+            Rec."Waybill Reference ID" := xRec."Waybill Reference ID";
+
+        if Rec."Waybill Type" = Rec."Waybill Type"::" " then
+            Rec."Waybill Type" := xRec."Waybill Type";
+
+        if Rec."Waybill Document No." = '' then
+            Rec."Waybill Document No." := xRec."Waybill Document No.";
+
+        if Rec."Waybill PO References" = '' then
+            Rec."Waybill PO References" := xRec."Waybill PO References";
+
+        if Rec."Linked PO No." = '' then
+            Rec."Linked PO No." := xRec."Linked PO No.";
+
+        if Rec."Waybill Vendor Name" = '' then
+            Rec."Waybill Vendor Name" := xRec."Waybill Vendor Name";
+
+        if Rec."Waybill Project Code" = '' then
+            Rec."Waybill Project Code" := xRec."Waybill Project Code";
+    end;
+
+    local procedure GetPOListFromReferences(POReferences: Text[1000]) POList: List of [Text]
+    var
+        TempText: Text;
+        PO: Text;
+        TempList: List of [Text];
+        i: Integer;
+    begin
+        // Handle multiple separator formats: //, comma, and hyphen
+        TempText := POReferences;
+        // First replace // with comma
+        TempText := TempText.Replace('//', ',');
+        // Replace space-hyphen-space with comma
+        TempText := TempText.Replace(' - ', ',');
+        TempText := TempText.Replace('- ', ',');
+        TempText := TempText.Replace(' -', ',');
+        // Now split by comma
+        TempList := TempText.Split(',');
+        // Clean up each PO and add to result list
+        foreach PO in TempList do begin
+            PO := DelChr(PO, '<>', ' '); // Trim spaces
+            if PO <> '' then
+                POList.Add(PO);
+        end;
+    end;
+    //FQ MASQ **END**
 
     var
         Text000: Label 'You cannot delete the order line because it is associated with Sales order %1 line %2.';

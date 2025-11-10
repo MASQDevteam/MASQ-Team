@@ -126,6 +126,12 @@ tableextension 70114 "PurchaseReceiptLine extension" extends "Purch. Rcpt. Line"
         {
             DataClassification = ToBeClassified;
         }
+       
+        field(70128; "Truck WayBill ID"; Code[20]) //FQ MASQ 
+        {
+            DataClassification = ToBeClassified;
+        }
+        
     }
 
     keys

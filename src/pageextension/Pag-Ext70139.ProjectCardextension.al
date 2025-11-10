@@ -2,6 +2,35 @@ pageextension 70139 "Project Card extension" extends "Job Card"
 {
     layout
     {
+        modify("Sell-to Customer Name")
+        {
+            Editable = false;
+        }
+        modify("Sell-to Address")
+        {
+            Editable = false;
+        }
+        modify("Sell-to Address 2")
+        {
+            Editable = false;
+        }
+        modify("Sell-to City")
+        {
+            Editable = false;
+        }
+        modify("Sell-to Post Code")
+        {
+            Editable = false;
+        }
+        modify("Sell-to Country/Region Code")
+        {
+            Editable = false;
+        }
+        modify("Sell-to Contact No.")
+        {
+            Editable = false;
+        }
+
         addlast(Content)
         {
             // group("Work In Progress")
@@ -64,6 +93,8 @@ pageextension 70139 "Project Card extension" extends "Job Card"
             //         }
             //     }
             // }
+
+
 
             //NB MASQ Start
             part("WIP Project Detail"; "WIP Project Detail")
@@ -190,6 +221,37 @@ pageextension 70139 "Project Card extension" extends "Job Card"
                 trigger OnAction()
                 begin
                     InsertOpex(Rec."Global Dimension 1 Code");
+                end;
+            }
+
+            action(updateCustomerdata)
+            {
+                ApplicationArea = All;
+                Caption = 'Update customer Fields';
+                Image = UpdateDescription;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Update Customer Field in Project card';
+                trigger OnAction()
+                var
+                    Customer: Record Customer;
+                begin
+                    if Rec."Sell-to Customer No." <> '' then begin
+                        if Customer.Get(Rec."Sell-to Customer No.") then begin
+                            Rec."Sell-to Customer Name" := Customer.Name;
+                            Rec."Sell-to Address" := Customer.Address;
+                            Rec."Sell-to Address 2" := Customer."Address 2";
+                            Rec."Sell-to City" := Customer.City;
+                            Rec."Sell-to Post Code" := Customer."Post Code";
+                            Rec."Sell-to Country/Region Code" := Customer."Country/Region Code";
+                            Rec."Sell-to Contact No." := Customer."Phone No.";
+                            Rec."Sell-to E-Mail" := Customer."E-Mail";
+                            Rec.Modify();
+                            Message('The Customer fields has been updated successfully');
+                            CurrPage.Update(false);
+                        end;
+                    end;
                 end;
             }
         }

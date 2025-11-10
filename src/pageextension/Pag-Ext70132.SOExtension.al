@@ -68,6 +68,61 @@ pageextension 70132 "SO Extension" extends "Sales Order"
         {
             ShowMandatory = true;
         }
+        //FQ MASQ **START**
+        modify("Sell-to Customer Name")
+        {
+            Editable = false;
+        }
+        modify("Sell-to Address")
+        {
+            Editable = false;
+        }
+        modify("Sell-to Address 2")
+        {
+            Editable = false;
+        }
+        modify("Sell-to City")
+        {
+            Editable = false;
+        }
+        modify("Sell-to Post Code")
+        {
+            Editable = false;
+        }
+        modify("Sell-to Country/Region Code")
+        {
+            Editable = false;
+        }
+        modify("Sell-to Contact No.")
+        {
+            Editable = false;
+        }
+
+        modify("VAT Registration No.")
+        {
+            Editable = false;
+        }
+        modify("Gen. Bus. Posting Group")
+        {
+            Editable = false;
+        }
+        modify("VAT Bus. Posting Group")
+        {
+            Editable = false;
+        }
+        modify("Sell-to Phone No.")
+        {
+            Editable = false;
+        }
+        modify("Sell-to E-Mail")
+        {
+            Editable = false;
+        }
+        modify("Foreign Trade")
+        {
+            Visible = false;
+        }
+        //FQ MASQ **END**
         addlast(General)
         {
             field("Pro-Forma Description"; Rec."Pro-Forma Description")
@@ -174,6 +229,40 @@ pageextension 70132 "SO Extension" extends "Sales Order"
                 trigger OnAction()
                 begin
                     CurrPage.Update(false);
+                end;
+            }
+            action(updateCustomerdata)
+            {
+                ApplicationArea = All;
+                Caption = 'Update customer Fields';
+                Image = UpdateDescription;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                ToolTip = 'Update Customer Field in sales header';
+                trigger OnAction()
+                var
+                    Customer: Record Customer;
+                begin
+                    if Rec."Sell-to Customer No." <> '' then begin
+                        if Customer.Get(Rec."Sell-to Customer No.") then begin
+                            Rec."Sell-to Customer Name" := Customer.Name;
+                            Rec."Sell-to Address" := Customer.Address;
+                            Rec."Sell-to Address 2" := Customer."Address 2";
+                            Rec."Sell-to City" := Customer.City;
+                            Rec."Sell-to Post Code" := Customer."Post Code";
+                            Rec."Sell-to Country/Region Code" := Customer."Country/Region Code";
+                            Rec."Sell-to Contact No." := Customer."Phone No.";
+                            Rec."VAT Bus. Posting Group" := Customer."VAT Bus. Posting Group";
+                            Rec."VAT Registration No." := Customer."VAT Registration No.";
+                            Rec."Gen. Bus. Posting Group" := Customer."Gen. Bus. Posting Group";
+                            Rec."Sell-to E-Mail" := Customer."E-Mail";
+                            Rec."Sell-to Phone No." := Customer."Mobile Phone No.";
+                            Rec.Modify();
+                            Message('The Customer fields has been updated successfully');
+                            CurrPage.Update(false);
+                        end;
+                    end;
                 end;
             }
             // FQ MASQ ** End

@@ -294,5 +294,49 @@ pageextension 70159 "Posted Purch. Invoice SubformE" extends "Posted Purch. Invo
             }
 
         }
+        addafter(Description)
+        {
+            field("Waybill Type"; Rec."Waybill Type")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the type of waybill: Air, Truck, or Bill of Lading';
+            }
+
+            field("Waybill Reference ID"; Rec."Waybill Reference ID")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the waybill reference ID (AWB, Truck Waybill, or BL)';
+            }
+
+            field("Waybill Document No."; Rec."Waybill Document No.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Document number from the selected waybill';
+            }
+
+            field("Waybill PO References"; Rec."Waybill PO References")
+            {
+                ApplicationArea = All;
+                ToolTip = 'All PO numbers referenced in the waybill';
+            }
+
+            field("Linked PO No."; Rec."Linked PO No.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'The specific PO number linked to this line';
+            }
+
+            field("Waybill Vendor Name"; Rec."Waybill Vendor Name")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Vendor name from the linked PO';
+            }
+
+            field("Waybill Project Code"; Rec."Waybill Project Code")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Project code from the linked PO';
+            }
+        }
     }
 }

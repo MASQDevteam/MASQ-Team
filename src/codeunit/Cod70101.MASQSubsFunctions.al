@@ -2422,64 +2422,6 @@ codeunit 70101 "MASQ Subs & Functions"
         JobJnlLine.Validate("Unit Price", SalesLine."Unit Price");
     end;
 
-    //AN 06/16/2025
-    // [EventSubscriber(ObjectType::Codeunit, CodeUnit::"Purch. Inv. Header - Edit", OnBeforePurchInvHeaderModify, '', false, false)]
-    // local procedure OnBeforePurchInvHeaderModify(var PurchInvHeader: Record "Purch. Inv. Header"; PurchInvHeaderRec: Record "Purch. Inv. Header")
-
-    // var
-    //     ValueEntryGoods: Record "Value Entry";
-    //     ValueEntryCharges: Record "Value Entry";
-    //     CLEARING: Decimal;
-    //     CUSTOMS: Decimal;
-    //     FREIGHT: Decimal;
-    //     OTHERS: Decimal;
-    //     INSURANCE: Decimal;
-    // begin
-    //     FREIGHT := 0;
-    //     CUSTOMS := 0;
-    //     CLEARING := 0;
-    //     OTHERS := 0;
-    //     INSURANCE := 0;
-
-    //     Clear(ValueEntryGoods);
-    //     ValueEntryGoods.SetRange("Posting Date", PurchInvHeader."Posting Date");
-    //     ValueEntryGoods.SetRange("Document No.", PurchInvHeader."No.");
-    //     IF ValueEntryGoods.FindFirst() then begin
-    //         Clear(ValueEntryCharges);
-    //         ValueEntryCharges.SetRange("Item Ledger Entry No.", ValueEntryGoods."Item Ledger Entry No.");
-    //         if ValueEntryCharges.FindSet() then
-    //             repeat
-
-    //                 IF ValueEntryCharges."Gen. Prod. Posting Group" = 'CLEARING' then
-    //                     CLEARING += ValueEntryCharges."Cost Amount (Actual)" else
-
-    //                     IF ValueEntryCharges."Gen. Prod. Posting Group" = 'CUSTOMS' then
-    //                         CUSTOMS += ValueEntryCharges."Cost Amount (Actual)" else
-
-    //                         IF ValueEntryCharges."Gen. Prod. Posting Group" = 'FREIGHT' then
-    //                             FREIGHT += ValueEntryCharges."Cost Amount (Actual)" else
-
-    //                             IF ValueEntryCharges."Gen. Prod. Posting Group" = 'INSURANCE' then
-    //                                 INSURANCE += ValueEntryCharges."Cost Amount (Actual)" else
-
-    //                                 IF ValueEntryCharges."Gen. Prod. Posting Group" = 'OTHEREXP TAXABLE' then
-    //                                     OTHERS += ValueEntryCharges."Cost Amount (Actual)";
-
-    //             until ValueEntryCharges.Next() = 0;
-
-
-    //         PurchInvHeader."Actual (Total Cost) Freight" := FREIGHT;
-    //         PurchInvHeader."Actual (Total Cost) Custom" := CUSTOMS;
-    //         PurchInvHeader."Actual (Total Cost) Clearance" := CLEARING;
-    //         PurchInvHeader."Actual (Total Cost) Others" := OTHERS;
-
-    //         PurchInvHeader."Actual (Total Cost) Insurance" := INSURANCE;//all cost related to insurance is added on 10/02/2025
-
-
-    //     end;
-
-    // end;
-
     var
         FilterText: Text;
         UOMMgt: Codeunit "Unit of Measure Management";

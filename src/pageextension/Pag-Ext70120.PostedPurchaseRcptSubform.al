@@ -20,6 +20,19 @@ pageextension 70120 "Posted Purchase Rcpt. Subform " extends "Posted Purchase Rc
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the VAT Prod. Posting Group field.', Comment = '%';
             }
+
+        }
+        addafter("Promised Receipt Date")
+        {
+            field("BL/AWB ID"; Rec."BL/AWB ID")
+            {
+                ApplicationArea = All;
+            }
+            field("Truck WayBill ID"; Rec."Truck WayBill ID")
+            {
+                ApplicationArea = All;
+            }
+
         }
     }
 
