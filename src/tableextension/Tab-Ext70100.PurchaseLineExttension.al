@@ -1106,8 +1106,9 @@ tableextension 70100 "Purchase Line Exttension" extends "Purchase Line"
         IF rec."Meg Item Type" = '' then begin
             Rec."Meg Item Type" := xRec."Meg Item Type";
         end;
-        IF (Rec."Direct Unit Cost" = 0) AND (xRec."Direct Unit Cost" <> 0) then//may be removed case VO replace item//added on 27/03/2025
-            Rec.Validate("Direct Unit Cost", xRec."Direct Unit Cost");
+
+        // IF (Rec."Direct Unit Cost" = 0) AND (xRec."Direct Unit Cost" <> 0) then//may be removed case VO replace item//added on 27/03/2025
+        //     Rec.Validate("Direct Unit Cost", xRec."Direct Unit Cost");
 
         IF (rec."Location Code" = '') and (xRec."Location Code" <> '') then//added on 27/03/2025
             Rec.Validate("Location Code", xRec."Location Code");
