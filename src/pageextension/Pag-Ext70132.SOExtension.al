@@ -216,6 +216,24 @@ pageextension 70132 "SO Extension" extends "Sales Order"
         }
         addfirst(Processing)
         {
+            action("Print Label")
+            {
+                ApplicationArea = All;
+                Image = Print;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedOnly = true;
+                trigger OnAction()
+                var
+                    SalesHeader: Record "Sales Header";
+                begin
+                    SalesHeader.Reset();
+                    SalesHeader.SetRange("Document Type", Rec."Document Type");
+                    SalesHeader.SetRange("No.", Rec."No.");
+                    if SalesHeader.FindFirst() then
+                        Report.RunModal(Report::"Print Labels For Items", true, true, SalesHeader);
+                end;
+            }
             action(RefreshData)
             {
                 ApplicationArea = All;
