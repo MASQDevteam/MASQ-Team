@@ -1,5 +1,15 @@
 pageextension 70161 "Sales Order List" extends "Sales Order List"
 {
+    layout
+    {
+        addafter("No.")
+        {
+            field("SO Type"; Rec."SO Type")
+            {
+                ApplicationArea = All;
+            }
+        }
+    }
     actions
     {
         addafter("Print Confirmation")
