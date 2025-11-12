@@ -352,6 +352,14 @@ tableextension 70132 "Project Planning Lines exte" extends "Job Planning Line"
 
     end;
 
+    trigger OnDelete()
+    var
+        myInt: Integer;
+    begin
+        if rec."Purchase Order No." <> '' then
+            Error('Project planning line is linked to a purchase order, so it cant be deleted. Please delete it from the purchase order first.');
+    end;
+
     local procedure CalcCustomandClearance()
     var
         perc: Decimal;

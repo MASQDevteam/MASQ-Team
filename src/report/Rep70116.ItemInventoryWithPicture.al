@@ -52,11 +52,12 @@ report 70116 "Item Inventory With Picture"
                     ItemTenantMedia.Init();
                 end;
 
-                LastLocationCode := '';
-                ItemLedgerEntry.SetCurrentKey("Item No.", "Entry No.");
-                ItemLedgerEntry.SetRange("Item No.", "No.");
-                if ItemLedgerEntry.FindLast() then
-                    LastLocationCode := ItemLedgerEntry."Location Code";
+                // Get last location code with optional filter
+                LastLocationCode := GetLastLocationCode("No.");
+                
+                // Skip if location filter is set and doesn't match
+                if (LocationFilter <> '') and (LastLocationCode <> LocationFilter) then
+                    CurrReport.Skip();
             end;
         }
     }
@@ -77,7 +78,6 @@ report 70116 "Item Inventory With Picture"
                         ApplicationArea = All;
                         Caption = 'Show Only Items With Pictures';
                         ToolTip = 'Filter to show only items that have pictures attached. This will significantly improve report performance.';
-
                     }
 
                     field(ShowOnlyItemsWithInventory; ShowOnlyItemsWithInventory)
@@ -85,6 +85,14 @@ report 70116 "Item Inventory With Picture"
                         ApplicationArea = All;
                         Caption = 'Show Only Items With Inventory > 0';
                         ToolTip = 'Filter to show only items that have inventory greater than zero. This will reduce the number of records processed.';
+                    }
+
+                    field(LocationFilter; LocationFilter)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Location Filter';
+                        ToolTip = 'Filter items by their last transaction location. Leave blank to show all locations.';
+                        TableRelation = Location.Code;
                     }
                 }
             }
@@ -103,10 +111,23 @@ report 70116 "Item Inventory With Picture"
         ShowOnlyItemsWithInventory := true;
     end;
 
+    local procedure GetLastLocationCode(ItemNo: Code[20]): Code[10]
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+    begin
+        ItemLedgerEntry.SetCurrentKey("Item No.", "Entry No.");
+        ItemLedgerEntry.SetRange("Item No.", ItemNo);
+        if ItemLedgerEntry.FindLast() then
+            exit(ItemLedgerEntry."Location Code");
+        
+        exit('');
+    end;
+
     var
         CompanyInfo: Record "Company Information";
         ItemTenantMedia: Record "Tenant Media";
         ShowOnlyItemsWithPictures: Boolean;
         ShowOnlyItemsWithInventory: Boolean;
+        LocationFilter: Code[10];
         LastLocationCode: Code[10];
 }
