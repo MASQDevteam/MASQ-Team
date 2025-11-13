@@ -70,5 +70,5 @@ pageextension 70117 "Posted sale invoc extension" extends "Posted Sales Invoice"
     var
         myInt: Integer;
         SalesSetup: Record "Sales & Receivables Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+    //NoSeriesMgt: Codeunit NoSeriesManagement;
 }

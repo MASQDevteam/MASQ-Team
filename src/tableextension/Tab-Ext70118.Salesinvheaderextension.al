@@ -47,7 +47,7 @@ tableextension 70118 "Sales inv. header extension" extends "Sales Invoice Header
 
     var
         SalesSetup: Record "Sales & Receivables Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        //NoSeriesMgt: Codeunit NoSeriesManagement;
 
 
 }

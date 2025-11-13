@@ -324,7 +324,7 @@ table 70109 "Container Details"
         NoSeriesCode: Code[20];
         IsHandled: Boolean;
         GLSetup: Record "General Ledger Setup";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        //NoSeriesManagement: Codeunit NoSeriesManagement;
         "ContainerDetails": Record "Container Details";
     begin
         if "SP ID" = '' then begin
