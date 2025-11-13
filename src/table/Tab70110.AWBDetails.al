@@ -543,7 +543,7 @@ table 70110 "AWB Details"
         NoSeriesCode: Code[20];
         IsHandled: Boolean;
         GLSetup: Record "General Ledger Setup";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        //NoSeriesManagement: Codeunit NoSeriesManagement; //FQ MASQ
         "AWBDetails": Record "AWB Details";
         "No. Series": Codeunit "No. Series";
     begin

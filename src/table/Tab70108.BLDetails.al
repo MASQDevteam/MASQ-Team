@@ -313,7 +313,7 @@ table 70108 "BL Details"
         NoSeriesCode: Code[20];
         IsHandled: Boolean;
         GLSetup: Record "General Ledger Setup";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        //NoSeriesManagement: Codeunit NoSeriesManagement;
         "BL": Record "BL Details";
     begin
         if "BL ID" = '' then begin

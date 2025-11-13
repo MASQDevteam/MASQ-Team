@@ -23,14 +23,15 @@ page 70108 JobWithAutoJobTaskCreator
                     trigger OnValidate()
                     var
 
-                        NoSeriesMgt: Codeunit NoSeriesManagement;
+                        //NoSeriesMgt: Codeunit NoSeriesManagement;
+                        NoSeriesNew: Codeunit "No. Series";
                         NoSeriesCode: Code[20];
                         JobsSetup: Record "Jobs Setup";
                     begin
                         ProjectTaskNo := '';
                         JobsSetup.Get();
                         NoSeriesCode := JobsSetup."Job Nos.";
-                        Rec."No." := NoSeriesMgt.GetNextNo(NoSeriesCode, Today(), true);
+                        Rec."No." := NoSeriesNew.GetNextNo(NoSeriesCode, Today(), true);//FQ MASQ
                         Rec.Insert();
                         Clear(ProjectTasks);
                         IF NOT ProjectTasks.Get(Rec."No.", Rec."No." + '.1') then begin

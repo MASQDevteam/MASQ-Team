@@ -337,25 +337,29 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         NoSeriesCode: Code[20];
         IsHandled: Boolean;
         GLSetup: Record "General Ledger Setup";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        //NoSeriesManagement: Codeunit NoSeriesManagement;
         "SUPPLIERPAYMENTREQUEST": Record "SUPPLIER PAYMENT REQUEST";
     begin
         GLSetup.Get();
         GLSetup.TestField("Request for Payment No. Series");
-        NoSeriesManagement.RaiseObsoleteOnBeforeInitSeries(GLSetup."Request for Payment No. Series", xRec."No. Series", 0D, Rec."Number", Rec."No. Series", IsHandled);
+        // NoSeriesManagement.RaiseObsoleteOnBeforeInitSeries(GLSetup."Request for Payment No. Series", xRec."No. Series", 0D, Rec."Number", Rec."No. Series", IsHandled);
 
         if NoSeries.AreRelated(GLSetup."Request for Payment No. Series", xRec."No. Series") then
             Rec."No. Series" := xRec."No. Series"
         else
             Rec."No. Series" := GLSetup."Request for Payment No. Series";
 
-        Rec."Number" := NoSeries.GetNextNo(Rec."No. Series");
-        SUPPLIERPAYMENTREQUEST.ReadIsolation(IsolationLevel::ReadUncommitted);
-        SUPPLIERPAYMENTREQUEST.SetLoadFields("Number");
-        while SUPPLIERPAYMENTREQUEST.Get(Rec."Number") do
+        if Rec."Number" = '' then begin// FQ MASQ
             Rec."Number" := NoSeries.GetNextNo(Rec."No. Series");
-        NoSeriesManagement.RaiseObsoleteOnAfterInitSeries(Rec."No. Series", GLSetup."Request for Payment No. Series", 0D, Rec."Number");
+            SUPPLIERPAYMENTREQUEST.ReadIsolation(IsolationLevel::ReadUncommitted);
+            SUPPLIERPAYMENTREQUEST.SetLoadFields("Number");
+            while SUPPLIERPAYMENTREQUEST.Get(Rec."Number") do
+                Rec."Number" := NoSeries.GetNextNo(Rec."No. Series");
+        end;
+        // NoSeriesManagement.RaiseObsoleteOnAfterInitSeries(Rec."No. Series", GLSetup."Request for Payment No. Series", 0D, Rec."Number");
     end;
+
+
 
     procedure SendtoPaymentJournal()
     var

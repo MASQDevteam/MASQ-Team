@@ -140,7 +140,8 @@ page 70166 VendorsAPI
     }
 
     var
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        //NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesNew: Codeunit "No. Series";
         PurchasePayableSetup: Record "Purchases & Payables Setup";
         NoSeries: Code[20];
 
@@ -149,9 +150,9 @@ page 70166 VendorsAPI
     begin
         if NoSeries = '' then begin
             PurchasePayableSetup.Get();
-            Rec."No." := NoSeriesMgt.GetNextNo(PurchasePayableSetup."Vendor Nos.", 0D, true);
+            Rec."No." := NoSeriesNew.GetNextNo(PurchasePayableSetup."Vendor Nos.", 0D, true);//FQ MASQ
         end else begin
-            Rec."No." := NoSeriesMgt.GetNextNo(NoSeries, 0D, true);
+            Rec."No." := NoSeriesNew.GetNextNo(NoSeries, 0D, true);//FQ MASQ
         end;
         Rec."Gen. Bus. Posting Group" := 'LOCAL';
         Rec."VAT Bus. Posting Group" := 'LOCAL';

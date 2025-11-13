@@ -288,7 +288,7 @@ table 70126 "Purchase Request Header"
         PurchaseSetup.GET();
         IF "No." = '' THEN BEGIN
             PurchaseSetup.TESTFIELD(PurchaseSetup."Purchase Request Nos.");
-            "No." := NoSeriesMgt.GetNextNo(PurchaseSetup."Purchase Request Nos.", WORKDATE, TRUE);
+            "No." := NoSeriesNew.GetNextNo(PurchaseSetup."Purchase Request Nos.", WORKDATE, TRUE);//FQ MASQ
         END;
 
         VALIDATE(Date, WORKDATE);
@@ -327,7 +327,8 @@ table 70126 "Purchase Request Header"
     //AN 06/27/2025-
     var
         PurchaseSetup: Record "Purchases & Payables Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+       // NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesNew: Codeunit "No. Series";
         UserSetup: Record "User Setup";
         PurchReqLine: Record "Purchase Request Line";
         DimMgt: Codeunit DimensionManagement;

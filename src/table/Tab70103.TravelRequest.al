@@ -397,25 +397,27 @@ table 70103 "Travel Request"
         NoSeriesCode: Code[20];
         IsHandled: Boolean;
         GLSetup: Record "General Ledger Setup";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        //NoSeriesManagement: Codeunit NoSeriesManagement;
         TravelRequest: Record "Travel Request";
     begin
         //    if "Number" = '' then begin
         GLSetup.Get();
         GLSetup.TestField("Travel Request No. Series");
-        NoSeriesManagement.RaiseObsoleteOnBeforeInitSeries(GLSetup."Travel Request No. Series", xRec."No. Series", 0D, Rec."Number", Rec."No. Series", IsHandled);
+        //NoSeriesManagement.RaiseObsoleteOnBeforeInitSeries(GLSetup."Travel Request No. Series", xRec."No. Series", 0D, Rec."Number", Rec."No. Series", IsHandled);
         //  if not IsHandled then begin
         if NoSeries.AreRelated(GLSetup."Travel Request No. Series", xRec."No. Series") then
             Rec."No. Series" := xRec."No. Series"
         else
             Rec."No. Series" := GLSetup."Travel Request No. Series";
 
-        Rec."Number" := NoSeries.GetNextNo(Rec."No. Series");
-        TravelRequest.ReadIsolation(IsolationLevel::ReadUncommitted);
-        TravelRequest.SetLoadFields("Number");
-        while TravelRequest.Get(Rec."Number") do
+        if Rec."Number" = '' then begin// FQ MASQ
             Rec."Number" := NoSeries.GetNextNo(Rec."No. Series");
-        NoSeriesManagement.RaiseObsoleteOnAfterInitSeries(Rec."No. Series", GLSetup."Travel Request No. Series", 0D, Rec."Number");
+            TravelRequest.ReadIsolation(IsolationLevel::ReadUncommitted);
+            TravelRequest.SetLoadFields("Number");
+            while TravelRequest.Get(Rec."Number") do
+                Rec."Number" := NoSeries.GetNextNo(Rec."No. Series");
+        End;
+        // NoSeriesManagement.RaiseObsoleteOnAfterInitSeries(Rec."No. Series", GLSetup."Travel Request No. Series", 0D, Rec."Number");
         //   end;
         //  end;
     end;
