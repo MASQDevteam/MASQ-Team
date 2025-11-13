@@ -291,6 +291,18 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
                 if JobPlanningLineInvoice.FindFirst() then begin
                     JobPlanningLineInvoice.Validate("Quantity Transferred", Rec.Quantity);
                     JobPlanningLineInvoice.Modify();
+                end else begin
+                    JobPlanningLineInvoice.Init();
+                    JobPlanningLineInvoice."Job No." := Rec."Job No.";
+                    JobPlanningLineInvoice."Job Task No." := Rec."Job Task No.";
+                    JobPlanningLineInvoice."Job Planning Line No." := Rec."Job Planning Line No.";
+                    JobPlanningLineInvoice."Document Type" := JobPlanningLineInvoice."Document Type"::Order;
+                    JobPlanningLineInvoice."Document No." := Rec."Document No.";
+                    JobPlanningLineInvoice."Line No." := Rec."Line No.";
+                    JobPlanningLineInvoice."Quantity Transferred" := Rec.Quantity;
+                    JobPlanningLineInvoice."Item no." := Rec."No.";
+                    JobPlanningLineInvoice."Transferred Date" := Rec."Posting Date";
+                    JobPlanningLineInvoice.Insert();
                 end;
             end;
         }
