@@ -167,6 +167,11 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
             DataClassification = ToBeClassified;
             Caption = 'Create Direct SCC';
         }
+        field(70136; Procurement ; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Procurement Team';
+        }
         //FQ MASQ End
 
         field(70133; "Create Direct RFP"; Boolean)

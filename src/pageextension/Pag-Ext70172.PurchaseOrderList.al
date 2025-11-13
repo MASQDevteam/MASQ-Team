@@ -39,9 +39,15 @@ pageextension 70172 "Purchase Order List Custom" extends "Purchase Order List"
 
 
     trigger OnOpenPage()
+    var
+        usersetup: Record "User Setup";
     begin
-        // Apply filter to exclude fully delivered and fully invoiced
-       // rec.SetFilter("Custom Status", '<> %1', rec."Custom Status"::"Fully Received/Fully Invoiced");
+        usersetup.Get(UserId);
+        if usersetup.Procurement then begin
+            CurrPage.SETTABLEVIEW(Rec);
+            Rec.SETCURRENTKEY("Order Date");
+            Rec.Ascending(false);
+        end;
     end;
 
     trigger OnAfterGetRecord()

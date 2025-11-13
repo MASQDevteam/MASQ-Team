@@ -43,9 +43,15 @@ pageextension 70173 "Sales Order List Custom" extends "Sales Order List"
     end;
 
     trigger OnOpenPage()
+    var
+        usersetup: Record "User Setup";
     begin
-        // Apply filter to exclude fully delivered and fully invoiced
-        //rec.SetFilter("Custom Status", '<> %1', rec."Custom Status"::"Fully Delivered/Fully Invoiced");
+        usersetup.Get(UserId);
+        if usersetup.Procurement then begin
+            CurrPage.SETTABLEVIEW(Rec);
+            Rec.SETCURRENTKEY("Order Date");
+            Rec.ASCENDING(FALSE);
+        end;
     end;
 
     local procedure UpdateStatusStyle()

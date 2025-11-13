@@ -173,6 +173,11 @@ pageextension 70111 "User Setup Extension" extends "User Setup"
             {
                 ApplicationArea = All;
             }
+            field(Procurement; Rec.Procurement)
+            {
+                ApplicationArea = All;
+            }
+
             // FQ MASQ End
 
         }
