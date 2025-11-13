@@ -5,6 +5,10 @@ pageextension 70138 "Job Planning Lines extension" extends "Job Planning Lines"
     {
         addafter("No.")
         {
+            field("Area"; Rec."Area")
+            {
+                ApplicationArea = All;
+            }
             field("Vendor No."; Rec."Vendor No.")
             {
                 ApplicationArea = All;
