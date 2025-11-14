@@ -4,7 +4,7 @@ report 70119 "Print Labels For Items"
     Caption = 'Print Labels For Items';
     UsageCategory = ReportsAndAnalysis;
     PreviewMode = PrintLayout;
-    DefaultRenderingLayout = PrintLabel;
+    DefaultRenderingLayout = "PrintLabel-A4";
     dataset
     {
         dataitem("Sales Header"; "Sales Header")
@@ -64,10 +64,15 @@ report 70119 "Print Labels For Items"
     }
     rendering
     {
-        layout(PrintLabel)
+        layout("PrintLabel-A4")
         {
             Type = RDLC;
-            LayoutFile = 'src/report/Layouts/PrintLabel.rdl';
+            LayoutFile = 'src/report/Layouts/PrintLabel-A4.rdl';
+        }
+        layout("PrintLabel-A5")
+        {
+            Type = RDLC;
+            LayoutFile = 'src/report/Layouts/PrintLabel-A5.rdl';
         }
     }
     var

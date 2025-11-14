@@ -106,9 +106,9 @@ tableextension 70126 "unplanned demand extension" extends "Unplanned Demand"
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(70135; "Meg Vendor Item Code"; Text[50])
+        field(70135; "Meg Vendor Item Code"; Code[200])
         {
-
+            DataClassification = CustomerContent;
         }
     }
 
