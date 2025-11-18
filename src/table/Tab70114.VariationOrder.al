@@ -217,11 +217,11 @@ table 70114 "Variation Order"
             DataClassification = ToBeClassified;
             ExtendedDatatype = EMail;
         }
-        field(37; "Vendor Item Code"; Text[50])
+        field(37; "Vendor Item Code"; Code[200])
         {
 
         }
-        field(38; "New Vendor Item Code"; Text[50])
+        field(38; "New Vendor Item Code"; Code[200])
         {
 
         }
@@ -296,7 +296,7 @@ table 70114 "Variation Order"
         end;
         //FQ MASQ Start
         // Send notification before release, once, when Open and key fields are ready
-        if (Status = Status::Open)and (not "VO Notification Sent")and ("Project Code" <> '')and ("Item Number" <> '')then begin
+        if (Status = Status::Open) and (not "VO Notification Sent") and ("Project Code" <> '') and ("Item Number" <> '') then begin
             MASQEmail.SendEmailVariationOrder(Rec);
             "VO Notification Sent" := true;
         end;

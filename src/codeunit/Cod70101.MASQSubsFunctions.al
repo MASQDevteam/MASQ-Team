@@ -1132,7 +1132,8 @@ codeunit 70101 "MASQ Subs & Functions"
         project: Record Job;
     begin
         RequisitionLine."Meg Item Type" := UnplannedDemand."Meg Item Type";
-        RequisitionLine."Vendor Item No." := UnplannedDemand."Meg Vendor Item Code";
+        RequisitionLine."Vendor Item No." := CopyStr(UnplannedDemand."Meg Vendor Item Code", 1, MaxStrLen(RequisitionLine."Vendor Item No."));
+
         //AN 06/19/2025
         //RequisitionLine."Meg Vendor Item Code" := UnplannedDemand."Meg Vendor Item Code";
         RequisitionLine."MASQ Sales Order No." := UnplannedDemand."MASQ Sales Order No.";

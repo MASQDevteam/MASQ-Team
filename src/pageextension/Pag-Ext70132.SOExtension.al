@@ -13,6 +13,7 @@ pageextension 70132 "SO Extension" extends "Sales Order"
         modify("Your Reference")
         {
             ShowMandatory = true;
+            Caption = 'Your Reference (LPO)';
         }
         modify("Salesperson Code")
         {
@@ -22,7 +23,6 @@ pageextension 70132 "SO Extension" extends "Sales Order"
         {
             ShowMandatory = false;//FQ MASQ 
             Visible = false;//FQ MASQ 
-
         }
         modify("Assigned User ID")
         {

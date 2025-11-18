@@ -11,7 +11,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.1.30001.02</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-11-14T10:44:41.7174989Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-11-17T11:34:20.5389877Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -24,67 +24,6 @@
       <rd:DataSourceID>e2acd73d-03e9-4238-8ad2-2a61da31ca70</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="MegOCNo">
-          <DataField>MegOCNo</DataField>
-        </Field>
-        <Field Name="LocationCode">
-          <DataField>LocationCode</DataField>
-        </Field>
-        <Field Name="No_">
-          <DataField>No_</DataField>
-        </Field>
-        <Field Name="CompInfoPic">
-          <DataField>CompInfoPic</DataField>
-        </Field>
-        <Field Name="Sample">
-          <DataField>Sample</DataField>
-        </Field>
-        <Field Name="Area">
-          <DataField>Area</DataField>
-        </Field>
-        <Field Name="Meg_Item_Type">
-          <DataField>Meg_Item_Type</DataField>
-        </Field>
-        <Field Name="Meg_Vendor_Item_Code">
-          <DataField>Meg_Vendor_Item_Code</DataField>
-        </Field>
-        <Field Name="Description">
-          <DataField>Description</DataField>
-        </Field>
-        <Field Name="Quantity">
-          <DataField>Quantity</DataField>
-        </Field>
-        <Field Name="QuantityFormat">
-          <DataField>QuantityFormat</DataField>
-        </Field>
-        <Field Name="Document_No_">
-          <DataField>Document_No_</DataField>
-        </Field>
-        <Field Name="ItemNo">
-          <DataField>ItemNo</DataField>
-        </Field>
-        <Field Name="Line_No_">
-          <DataField>Line_No_</DataField>
-        </Field>
-        <Field Name="Meg_Driver">
-          <DataField>Meg_Driver</DataField>
-        </Field>
-        <Field Name="Picture">
-          <DataField>Picture</DataField>
-        </Field>
-        <Field Name="Meg_Brand">
-          <DataField>Meg_Brand</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -122,8 +61,8 @@
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <PaddingLeft>10pt</PaddingLeft>
-                            <PaddingRight>10pt</PaddingRight>
+                            <PaddingLeft>20pt</PaddingLeft>
+                            <PaddingRight>20pt</PaddingRight>
                             <PaddingTop>10pt</PaddingTop>
                             <PaddingBottom>10pt</PaddingBottom>
                           </Style>
@@ -422,32 +361,15 @@
                           <Source>Database</Source>
                           <Value>=Fields!Picture.Value</Value>
                           <MIMEType>image/png</MIMEType>
-                          <Sizing>Fit</Sizing>
+                          <Sizing>FitProportional</Sizing>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
-                              <Width>0.25pt</Width>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
+                            <PaddingLeft>1pt</PaddingLeft>
+                            <PaddingRight>1pt</PaddingRight>
+                            <PaddingTop>1pt</PaddingTop>
+                            <PaddingBottom>1pt</PaddingBottom>
                           </Style>
                         </Image>
                         <ColSpan>3</ColSpan>
@@ -1196,7 +1118,7 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Top>0cm</Top>
             <Left>0cm</Left>
-            <Height>9.7731cm</Height>
+            <Height>9.77309cm</Height>
             <Width>18.01283cm</Width>
             <Style>
               <Border>
@@ -1242,12 +1164,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -1304,4 +1220,65 @@ vXWu6gI+t85G3/l3uYTrKdFSEtsmYgXCuAfhwgQrH48vWHkPZFk4X3UVJlxPMRHLzZjBx3iYntiSsDji
   </EmbeddedImages>
   <Language>=User!Language</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="MegOCNo">
+          <DataField>MegOCNo</DataField>
+        </Field>
+        <Field Name="LocationCode">
+          <DataField>LocationCode</DataField>
+        </Field>
+        <Field Name="No_">
+          <DataField>No_</DataField>
+        </Field>
+        <Field Name="CompInfoPic">
+          <DataField>CompInfoPic</DataField>
+        </Field>
+        <Field Name="Sample">
+          <DataField>Sample</DataField>
+        </Field>
+        <Field Name="Area">
+          <DataField>Area</DataField>
+        </Field>
+        <Field Name="Meg_Item_Type">
+          <DataField>Meg_Item_Type</DataField>
+        </Field>
+        <Field Name="Meg_Vendor_Item_Code">
+          <DataField>Meg_Vendor_Item_Code</DataField>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+        </Field>
+        <Field Name="Quantity">
+          <DataField>Quantity</DataField>
+        </Field>
+        <Field Name="QuantityFormat">
+          <DataField>QuantityFormat</DataField>
+        </Field>
+        <Field Name="Document_No_">
+          <DataField>Document_No_</DataField>
+        </Field>
+        <Field Name="ItemNo">
+          <DataField>ItemNo</DataField>
+        </Field>
+        <Field Name="Line_No_">
+          <DataField>Line_No_</DataField>
+        </Field>
+        <Field Name="Meg_Driver">
+          <DataField>Meg_Driver</DataField>
+        </Field>
+        <Field Name="Picture">
+          <DataField>Picture</DataField>
+        </Field>
+        <Field Name="Meg_Brand">
+          <DataField>Meg_Brand</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

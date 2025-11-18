@@ -11,7 +11,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.1.30001.02</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-11-14T06:39:40.1572645Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-11-17T08:38:01.0953854Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -61,8 +61,8 @@
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <PaddingLeft>10pt</PaddingLeft>
-                            <PaddingRight>10pt</PaddingRight>
+                            <PaddingLeft>30pt</PaddingLeft>
+                            <PaddingRight>30pt</PaddingRight>
                             <PaddingTop>10pt</PaddingTop>
                             <PaddingBottom>10pt</PaddingBottom>
                           </Style>
@@ -361,32 +361,15 @@
                           <Source>Database</Source>
                           <Value>=Fields!Picture.Value</Value>
                           <MIMEType>image/png</MIMEType>
-                          <Sizing>Fit</Sizing>
+                          <Sizing>FitProportional</Sizing>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
-                              <Width>0.25pt</Width>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
+                            <PaddingLeft>1pt</PaddingLeft>
+                            <PaddingRight>1pt</PaddingRight>
+                            <PaddingTop>1pt</PaddingTop>
+                            <PaddingBottom>1pt</PaddingBottom>
                           </Style>
                         </Image>
                         <ColSpan>3</ColSpan>

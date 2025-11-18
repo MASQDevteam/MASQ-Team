@@ -2,6 +2,10 @@ pageextension 70103 "PO Extension" extends "Purchase Order"
 {
     layout
     {
+        modify("Your Reference")
+        {
+            Caption = 'Your Reference (Quotation No.)';
+        }
         addafter(PurchLines)
         {
             //AN 07/04/2025
