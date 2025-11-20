@@ -61,7 +61,14 @@ tableextension 70115 "SalesShipmentLine extension" extends "Sales Shipment Line"
             DataClassification = ToBeClassified;
         }
 
-
+        //FQ MASQ ** Start
+        field(70120; "Delivery Order No."; Code[20])
+        {
+            Caption = 'Delivery Order No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        //FQ MASQ ** End
     }
 
     keys

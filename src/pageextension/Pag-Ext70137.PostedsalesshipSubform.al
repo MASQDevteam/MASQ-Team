@@ -16,6 +16,13 @@ pageextension 70137 "Posted sales ship Subform " extends "Posted Sales Shpt. Sub
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the VAT Prod. Posting Group field.', Comment = '%';
             }
+            //FQ MASQ ** Start
+            field("Delivery Order No."; Rec."Delivery Order No.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the Delivery Order No. associated with this shipment line.';
+            }
+            //FQ MASQ ** End
         }
     }
 

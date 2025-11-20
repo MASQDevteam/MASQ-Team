@@ -1289,8 +1289,6 @@ codeunit 70101 "MASQ Subs & Functions"
             until PurchaseRequest.Next() = 0;
     end;
 
-
-    //remove comment on go live
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePostPurchLine', '', false, false)]//for batch posting
     local procedure OnBeforePostPurchLine(var PurchHeader: Record "Purchase Header"; var PurchLine: Record "Purchase Line"; var IsHandled: Boolean)
     var
@@ -1299,23 +1297,25 @@ codeunit 70101 "MASQ Subs & Functions"
         BatchNumber: code[50];
         BatchLOG: Record "Supply Chain LOG";
         Purchaseinvoice: Record "Purch. Inv. Header";
+        userSetup: Record "User Setup";
     begin
         //AN 06/26/2025
         IF (PurchLine.Type = PurchLine.Type::Item) AND (PurchLine."Document Type" = PurchLine."Document Type"::Order) then begin
             // no post receive if not linked to bl/awb if it is an order
             IF PurchHeader.Receive then begin
-                if PurchHeader."Gen. Bus. Posting Group" = 'FOREIGN' then begin
-                    IF PurchLine."Qty. to Receive" <> 0 then begin
-                        IF (PurchLine."Shipping By" = PurchLine."Shipping By"::Air) OR (PurchLine."Shipping By" = PurchLine."Shipping By"::Sea) then//added on 27/05/2025
-                            PurchLine.TestField("BL/AWB ID");
-
-                        IF PurchLine."Shipping By" = PurchLine."Shipping By"::InLand then//added on 27/05/2025
-                            PurchLine.TestField("Truck WayBill ID");//added on 27/05/2025
+                userSetup.Get(UserId);
+                IF userSetup."Bypass Shipping Doc. Check" = false then begin
+                    if PurchHeader."Gen. Bus. Posting Group" = 'FOREIGN' then begin
+                        IF PurchLine."Qty. to Receive" <> 0 then begin
+                            IF (PurchLine."Shipping By" = PurchLine."Shipping By"::Air) OR (PurchLine."Shipping By" = PurchLine."Shipping By"::Sea) OR (PurchLine."Shipping By" = PurchLine."Shipping By"::" ") then// validation for blank shipping by added on 19/11/2025
+                                PurchLine.TestField("BL/AWB ID");
+                            IF PurchLine."Shipping By" = PurchLine."Shipping By"::InLand then//added on 27/05/2025
+                                PurchLine.TestField("Truck WayBill ID");//added on 27/05/2025
+                        end;
                     end;
                 end;
             end;
         end;
-        //for credit memos only
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnPostSalesLineOnBeforeTestUnitOfMeasureCode', '', false, false)]//for batch posting

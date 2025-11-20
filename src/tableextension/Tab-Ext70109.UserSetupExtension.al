@@ -172,6 +172,10 @@ tableextension 70109 "User Setup Extension" extends "User Setup"
             DataClassification = ToBeClassified;
             Caption = 'Procurement Team';
         }
+        field(70137; "Bypass Shipping Doc. Check"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
         //FQ MASQ End
 
         field(70133; "Create Direct RFP"; Boolean)

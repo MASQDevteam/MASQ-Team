@@ -177,7 +177,10 @@ pageextension 70111 "User Setup Extension" extends "User Setup"
             {
                 ApplicationArea = All;
             }
-
+            field("Bypass Shipping Doc. Check"; Rec."Bypass Shipping Doc. Check")
+            {
+                ApplicationArea = All;
+            }
             // FQ MASQ End
 
         }
