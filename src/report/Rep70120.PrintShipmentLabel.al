@@ -1,15 +1,15 @@
-report 70119 "Print Labels For Items"
+report 70120 "Print Shipment Label"
 {
     ApplicationArea = All;
-    Caption = 'Print Labels For Items';
+    Caption = 'Print Shipment Label';
     UsageCategory = ReportsAndAnalysis;
     PreviewMode = PrintLayout;
-    DefaultRenderingLayout = "PrintLabel-A4";
+    DefaultRenderingLayout = "PrintShipLabel-A4";
     dataset
     {
-        dataitem("Sales Header"; "Sales Header")
+        dataitem("Sales Shipment Header"; "Sales Shipment Header")
         {
-            DataItemTableView = sorting("Document Type", "No.") where("Document Type" = filter(Order));
+            DataItemTableView = sorting("No.");
             column(MegOCNo; "Meg OC No.") { }
             column(LocationCode; "Location Code") { }
             column(No_; "No.") { }
@@ -17,12 +17,12 @@ report 70119 "Print Labels For Items"
             column(Sample; Sample) { }
             column("Area"; "Area") { }
             column(SampleText; SampleText) { }
-            dataitem("Sales Line"; "Sales Line")
+            dataitem("Sales Shipment Line"; "Sales Shipment Line")
             {
-                DataItemTableView = sorting("Document Type", "Document No.", "Line No.")
-                                    where("Document Type" = filter(Order), Type = filter(Item));
-                DataItemLinkReference = "Sales Header";
-                DataItemLink = "Document Type" = field("Document Type"), "Document No." = field("No.");
+                DataItemTableView = sorting("Document No.", "Line No.")
+                                    where(Type = filter(Item), Quantity = filter(> 0));
+                DataItemLinkReference = "Sales Shipment Header";
+                DataItemLink = "Document No." = field("No.");
                 column(Meg_Item_Type; "Meg Item Type") { }
                 column(Meg_Vendor_Item_Code; "Meg Vendor Item Code") { }
                 column(Description; Description) { }
@@ -33,7 +33,7 @@ report 70119 "Print Labels For Items"
                 dataitem(Item; Item)
                 {
                     DataItemTableView = sorting("No.");
-                    DataItemLinkReference = "Sales Line";
+                    DataItemLinkReference = "Sales Shipment Line";
                     DataItemLink = "No." = field("No.");
                     column(Meg_Driver; "Meg Driver") { }
                     column(Picture; Picture) { }
@@ -65,15 +65,15 @@ report 70119 "Print Labels For Items"
     }
     rendering
     {
-        layout("PrintLabel-A4")
+        layout("PrintShipLabel-A4")
         {
             Type = RDLC;
-            LayoutFile = 'src/report/Layouts/PrintLabel-A4.rdl';
+            LayoutFile = 'src/report/Layouts/PrintShipLabel-A4.rdl';
         }
-        layout("PrintLabel-A5")
+        layout("PrintShipLabel-A5")
         {
             Type = RDLC;
-            LayoutFile = 'src/report/Layouts/PrintLabel-A5.rdl';
+            LayoutFile = 'src/report/Layouts/PrintShipLabel-A5.rdl';
         }
     }
     var
