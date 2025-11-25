@@ -52,6 +52,10 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
                 Editable = false;
                 Enabled = false;
             }
+            field("Area Text"; Rec."Area Text")
+            {
+                ApplicationArea = All;
+            }
         }
         // Add changes to page layout here
         addafter("Unit Price")
@@ -615,11 +619,20 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
     trigger OnAfterGetRecord()
     var
         Item: Record Item;
+        JobPlanningLine: Record "Job Planning Line";
     begin
         if Item.Get(Rec."No.") then begin
             Item.CalcFields(Inventory);
             Rec.Validate("Available Inventory", Item.Inventory);
         end;
+
+        JobPlanningLine.Reset();
+        JobPlanningLine.SetRange("Job No.", Rec."Job No.");
+        JobPlanningLine.SetRange("Job Task No.", Rec."Job Task No.");
+        JobPlanningLine.SetRange("Line No.", Rec."Job Planning Line No.");
+        JobPlanningLine.SetRange("Job Contract Entry No.", Rec."Job Contract Entry No.");
+        if JobPlanningLine.FindFirst() then
+            Rec.Validate("Area Text", JobPlanningLine."Area");
     end;
     //NB MASQ End
 
