@@ -255,6 +255,11 @@ tableextension 70102 "Sales line extension" extends "Sales Line"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(70144; "Area Text"; Text[50])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Area';
+        }
         //NB MASQ End
 
         modify("Planned Delivery Date")
