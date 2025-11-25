@@ -17,7 +17,7 @@ report 70116 "Item Inventory With Picture"
             column(Picture; CompanyInfo.Picture) { }
             column(Inventory; Inventory) { }
             column(Meg_Vendor_Item_Code; "Meg Vendor Item Code") { }
-            column(Location_Code; LastLocationCode) { }
+            column(Location_Code; LastLocationName) { }
             column(Meg_Family; "Meg Family") { }
             column(Meg_Item_Subcategory_Code; "Meg Item Subcategory Code") { }
 
@@ -31,6 +31,7 @@ report 70116 "Item Inventory With Picture"
             trigger OnAfterGetRecord()
             var
                 ItemLedgerEntry: Record "Item Ledger Entry";
+                Location: Record Location;
             begin
                 // Use partial records for better performance - only load required fields
                 SetLoadFields("No.", "Vendor No.", Description, "Meg Vendor Item Code", Inventory, Picture);
@@ -54,10 +55,15 @@ report 70116 "Item Inventory With Picture"
 
                 // Get last location code with optional filter
                 LastLocationCode := GetLastLocationCode("No.");
-                
+
                 // Skip if location filter is set and doesn't match
                 if (LocationFilter <> '') and (LastLocationCode <> LocationFilter) then
                     CurrReport.Skip();
+
+                if Location.Get(LastLocationCode) then
+                    LastLocationName := LastLocationCode + ' - ' + Location.Name
+                else
+                    LastLocationName := LastLocationCode;
             end;
         }
     }
@@ -119,7 +125,7 @@ report 70116 "Item Inventory With Picture"
         ItemLedgerEntry.SetRange("Item No.", ItemNo);
         if ItemLedgerEntry.FindLast() then
             exit(ItemLedgerEntry."Location Code");
-        
+
         exit('');
     end;
 
@@ -130,4 +136,5 @@ report 70116 "Item Inventory With Picture"
         ShowOnlyItemsWithInventory: Boolean;
         LocationFilter: Code[10];
         LastLocationCode: Code[10];
+        LastLocationName: Text[100];
 }

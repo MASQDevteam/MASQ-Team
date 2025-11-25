@@ -78,6 +78,11 @@ Report 70109 "Purchase - Receipt Updated"
             {
 
             }
+            //FQ MASQ 25/11/2025 Start
+            column(Posting_Date; "Posting Date")
+            {
+            }
+            //FQ MASQ 25/11/2025 End
 
             dataitem(CopyLoop; "Integer")
             {
