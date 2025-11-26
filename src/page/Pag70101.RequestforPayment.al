@@ -244,6 +244,23 @@ page 70101 "Request for Payment"
             //         Rec."Sent to journals" := true;
             //     end;
             // }
+            action("Print RFP")
+            {
+                ApplicationArea = All;
+                Image = Payment;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedOnly = true;
+                trigger OnAction()
+                var
+                    SUPPLIERPAYMENTREQUEST: Record "SUPPLIER PAYMENT REQUEST";
+                begin
+                    SUPPLIERPAYMENTREQUEST.Reset();
+                    SUPPLIERPAYMENTREQUEST.SetRange(Number, Rec.Number);
+                    if SUPPLIERPAYMENTREQUEST.FindFirst() then
+                        Report.RunModal(Report::"RFP Print Report", true, true, SUPPLIERPAYMENTREQUEST);
+                end;
+            }
         }
     }
     trigger OnOpenPage()//to be removed
