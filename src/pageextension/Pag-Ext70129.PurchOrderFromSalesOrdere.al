@@ -384,11 +384,6 @@ pageextension 70129 "Purch. Order From Sales Ordere" extends "Purch. Order From 
                                 IF (PurchaseRequestLine."Unit Cost" <> Rec."Direct Unit Cost") then begin
                                     Rec.Validate("Direct Unit Cost", PurchaseRequestLine."Unit Cost");
                                 end;
-                                //FQ MASQ 11/24/2025 Start
-                                PurchaseRequestLine.CalcFields("Vendor Item Code");
-                                if PurchaseRequestLine."Vendor Item Code" <> '' then
-                                    Rec."Vendor Item No." := CopyStr(PurchaseRequestLine."Vendor Item Code", 1, MaxStrLen(Rec."Vendor Item No."));
-                                //FQ MASQ 11/24/2025 End
                                 Rec.Modify(true);
 
                             end;
