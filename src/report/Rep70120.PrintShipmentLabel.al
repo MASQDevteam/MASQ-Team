@@ -10,6 +10,7 @@ report 70120 "Print Shipment Label"
         dataitem("Sales Shipment Header"; "Sales Shipment Header")
         {
             DataItemTableView = sorting("No.");
+            RequestFilterFields = "No.";
             column(MegOCNo; "Meg OC No.") { }
             column(LocationCode; "Location Code") { }
             column(No_; "No.") { }
@@ -23,6 +24,7 @@ report 70120 "Print Shipment Label"
                                     where(Type = filter(Item), Quantity = filter(> 0));
                 DataItemLinkReference = "Sales Shipment Header";
                 DataItemLink = "Document No." = field("No.");
+                RequestFilterFields = "Document No.";
                 column(Meg_Item_Type; "Meg Item Type") { }
                 column(Meg_Vendor_Item_Code; "Meg Vendor Item Code") { }
                 column(Description; Description) { }
@@ -35,6 +37,7 @@ report 70120 "Print Shipment Label"
                     DataItemTableView = sorting("No.");
                     DataItemLinkReference = "Sales Shipment Line";
                     DataItemLink = "No." = field("No.");
+                    RequestFilterFields = "No.";
                     column(Meg_Driver; "Meg Driver") { }
                     column(Picture; Picture) { }
                     column(Meg_Brand; "Meg Brand") { }

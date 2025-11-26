@@ -10,6 +10,7 @@ report 70119 "Print Labels For Items"
         dataitem("Sales Header"; "Sales Header")
         {
             DataItemTableView = sorting("Document Type", "No.") where("Document Type" = filter(Order));
+            RequestFilterFields = "No.";
             column(MegOCNo; "Meg OC No.") { }
             column(LocationCode; "Location Code") { }
             column(No_; "No.") { }
@@ -23,6 +24,7 @@ report 70119 "Print Labels For Items"
                                     where("Document Type" = filter(Order), Type = filter(Item));
                 DataItemLinkReference = "Sales Header";
                 DataItemLink = "Document Type" = field("Document Type"), "Document No." = field("No.");
+                RequestFilterFields = "Document No.";
                 column(Meg_Item_Type; "Meg Item Type") { }
                 column(Meg_Vendor_Item_Code; "Meg Vendor Item Code") { }
                 column(Description; Description) { }
@@ -35,6 +37,7 @@ report 70119 "Print Labels For Items"
                     DataItemTableView = sorting("No.");
                     DataItemLinkReference = "Sales Line";
                     DataItemLink = "No." = field("No.");
+                    RequestFilterFields = "No.";
                     column(Meg_Driver; "Meg Driver") { }
                     column(Picture; Picture) { }
                     column(Meg_Brand; "Meg Brand") { }
