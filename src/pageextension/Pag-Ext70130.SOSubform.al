@@ -5,6 +5,11 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
         //FQ MASQ **START**
         addafter("No.")
         {
+            field("Item Category Code"; Rec."Item Category Code")
+            {
+                ApplicationArea = All;
+                Editable = false;
+            }
             field("Item Subcategory Code"; Rec."Item Subcategory Code") //NB MASQ
             {
                 ApplicationArea = All;

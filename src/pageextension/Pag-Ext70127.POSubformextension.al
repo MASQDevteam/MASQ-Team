@@ -5,6 +5,11 @@ pageextension 70127 "PO Subform e xtension" extends "Purchase Order Subform"
 
         addafter("No.")
         {
+            field("Item Category Code"; Rec."Item Category Code")
+            {
+                ApplicationArea = All;
+                Editable = false;
+            }
             field("Item Subcategory Code"; Rec."Item Subcategory Code") //NB MASQ
             {
                 ApplicationArea = All;
