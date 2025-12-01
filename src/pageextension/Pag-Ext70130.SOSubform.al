@@ -510,6 +510,25 @@ pageextension 70130 "SO Subform" extends "Sales Order Subform"
                 end;
             }
         }
+        addfirst(processing)
+        {
+            action("Print Label")
+            {
+                ApplicationArea = All;
+                Image = Print;
+                trigger OnAction()
+                var
+                    SalesLine: Record "Sales Line";
+                begin
+                    CurrPage.SetSelectionFilter(SalesLine);
+
+                    if SalesLine.FindSet() then
+                        Report.RunModal(Report::PrintLineLabels, true, true, SalesLine);
+
+                    CurrPage.Update();
+                end;
+            }
+        }
     }
     local procedure SplitSOLines()
     var

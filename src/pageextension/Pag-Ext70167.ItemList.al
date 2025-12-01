@@ -4,7 +4,6 @@ pageextension 70167 "Item List" extends "Item List"
     {
         addafter("Meg Item Subcategory Code")
         {
-
             field("Meg Brand"; Rec."Meg Brand")
             {
                 ApplicationArea = All;
