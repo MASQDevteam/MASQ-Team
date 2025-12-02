@@ -11,7 +11,6 @@ pageextension 70108 "Vendor ledger extension" extends "Vendor Ledger Entries"
                 ToolTip = 'Specifies the value of the Purchase (LCY) field.', Comment = '%';
             }
         }
-
         //NB MASQ Start
         addafter("Shortcut Dimension 8 Code")
         {
@@ -21,7 +20,15 @@ pageextension 70108 "Vendor ledger extension" extends "Vendor Ledger Entries"
                 ToolTip = 'Displays the name of the employee associated with this entry.';
             }
         }
+        addafter("Global Dimension 1 Code")
+        {
+            field("Project Name"; Rec."Project Name")
+            {
+                ApplicationArea = All;
+            }
+        }
         //NB MASQ End
+
         //FQ MASQ** Start
         addafter("External Document No.")
         {
@@ -34,7 +41,6 @@ pageextension 70108 "Vendor ledger extension" extends "Vendor Ledger Entries"
             }
             //FQ MASQ** End
         }
-
     }
 
     actions

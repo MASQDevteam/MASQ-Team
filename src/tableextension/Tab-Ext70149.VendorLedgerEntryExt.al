@@ -18,6 +18,14 @@ tableextension 70149 "Vendor Ledger Entry Ext" extends "Vendor Ledger Entry"
             TableRelation = "Purchase Header"."No." WHERE("No." = field("Related PO No."));
             Editable = false;
         }
+        field(70102; "Project Name"; Text[50])
+        {
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = lookup("Dimension Value".Name where("Dimension Code" = const('PROJECT'),
+                                                            Code = field("Global Dimension 1 Code"),
+                                                            "Global Dimension No." = const(1)));
+        }
         //FQ MASQ**END
     }
 }
