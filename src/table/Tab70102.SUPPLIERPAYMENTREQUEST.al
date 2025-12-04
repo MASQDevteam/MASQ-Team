@@ -129,19 +129,33 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
         }
         field(18; "1st Payment"; Decimal)
         {
-            DataClassification = CustomerContent;
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."Payment Value" where(Number = field(Number), "Line No" = const(10000)));
         }
         field(19; "1st Payment Date"; Date)
         {
-            DataClassification = CustomerContent;
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."Payment Date" where(Number = field(Number), "Line No" = const(10000)));
         }
         field(20; "2nd Payment"; Decimal)
         {
-            DataClassification = CustomerContent;
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."Payment Value" where(Number = field(Number), "Line No" = const(20000)));
         }
         field(21; "2nd Payment Date"; Date)
         {
-            DataClassification = CustomerContent;
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."Payment Date" where(Number = field(Number), "Line No" = const(10000)));
+        }
+        field(40; "3rd Payment"; Decimal)
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."Payment Value" where(Number = field(Number), "Line No" = const(30000)));
+        }
+        field(41; "3rd Payment Date"; Date)
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."Payment Date" where(Number = field(Number), "Line No" = const(30000)));
         }
         field(22; "Balance on Order"; Decimal)
         {
@@ -274,14 +288,6 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
                 end;
             end;
         }
-        field(40; "3rd Payment"; Decimal)
-        {
-            DataClassification = CustomerContent;
-        }
-        field(41; "3rd Payment Date"; Date)
-        {
-            DataClassification = CustomerContent;
-        }
         field(42; "Additional Charges"; Decimal)
         {
             DataClassification = CustomerContent;
@@ -299,17 +305,23 @@ table 70102 "SUPPLIER PAYMENT REQUEST"
             DataClassification = ToBeClassified;
             OptionMembers = "Materials to be Produced","Ready (In-Stock) Materials","General Payment on Account";
         }
-        field(45; "Payment Status 1"; Enum "Document Status")
+        field(45; "Payment Status 1"; Option)
         {
-
+            OptionMembers = Open,"Pending Approval",Approved;
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."Procurment Status" where(Number = field(Number), "Line No" = const(10000)));
         }
-        field(46; "Payment Status 2"; Enum "Document Status")
+        field(46; "Payment Status 2"; Option)
         {
-
+            OptionMembers = Open,"Pending Approval",Approved;
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."Procurment Status" where(Number = field(Number), "Line No" = const(20000)));
         }
-        field(47; "Payment Status 3"; Enum "Document Status")
+        field(47; "Payment Status 3"; Option)
         {
-
+            OptionMembers = Open,"Pending Approval",Approved;
+            FieldClass = FlowField;
+            CalcFormula = lookup("Payment Line"."Procurment Status" where(Number = field(Number), "Line No" = const(30000)));
         }
         field(48; "Project Name"; Text[50]) //NB MASQ
         {
