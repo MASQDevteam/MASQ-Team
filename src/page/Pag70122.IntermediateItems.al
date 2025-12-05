@@ -594,11 +594,14 @@ page 70122 "Intermediate Items"
             OtherCompanyItemRec.Validate("Gen. Prod. Posting Group", Rec."Gen. Prod. Posting Group")
         else
             OtherCompanyItemRec.Validate("Gen. Prod. Posting Group", 'GOODS');
-
-        if Rec."VAT Prod. Posting Group" <> '' then
-            OtherCompanyItemRec.Validate("VAT Prod. Posting Group", Rec."VAT Prod. Posting Group")
-        else
-            OtherCompanyItemRec.Validate("VAT Prod. Posting Group", 'GOODSVAT');
+        IF CompanyName = 'NEW MASQ -QATAR' then
+            OtherCompanyItemRec.Validate("VAT Prod. Posting Group", 'GOODSNOVAT')
+        else begin
+            if Rec."VAT Prod. Posting Group" <> '' then
+                OtherCompanyItemRec.Validate("VAT Prod. Posting Group", Rec."VAT Prod. Posting Group")
+            else
+                OtherCompanyItemRec.Validate("VAT Prod. Posting Group", 'GOODSVAT');
+        end;
         IF Rec.Type = Rec.Type::Inventory then begin
             if Rec."Inventory Posting Group" <> '' then
                 OtherCompanyItemRec.Validate("Inventory Posting Group", Rec."Inventory Posting Group")

@@ -2,9 +2,35 @@ pageextension 70105 "Item Ledger Entries Extension" extends "Item Ledger Entries
 {
     layout
     {
-        // Add changes to page layout here\
+        // Add changes to page layout here
+        //FQ MASQ** Start
         addafter("Document No.")
         {
+            field("Source Order No"; Rec."Source Order No.")
+            {
+                ApplicationArea = All;
+                Editable = false;
+                Caption = 'Source Order No.';
+                ToolTip = 'Specifies the originating sales or purchase order for this entry.', Comment = '%';
+
+                trigger OnDrillDown()
+                var
+                    SalesHeader: Record "Sales Header";
+                    PurchHeader: Record "Purchase Header";
+                begin
+                    case Rec."Document Type" of
+                        Rec."Document Type"::"Sales Shipment":
+                            if Rec."Source Order No." <> '' then
+                                if SalesHeader.Get(SalesHeader."Document Type"::Order, Rec."Source Order No.") then
+                                    Page.Run(Page::"Sales Order", SalesHeader);
+                        Rec."Document Type"::"Purchase Receipt":
+                            if Rec."Source Order No." <> '' then
+                                if PurchHeader.Get(PurchHeader."Document Type"::Order, Rec."Source Order No.") then
+                                    Page.Run(Page::"Purchase Order", PurchHeader);
+                    end;
+                end;
+            }
+            //FQ MASQ** End
             field("Item Type Purch. Inv."; Rec."Item Type Purch. Inv.")
             {
                 ApplicationArea = All;
@@ -109,7 +135,27 @@ pageextension 70105 "Item Ledger Entries Extension" extends "Item Ledger Entries
             }
         }
     }
+    //FQ MASQ** Start
+    trigger OnAfterGetRecord()
+    begin
+        SetSourceOrderNo();
+    end;
 
+    local procedure SetSourceOrderNo()
     var
-        myInt: Integer;
+        SalesShptHeader: Record "Sales Shipment Header";
+        PurchRcptHeader: Record "Purch. Rcpt. Header";
+    begin
+        Rec."Source Order No." := '';
+
+        case Rec."Document Type" of
+            Rec."Document Type"::"Sales Shipment":
+                if SalesShptHeader.Get(Rec."Document No.") then
+                    Rec."Source Order No." := SalesShptHeader."Order No.";
+            Rec."Document Type"::"Purchase Receipt":
+                if PurchRcptHeader.Get(Rec."Document No.") then
+                    Rec."Source Order No." := PurchRcptHeader."Order No.";
+        end;
+    end;
+    //FQ MASQ** End
 }

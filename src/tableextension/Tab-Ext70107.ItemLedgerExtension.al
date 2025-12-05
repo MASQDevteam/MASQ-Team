@@ -100,6 +100,11 @@ tableextension 70107 "Item Ledger Extension" extends "Item Ledger Entry"
             CalcFormula = lookup(Item."Meg Item Subcategory Code" where("No." = field("Item No.")));
             Editable = false;
         }
+        field(70115; "Source Order No."; Code[20]) //MASQ FQ
+        {
+            Caption = 'Source Order No.';
+            DataClassification = ToBeClassified;
+        }
         //NB MASQ End
 
     }
